@@ -186,6 +186,15 @@ public:
                      const std::string &finish,
                      const int32_t count);
 
+  std::map<std::string, std::vector<org::apache::cassandra::Column> >
+  getRangeSlices(const org::apache::cassandra::ColumnParent &col_parent,
+                const org::apache::cassandra::SlicePredicate &pred,
+                const org::apache::cassandra::KeyRange &range);
+
+  std::map<std::string, std::vector<org::apache::cassandra::SuperColumn> >
+  getSuperRangeSlices(const org::apache::cassandra::ColumnParent &col_parent,
+                     const org::apache::cassandra::SlicePredicate &pred,
+                     const org::apache::cassandra::KeyRange &range);
 
   /**
    * @return number of columns in a row or super column
