@@ -1,6 +1,7 @@
-.autotools
-.cproject
-.project
+/.autotools
+/.cproject
+/.project
+/.settings/
 .svn
 *.o
 *.la
