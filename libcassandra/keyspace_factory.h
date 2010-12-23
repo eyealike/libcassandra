@@ -34,7 +34,8 @@ public:
   std::tr1::shared_ptr<Keyspace> create(Cassandra *client,
                                         const std::string &name,
                                         const std::map< std::string, std::map<std::string, std::string> > &descrip,
-                                        org::apache::cassandra::ConsistencyLevel level);
+                                        org::apache::cassandra::ConsistencyLevel readLevel,
+                                        org::apache::cassandra::ConsistencyLevel writeLevel );
 
 };
 

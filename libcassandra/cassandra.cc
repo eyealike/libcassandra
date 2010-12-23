@@ -71,14 +71,15 @@ set<string> Cassandra::getKeyspaces()
 
 tr1::shared_ptr<Keyspace> Cassandra::getKeyspace(const string &name)
 {
-  return getKeyspace(name, DCQUORUM);
+  return getKeyspace(name, DCQUORUM, DCQUORUM );
 }
 
 
 tr1::shared_ptr<Keyspace> Cassandra::getKeyspace(const string &name,
-                                                 ConsistencyLevel level)
+                                                 ConsistencyLevel readLevel,
+                                                 ConsistencyLevel writeLevel )
 {
-  string keymap_name= buildKeyspaceMapName(name, level);
+  string keymap_name= buildKeyspaceMapName(name, readLevel, writeLevel );
   map<string, tr1::shared_ptr<Keyspace> >::iterator key_it= keyspace_map.find(keymap_name);
   if (key_it == keyspace_map.end())
   {
@@ -88,7 +89,7 @@ tr1::shared_ptr<Keyspace> Cassandra::getKeyspace(const string &name,
     {
       map< string, map<string, string> > keyspace_desc;
       thrift_client->describe_keyspace(keyspace_desc, name);
-      tr1::shared_ptr<Keyspace> ret(new Keyspace(this, name, keyspace_desc, level));
+      tr1::shared_ptr<Keyspace> ret(new Keyspace(this, name, keyspace_desc, readLevel, writeLevel));
       keyspace_map[keymap_name]= ret;
     }
     else
@@ -103,7 +104,7 @@ tr1::shared_ptr<Keyspace> Cassandra::getKeyspace(const string &name,
 
 void Cassandra::removeKeyspace(tr1::shared_ptr<Keyspace> k)
 {
-  string keymap_name= buildKeyspaceMapName(k->getName(), k->getConsistencyLevel());
+  string keymap_name= buildKeyspaceMapName(k->getName(), k->getReadConsistencyLevel(), k->getWriteConsistencyLevel());
   keyspace_map.erase(keymap_name);
 }
 
@@ -197,10 +198,12 @@ int Cassandra::getPort() const
 }
 
 
-string Cassandra::buildKeyspaceMapName(string keyspace, int level)
+string Cassandra::buildKeyspaceMapName(string keyspace, int readLevel, int writeLevel )
 {
   keyspace.append("[");
-  keyspace.append(toString(level));
+  keyspace.append(toString(readLevel));
+  keyspace.append(",");
+  keyspace.append(toString(writeLevel));
   keyspace.append("]");
   return keyspace;
 }

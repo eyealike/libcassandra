@@ -69,7 +69,10 @@ public:
   /**
    * @return the keyspace with the given name at the given consistency level.
    */
-  std::tr1::shared_ptr<Keyspace> getKeyspace(const std::string &name, org::apache::cassandra::ConsistencyLevel level);
+  std::tr1::shared_ptr<Keyspace> getKeyspace(
+	  const std::string &name,
+	  org::apache::cassandra::ConsistencyLevel readLevel,
+	  org::apache::cassandra::ConsistencyLevel writeLevel);
 
   /**
    * Remove the given keyspace.
@@ -117,7 +120,7 @@ private:
   /**
    * Creates a unique map name for the keyspace and its consistency level
    */
-  std::string buildKeyspaceMapName(std::string keyspace, int level);
+  std::string buildKeyspaceMapName(std::string keyspace, int readLevel, int writeLevel );
 
   org::apache::cassandra::CassandraClient *thrift_client;
   std::string host;

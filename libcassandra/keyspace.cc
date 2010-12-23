@@ -34,12 +34,14 @@ using namespace boost;
 Keyspace::Keyspace(Cassandra *in_client,
                    const string &in_name,
                    const map< string, map<string, string> > &in_desc,
-                   ConsistencyLevel in_level)
+                   ConsistencyLevel in_readLevel,
+                   ConsistencyLevel in_writeLevel)
   :
     client(in_client),
     name(in_name),
     keyspace_desc(in_desc),
-    level(in_level)
+    readLevel(in_readLevel),
+    writeLevel(in_writeLevel)
 {}
 
 
@@ -61,7 +63,7 @@ void Keyspace::insertColumn(const string &key,
   /* validate the column path */
   validateColumnPath(col_path);
   /* actually perform the insert */
-  client->getCassandra()->insert(name, key, col_path, value, createTimestamp(), level);
+  client->getCassandra()->insert(name, key, col_path, value, createTimestamp(), writeLevel);
 }
 
 
@@ -79,7 +81,7 @@ void Keyspace::remove(const string &key,
 {
   /* validate the column path */
   validateColumnPath(col_path);
-  client->getCassandra()->remove(name, key, col_path, createTimestamp(), level);
+  client->getCassandra()->remove(name, key, col_path, createTimestamp(), writeLevel);
 }
 
 
@@ -137,7 +139,7 @@ Column Keyspace::getColumn(const string &key,
   col_path.__isset.column= true;
   validateColumnPath(col_path);
   ColumnOrSuperColumn cosc;
-  client->getCassandra()->get(cosc, name, key, col_path, level);
+  client->getCassandra()->get(cosc, name, key, col_path, readLevel);
   if (cosc.column.name.empty())
   {
     /* throw an exception */
@@ -182,7 +184,7 @@ SuperColumn Keyspace::getSuperColumn(const string &key,
   col_path.__isset.super_column= true;
   validateSuperColumnPath(col_path);
   ColumnOrSuperColumn cosc;
-  client->getCassandra()->get(cosc, name, key, col_path, level);
+  client->getCassandra()->get(cosc, name, key, col_path, readLevel);
   if (cosc.super_column.name.empty())
   {
     /* throw an exception */
@@ -200,7 +202,7 @@ vector<Column> Keyspace::getSliceNames(const string &key,
   vector<Column> result;
   /* damn you thrift! */
   pred.__isset.column_names= true;
-  client->getCassandra()->get_slice(ret_cosc, name, key, col_parent, pred, level);
+  client->getCassandra()->get_slice(ret_cosc, name, key, col_parent, pred, readLevel);
   for (vector<ColumnOrSuperColumn>::iterator it= ret_cosc.begin();
        it != ret_cosc.end();
        ++it)
@@ -222,7 +224,7 @@ vector<Column> Keyspace::getSliceRange(const string &key,
   vector<Column> result;
   /* damn you thrift! */
   pred.__isset.slice_range= true;
-  client->getCassandra()->get_slice(ret_cosc, name, key, col_parent, pred, level);
+  client->getCassandra()->get_slice(ret_cosc, name, key, col_parent, pred, readLevel);
   for (vector<ColumnOrSuperColumn>::iterator it= ret_cosc.begin();
        it != ret_cosc.end();
        ++it)
@@ -251,7 +253,7 @@ map<string, vector<Column> > Keyspace::getRangeSlice(const ColumnParent &col_par
                                           start,
                                           finish,
                                           row_count,
-                                          level);
+                                          readLevel);
   if (! key_slices.empty())
   {
     for (vector<KeySlice>::iterator it= key_slices.begin();
@@ -280,7 +282,7 @@ map<string, vector<SuperColumn> > Keyspace::getSuperRangeSlice(const ColumnParen
                                           start,
                                           finish,
                                           row_count,
-                                          level);
+                                          readLevel);
   if (! key_slices.empty())
   {
     for (vector<KeySlice>::iterator it= key_slices.begin();
@@ -305,7 +307,7 @@ map<string, vector<Column> > Keyspace::getRangeSlices(const ColumnParent &col_pa
                                           col_parent,
                                           pred,
                                           range,
-                                          level);
+                                          readLevel);
   if (! key_slices.empty())
   {
     for (vector<KeySlice>::iterator it= key_slices.begin();
@@ -330,7 +332,7 @@ map<string, vector<SuperColumn> > Keyspace::getSuperRangeSlices(const ColumnPare
                                           col_parent,
                                           pred,
                                           range,
-                                          level);
+                                          readLevel);
   if (! key_slices.empty())
   {
     for (vector<KeySlice>::iterator it= key_slices.begin();
@@ -372,7 +374,7 @@ vector<SuperColumn> Keyspace::getSuperColumnList(vector<ColumnOrSuperColumn> &co
 
 int32_t Keyspace::getCount(const string &key, const ColumnParent &col_parent)
 {
-  return (client->getCassandra()->get_count(name, key, col_parent, level));
+  return (client->getCassandra()->get_count(name, key, col_parent, readLevel));
 }
 
 
@@ -382,11 +384,16 @@ string Keyspace::getName()
 }
 
 
-ConsistencyLevel Keyspace::getConsistencyLevel() const
+ConsistencyLevel Keyspace::getReadConsistencyLevel() const
 {
-  return level;
+  return readLevel;
 }
 
+
+ConsistencyLevel Keyspace::getWriteConsistencyLevel() const
+{
+  return writeLevel;
+}
 
 map< string, map<string, string> > Keyspace::getDescription()
 {

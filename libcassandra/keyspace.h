@@ -29,7 +29,8 @@ public:
   Keyspace(Cassandra *in_client,
            const std::string &in_name,
            const std::map< std::string, std::map<std::string, std::string> > &in_desc,
-           org::apache::cassandra::ConsistencyLevel in_level);
+           org::apache::cassandra::ConsistencyLevel in_readLevel,
+           org::apache::cassandra::ConsistencyLevel in_writeLevel);
   ~Keyspace() {}
 
   /**
@@ -208,9 +209,14 @@ public:
   std::string getName();
 
   /**
-   * @return the consistency level for this keyspace
+   * @return the consistency level for read operations on this keyspace
    */
-  org::apache::cassandra::ConsistencyLevel getConsistencyLevel() const;
+  org::apache::cassandra::ConsistencyLevel getReadConsistencyLevel() const;
+
+  /**
+   * @return the consistency level for write operations on this keyspace
+   */
+  org::apache::cassandra::ConsistencyLevel getWriteConsistencyLevel() const;
 
   /**
    * @return the keyspace description
@@ -240,7 +246,7 @@ private:
 
   std::map< std::string, std::map<std::string, std::string> > keyspace_desc;
 
-  org::apache::cassandra::ConsistencyLevel level;
+  org::apache::cassandra::ConsistencyLevel readLevel, writeLevel;
 
 };
 
