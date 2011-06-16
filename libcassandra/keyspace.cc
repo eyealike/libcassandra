@@ -295,6 +295,31 @@ map<string, vector<SuperColumn> > Keyspace::getSuperRangeSlice(const ColumnParen
   return ret;
 }
 
+void Keyspace::getRangeSlicesRaw(vector<KeySlice> &key_slices,
+								const ColumnParent &col_parent,
+								const SlicePredicate &pred,
+								const KeyRange &range)
+{
+	client->getCassandra()->get_range_slices(key_slices,
+	                                          name,
+	                                          col_parent,
+	                                          pred,
+	                                          range,
+	                                          readLevel);
+}
+
+void Keyspace::multigetSliceRaw(std::map<std::string, std::vector<ColumnOrSuperColumn> > & _return,
+								const ColumnParent &col_parent,
+								const SlicePredicate &pred,
+								const std::vector<std::string> &keys)
+{
+	client->getCassandra()->multiget_slice(_return,
+											name,
+											keys,
+											col_parent,
+											pred,
+											readLevel);
+}
 
 map<string, vector<Column> > Keyspace::getRangeSlices(const ColumnParent &col_parent,
                                                      const SlicePredicate &pred,

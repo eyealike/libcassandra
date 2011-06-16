@@ -189,8 +189,18 @@ public:
 
   std::map<std::string, std::vector<org::apache::cassandra::Column> >
   getRangeSlices(const org::apache::cassandra::ColumnParent &col_parent,
-                const org::apache::cassandra::SlicePredicate &pred,
-                const org::apache::cassandra::KeyRange &range);
+                 const org::apache::cassandra::SlicePredicate &pred,
+                 const org::apache::cassandra::KeyRange &range);
+
+  void getRangeSlicesRaw(std::vector<org::apache::cassandra::KeySlice> &key_slices,
+		  	  	  	  	  const org::apache::cassandra::ColumnParent &col_parent,
+		  	  	  	  	  const org::apache::cassandra::SlicePredicate &pred,
+		  	  	  	  	  const org::apache::cassandra::KeyRange &range);
+
+  void multigetSliceRaw(std::map<std::string, std::vector<org::apache::cassandra::ColumnOrSuperColumn> > & _return,
+  						const org::apache::cassandra::ColumnParent &col_parent,
+  						const org::apache::cassandra::SlicePredicate &pred,
+  						const std::vector<std::string> &keys);
 
   std::map<std::string, std::vector<org::apache::cassandra::SuperColumn> >
   getSuperRangeSlices(const org::apache::cassandra::ColumnParent &col_parent,
