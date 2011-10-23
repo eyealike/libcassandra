@@ -82,7 +82,7 @@ AC_DEFUN([PANDORA_CANONICAL_TARGET],[
     AM_INIT_AUTOMAKE(-Wall -Werror nostdinc subdir-objects foreign)
   ])
 
-  m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
+#  m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
 
   m4_if(m4_substr(m4_esyscmd(test -d gnulib && echo 0),0,1),0,[
     gl_EARLY
