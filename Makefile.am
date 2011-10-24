@@ -1,4 +1,5 @@
 ACLOCAL_AMFLAGS = -I m4
+AM_LDFLAGS = -Xcompiler --shared-libgcc
 
 # includes append to these:
 SUFFIXES =
