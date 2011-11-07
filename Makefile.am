@@ -1,5 +1,6 @@
 ACLOCAL_AMFLAGS = -I m4
 AM_LDFLAGS = -Xcompiler --shared-libgcc
+AM_CXXFLAGS = -DT_GLOBAL_DEBUG_VIRTUAL=0
 
 # includes append to these:
 SUFFIXES =

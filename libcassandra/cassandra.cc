@@ -59,11 +59,15 @@ CassandraClient *Cassandra::getCassandra()
 }
 
 
-set<string> Cassandra::getKeyspaces()
+map<string, org::apache::cassandra::KsDef> Cassandra::getKeyspaces()
 {
   if (key_spaces.empty())
   {
-    thrift_client->describe_keyspaces(key_spaces);
+	vector<org::apache::cassandra::KsDef> ksDefs;
+    thrift_client->describe_keyspaces(ksDefs);
+    for( vector<org::apache::cassandra::KsDef>::iterator ksDef = ksDefs.begin(); ksDef < ksDefs.end() ; ++ksDef ) {
+       key_spaces[ ksDef->name ] = *ksDef;
+    }
   }
   return key_spaces;
 }
@@ -71,25 +75,22 @@ set<string> Cassandra::getKeyspaces()
 
 tr1::shared_ptr<Keyspace> Cassandra::getKeyspace(const string &name)
 {
-  return getKeyspace(name, DCQUORUM, DCQUORUM );
+  return getKeyspace(name, ConsistencyLevel::LOCAL_QUORUM, ConsistencyLevel::LOCAL_QUORUM );
 }
 
 
 tr1::shared_ptr<Keyspace> Cassandra::getKeyspace(const string &name,
-                                                 ConsistencyLevel readLevel,
-                                                 ConsistencyLevel writeLevel )
+                                                 const ConsistencyLevel::type readLevel,
+                                                 const ConsistencyLevel::type writeLevel )
 {
   string keymap_name= buildKeyspaceMapName(name, readLevel, writeLevel );
   map<string, tr1::shared_ptr<Keyspace> >::iterator key_it= keyspace_map.find(keymap_name);
   if (key_it == keyspace_map.end())
   {
-    getKeyspaces();
-    set<string>::iterator it= key_spaces.find(name);
+    map<string, org::apache::cassandra::KsDef>::iterator it= getKeyspaces().find(name);
     if (it != key_spaces.end())
     {
-      map< string, map<string, string> > keyspace_desc;
-      thrift_client->describe_keyspace(keyspace_desc, name);
-      tr1::shared_ptr<Keyspace> ret(new Keyspace(this, name, keyspace_desc, readLevel, writeLevel));
+      tr1::shared_ptr<Keyspace> ret(new Keyspace(this, name, readLevel, writeLevel));
       keyspace_map[keymap_name]= ret;
     }
     else
@@ -129,60 +130,19 @@ string Cassandra::getServerVersion()
 }
 
 
-string Cassandra::getConfigFile()
-{
-  if (config_file.empty())
-  {
-    thrift_client->get_string_property(config_file, "config file");
-  }
-  return config_file;
-}
-
-
-map<string, string> Cassandra::getTokenMap(bool fresh)
+map<string, string> Cassandra::getTokenMap(const string & keyspaceName, bool fresh)
 {
   if (token_map.empty() || fresh)
   {
+	vector<TokenRange> ranges;
+	thrift_client->describe_ring( ranges, keyspaceName);
     token_map.clear();
-    string str_tokens;
-    thrift_client->get_string_property(str_tokens, "token map");
-    /* parse the tokens which are in the form {"token1":"host1","token2":"host2"} */
-    /* first remove the { brackets on either side */
-    str_tokens.erase(0, 1);
-    str_tokens.erase(str_tokens.length() - 1, 1);
-    /* now build a vector of token pairs */
-    vector<string> token_pairs;
-    string::size_type last_pos= str_tokens.find_first_not_of(',', 0);
-    string::size_type pos= str_tokens.find_first_of(',', last_pos);
-    while (pos != string::npos || last_pos != string::npos)
-    {
-      token_pairs.push_back(str_tokens.substr(last_pos, pos - last_pos));
-      last_pos= str_tokens.find_first_not_of(',', pos);
-      pos= str_tokens.find_first_of(',', last_pos);
+    for( vector<TokenRange>::iterator range = ranges.begin() ; range < ranges.end() ; ++range ) {
+    	token_map[ range->end_token ] = *(range->endpoints.begin());
     }
-    /* now iterate through the token pairs and populate the map */
-    for (vector<string>::iterator it= token_pairs.begin();
-         it != token_pairs.end();
-         ++it)
-    {
-      string input= *it;
-      pos= input.find_first_of(':', 0);
-      string token= input.substr(0, pos);
-      string the_host= input.substr(pos + 1);
-      token.erase(0, 1);
-      token.erase(token.length() - 1, 1);
-      the_host.erase(0, 1);
-      the_host.erase(the_host.length() - 1, 1);
-      token_map[token]= the_host;
-    }
+
   }
   return token_map;
-}
-
-
-void Cassandra::getStringProperty(string &return_val, const string &property)
-{
-  thrift_client->get_string_property(return_val, property);
 }
 
 

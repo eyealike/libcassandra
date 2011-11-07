@@ -59,7 +59,7 @@ public:
   /**
    * @return all the keyspace names.
    */
-  std::set<std::string> getKeyspaces();
+  std::map<std::string, org::apache::cassandra::KsDef> getKeyspaces();
 
   /**
    * @return the keyspace with the given name.
@@ -71,8 +71,8 @@ public:
    */
   std::tr1::shared_ptr<Keyspace> getKeyspace(
 	  const std::string &name,
-	  org::apache::cassandra::ConsistencyLevel readLevel,
-	  org::apache::cassandra::ConsistencyLevel writeLevel);
+	  const org::apache::cassandra::ConsistencyLevel::type readLevel,
+	  const org::apache::cassandra::ConsistencyLevel::type writeLevel);
 
   /**
    * Remove the given keyspace.
@@ -90,20 +90,10 @@ public:
   std::string getServerVersion();
 
   /**
-   * @return the configuration file.
-   */
-  std::string getConfigFile();
-
-  /**
    * @param[in] fresh whether to refresh the token map or not
    * @return a map of the tokens in this cluster
    */
-  std::map<std::string, std::string> getTokenMap(bool fresh);
-
-  /**
-   * @return a string property from the server
-   */
-  void getStringProperty(std::string &return_val, const std::string &property);
+  std::map<std::string, std::string> getTokenMap(const std::string & keyspaceName, bool fresh);
 
   /**
    * @return hostname
@@ -118,7 +108,7 @@ public:
 private:
 
   /**
-   * Creates a unique map name for the keyspace and its consistency level
+   * Creates a unique map name for the keyspace and its consistency levels
    */
   std::string buildKeyspaceMapName(std::string keyspace, int readLevel, int writeLevel );
 
@@ -128,7 +118,7 @@ private:
   std::string cluster_name;
   std::string server_version;
   std::string config_file;
-  std::set<std::string> key_spaces;
+  std::map<std::string, org::apache::cassandra::KsDef> key_spaces;
   std::map<std::string, std::string> token_map;
   std::map<std::string, std::tr1::shared_ptr<Keyspace> > keyspace_map;
 

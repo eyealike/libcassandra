@@ -18,7 +18,6 @@ uint32_t Cassandra_login_args::read(::apache::thrift::protocol::TProtocol* iprot
 
   using ::apache::thrift::protocol::TProtocolException;
 
-  bool isset_keyspace = false;
   bool isset_auth_request = false;
 
   while (true)
@@ -30,14 +29,6 @@ uint32_t Cassandra_login_args::read(::apache::thrift::protocol::TProtocol* iprot
     switch (fid)
     {
       case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->keyspace);
-          isset_keyspace = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 2:
         if (ftype == ::apache::thrift::protocol::T_STRUCT) {
           xfer += this->auth_request.read(iprot);
           isset_auth_request = true;
@@ -54,8 +45,6 @@ uint32_t Cassandra_login_args::read(::apache::thrift::protocol::TProtocol* iprot
 
   xfer += iprot->readStructEnd();
 
-  if (!isset_keyspace)
-    throw TProtocolException(TProtocolException::INVALID_DATA);
   if (!isset_auth_request)
     throw TProtocolException(TProtocolException::INVALID_DATA);
   return xfer;
@@ -64,10 +53,7 @@ uint32_t Cassandra_login_args::read(::apache::thrift::protocol::TProtocol* iprot
 uint32_t Cassandra_login_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   xfer += oprot->writeStructBegin("Cassandra_login_args");
-  xfer += oprot->writeFieldBegin("keyspace", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString(this->keyspace);
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("auth_request", ::apache::thrift::protocol::T_STRUCT, 2);
+  xfer += oprot->writeFieldBegin("auth_request", ::apache::thrift::protocol::T_STRUCT, 1);
   xfer += this->auth_request.write(oprot);
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldStop();
@@ -78,10 +64,7 @@ uint32_t Cassandra_login_args::write(::apache::thrift::protocol::TProtocol* opro
 uint32_t Cassandra_login_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   xfer += oprot->writeStructBegin("Cassandra_login_pargs");
-  xfer += oprot->writeFieldBegin("keyspace", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString((*(this->keyspace)));
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("auth_request", ::apache::thrift::protocol::T_STRUCT, 2);
+  xfer += oprot->writeFieldBegin("auth_request", ::apache::thrift::protocol::T_STRUCT, 1);
   xfer += (*(this->auth_request)).write(oprot);
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldStop();
@@ -205,7 +188,7 @@ uint32_t Cassandra_login_presult::read(::apache::thrift::protocol::TProtocol* ip
   return xfer;
 }
 
-uint32_t Cassandra_get_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t Cassandra_set_keyspace_args::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
   std::string fname;
@@ -217,9 +200,6 @@ uint32_t Cassandra_get_args::read(::apache::thrift::protocol::TProtocol* iprot) 
   using ::apache::thrift::protocol::TProtocolException;
 
   bool isset_keyspace = false;
-  bool isset_key = false;
-  bool isset_column_path = false;
-  bool isset_consistency_level = false;
 
   while (true)
   {
@@ -237,15 +217,170 @@ uint32_t Cassandra_get_args::read(::apache::thrift::protocol::TProtocol* iprot) 
           xfer += iprot->skip(ftype);
         }
         break;
-      case 2:
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  if (!isset_keyspace)
+    throw TProtocolException(TProtocolException::INVALID_DATA);
+  return xfer;
+}
+
+uint32_t Cassandra_set_keyspace_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("Cassandra_set_keyspace_args");
+  xfer += oprot->writeFieldBegin("keyspace", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString(this->keyspace);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_set_keyspace_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("Cassandra_set_keyspace_pargs");
+  xfer += oprot->writeFieldBegin("keyspace", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString((*(this->keyspace)));
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_set_keyspace_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Cassandra_set_keyspace_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("Cassandra_set_keyspace_result");
+
+  if (this->__isset.ire) {
+    xfer += oprot->writeFieldBegin("ire", ::apache::thrift::protocol::T_STRUCT, 1);
+    xfer += this->ire.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_set_keyspace_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Cassandra_get_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+  bool isset_key = false;
+  bool isset_column_path = false;
+  bool isset_consistency_level = false;
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
         if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->key);
+          xfer += iprot->readBinary(this->key);
           isset_key = true;
         } else {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 3:
+      case 2:
         if (ftype == ::apache::thrift::protocol::T_STRUCT) {
           xfer += this->column_path.read(iprot);
           isset_column_path = true;
@@ -253,11 +388,11 @@ uint32_t Cassandra_get_args::read(::apache::thrift::protocol::TProtocol* iprot) 
           xfer += iprot->skip(ftype);
         }
         break;
-      case 4:
+      case 3:
         if (ftype == ::apache::thrift::protocol::T_I32) {
-          int32_t ecast32;
-          xfer += iprot->readI32(ecast32);
-          this->consistency_level = (ConsistencyLevel)ecast32;
+          int32_t ecast125;
+          xfer += iprot->readI32(ecast125);
+          this->consistency_level = (ConsistencyLevel::type)ecast125;
           isset_consistency_level = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -272,8 +407,6 @@ uint32_t Cassandra_get_args::read(::apache::thrift::protocol::TProtocol* iprot) 
 
   xfer += iprot->readStructEnd();
 
-  if (!isset_keyspace)
-    throw TProtocolException(TProtocolException::INVALID_DATA);
   if (!isset_key)
     throw TProtocolException(TProtocolException::INVALID_DATA);
   if (!isset_column_path)
@@ -286,16 +419,13 @@ uint32_t Cassandra_get_args::read(::apache::thrift::protocol::TProtocol* iprot) 
 uint32_t Cassandra_get_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   xfer += oprot->writeStructBegin("Cassandra_get_args");
-  xfer += oprot->writeFieldBegin("keyspace", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString(this->keyspace);
+  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeBinary(this->key);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_STRING, 2);
-  xfer += oprot->writeString(this->key);
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("column_path", ::apache::thrift::protocol::T_STRUCT, 3);
+  xfer += oprot->writeFieldBegin("column_path", ::apache::thrift::protocol::T_STRUCT, 2);
   xfer += this->column_path.write(oprot);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 4);
+  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 3);
   xfer += oprot->writeI32((int32_t)this->consistency_level);
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldStop();
@@ -306,16 +436,13 @@ uint32_t Cassandra_get_args::write(::apache::thrift::protocol::TProtocol* oprot)
 uint32_t Cassandra_get_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   xfer += oprot->writeStructBegin("Cassandra_get_pargs");
-  xfer += oprot->writeFieldBegin("keyspace", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString((*(this->keyspace)));
+  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeBinary((*(this->key)));
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_STRING, 2);
-  xfer += oprot->writeString((*(this->key)));
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("column_path", ::apache::thrift::protocol::T_STRUCT, 3);
+  xfer += oprot->writeFieldBegin("column_path", ::apache::thrift::protocol::T_STRUCT, 2);
   xfer += (*(this->column_path)).write(oprot);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 4);
+  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 3);
   xfer += oprot->writeI32((int32_t)(*(this->consistency_level)));
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldStop();
@@ -510,7 +637,6 @@ uint32_t Cassandra_get_slice_args::read(::apache::thrift::protocol::TProtocol* i
 
   using ::apache::thrift::protocol::TProtocolException;
 
-  bool isset_keyspace = false;
   bool isset_key = false;
   bool isset_column_parent = false;
   bool isset_predicate = false;
@@ -526,21 +652,13 @@ uint32_t Cassandra_get_slice_args::read(::apache::thrift::protocol::TProtocol* i
     {
       case 1:
         if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->keyspace);
-          isset_keyspace = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 2:
-        if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->key);
+          xfer += iprot->readBinary(this->key);
           isset_key = true;
         } else {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 3:
+      case 2:
         if (ftype == ::apache::thrift::protocol::T_STRUCT) {
           xfer += this->column_parent.read(iprot);
           isset_column_parent = true;
@@ -548,7 +666,7 @@ uint32_t Cassandra_get_slice_args::read(::apache::thrift::protocol::TProtocol* i
           xfer += iprot->skip(ftype);
         }
         break;
-      case 4:
+      case 3:
         if (ftype == ::apache::thrift::protocol::T_STRUCT) {
           xfer += this->predicate.read(iprot);
           isset_predicate = true;
@@ -556,11 +674,11 @@ uint32_t Cassandra_get_slice_args::read(::apache::thrift::protocol::TProtocol* i
           xfer += iprot->skip(ftype);
         }
         break;
-      case 5:
+      case 4:
         if (ftype == ::apache::thrift::protocol::T_I32) {
-          int32_t ecast33;
-          xfer += iprot->readI32(ecast33);
-          this->consistency_level = (ConsistencyLevel)ecast33;
+          int32_t ecast126;
+          xfer += iprot->readI32(ecast126);
+          this->consistency_level = (ConsistencyLevel::type)ecast126;
           isset_consistency_level = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -575,8 +693,6 @@ uint32_t Cassandra_get_slice_args::read(::apache::thrift::protocol::TProtocol* i
 
   xfer += iprot->readStructEnd();
 
-  if (!isset_keyspace)
-    throw TProtocolException(TProtocolException::INVALID_DATA);
   if (!isset_key)
     throw TProtocolException(TProtocolException::INVALID_DATA);
   if (!isset_column_parent)
@@ -591,19 +707,16 @@ uint32_t Cassandra_get_slice_args::read(::apache::thrift::protocol::TProtocol* i
 uint32_t Cassandra_get_slice_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   xfer += oprot->writeStructBegin("Cassandra_get_slice_args");
-  xfer += oprot->writeFieldBegin("keyspace", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString(this->keyspace);
+  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeBinary(this->key);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_STRING, 2);
-  xfer += oprot->writeString(this->key);
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("column_parent", ::apache::thrift::protocol::T_STRUCT, 3);
+  xfer += oprot->writeFieldBegin("column_parent", ::apache::thrift::protocol::T_STRUCT, 2);
   xfer += this->column_parent.write(oprot);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("predicate", ::apache::thrift::protocol::T_STRUCT, 4);
+  xfer += oprot->writeFieldBegin("predicate", ::apache::thrift::protocol::T_STRUCT, 3);
   xfer += this->predicate.write(oprot);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 5);
+  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 4);
   xfer += oprot->writeI32((int32_t)this->consistency_level);
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldStop();
@@ -614,19 +727,16 @@ uint32_t Cassandra_get_slice_args::write(::apache::thrift::protocol::TProtocol* 
 uint32_t Cassandra_get_slice_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   xfer += oprot->writeStructBegin("Cassandra_get_slice_pargs");
-  xfer += oprot->writeFieldBegin("keyspace", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString((*(this->keyspace)));
+  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeBinary((*(this->key)));
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_STRING, 2);
-  xfer += oprot->writeString((*(this->key)));
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("column_parent", ::apache::thrift::protocol::T_STRUCT, 3);
+  xfer += oprot->writeFieldBegin("column_parent", ::apache::thrift::protocol::T_STRUCT, 2);
   xfer += (*(this->column_parent)).write(oprot);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("predicate", ::apache::thrift::protocol::T_STRUCT, 4);
+  xfer += oprot->writeFieldBegin("predicate", ::apache::thrift::protocol::T_STRUCT, 3);
   xfer += (*(this->predicate)).write(oprot);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 5);
+  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 4);
   xfer += oprot->writeI32((int32_t)(*(this->consistency_level)));
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldStop();
@@ -658,14 +768,14 @@ uint32_t Cassandra_get_slice_result::read(::apache::thrift::protocol::TProtocol*
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size34;
-            ::apache::thrift::protocol::TType _etype37;
-            iprot->readListBegin(_etype37, _size34);
-            this->success.resize(_size34);
-            uint32_t _i38;
-            for (_i38 = 0; _i38 < _size34; ++_i38)
+            uint32_t _size127;
+            ::apache::thrift::protocol::TType _etype130;
+            iprot->readListBegin(_etype130, _size127);
+            this->success.resize(_size127);
+            uint32_t _i131;
+            for (_i131 = 0; _i131 < _size127; ++_i131)
             {
-              xfer += this->success[_i38].read(iprot);
+              xfer += this->success[_i131].read(iprot);
             }
             iprot->readListEnd();
           }
@@ -720,10 +830,10 @@ uint32_t Cassandra_get_slice_result::write(::apache::thrift::protocol::TProtocol
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, this->success.size());
-      std::vector<ColumnOrSuperColumn> ::const_iterator _iter39;
-      for (_iter39 = this->success.begin(); _iter39 != this->success.end(); ++_iter39)
+      std::vector<ColumnOrSuperColumn> ::const_iterator _iter132;
+      for (_iter132 = this->success.begin(); _iter132 != this->success.end(); ++_iter132)
       {
-        xfer += (*_iter39).write(oprot);
+        xfer += (*_iter132).write(oprot);
       }
       xfer += oprot->writeListEnd();
     }
@@ -770,747 +880,16 @@ uint32_t Cassandra_get_slice_presult::read(::apache::thrift::protocol::TProtocol
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size40;
-            ::apache::thrift::protocol::TType _etype43;
-            iprot->readListBegin(_etype43, _size40);
-            (*(this->success)).resize(_size40);
-            uint32_t _i44;
-            for (_i44 = 0; _i44 < _size40; ++_i44)
+            uint32_t _size133;
+            ::apache::thrift::protocol::TType _etype136;
+            iprot->readListBegin(_etype136, _size133);
+            (*(this->success)).resize(_size133);
+            uint32_t _i137;
+            for (_i137 = 0; _i137 < _size133; ++_i137)
             {
-              xfer += (*(this->success))[_i44].read(iprot);
+              xfer += (*(this->success))[_i137].read(iprot);
             }
             iprot->readListEnd();
-          }
-          this->__isset.success = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->ire.read(iprot);
-          this->__isset.ire = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 2:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->ue.read(iprot);
-          this->__isset.ue = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 3:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->te.read(iprot);
-          this->__isset.te = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
-    xfer += iprot->readFieldEnd();
-  }
-
-  xfer += iprot->readStructEnd();
-
-  return xfer;
-}
-
-uint32_t Cassandra_multiget_args::read(::apache::thrift::protocol::TProtocol* iprot) {
-
-  uint32_t xfer = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TType ftype;
-  int16_t fid;
-
-  xfer += iprot->readStructBegin(fname);
-
-  using ::apache::thrift::protocol::TProtocolException;
-
-  bool isset_keyspace = false;
-  bool isset_keys = false;
-  bool isset_column_path = false;
-  bool isset_consistency_level = false;
-
-  while (true)
-  {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == ::apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->keyspace);
-          isset_keyspace = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 2:
-        if (ftype == ::apache::thrift::protocol::T_LIST) {
-          {
-            this->keys.clear();
-            uint32_t _size45;
-            ::apache::thrift::protocol::TType _etype48;
-            iprot->readListBegin(_etype48, _size45);
-            this->keys.resize(_size45);
-            uint32_t _i49;
-            for (_i49 = 0; _i49 < _size45; ++_i49)
-            {
-              xfer += iprot->readString(this->keys[_i49]);
-            }
-            iprot->readListEnd();
-          }
-          isset_keys = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 3:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->column_path.read(iprot);
-          isset_column_path = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 4:
-        if (ftype == ::apache::thrift::protocol::T_I32) {
-          int32_t ecast50;
-          xfer += iprot->readI32(ecast50);
-          this->consistency_level = (ConsistencyLevel)ecast50;
-          isset_consistency_level = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
-    xfer += iprot->readFieldEnd();
-  }
-
-  xfer += iprot->readStructEnd();
-
-  if (!isset_keyspace)
-    throw TProtocolException(TProtocolException::INVALID_DATA);
-  if (!isset_keys)
-    throw TProtocolException(TProtocolException::INVALID_DATA);
-  if (!isset_column_path)
-    throw TProtocolException(TProtocolException::INVALID_DATA);
-  if (!isset_consistency_level)
-    throw TProtocolException(TProtocolException::INVALID_DATA);
-  return xfer;
-}
-
-uint32_t Cassandra_multiget_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
-  uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("Cassandra_multiget_args");
-  xfer += oprot->writeFieldBegin("keyspace", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString(this->keyspace);
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("keys", ::apache::thrift::protocol::T_LIST, 2);
-  {
-    xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRING, this->keys.size());
-    std::vector<std::string> ::const_iterator _iter51;
-    for (_iter51 = this->keys.begin(); _iter51 != this->keys.end(); ++_iter51)
-    {
-      xfer += oprot->writeString((*_iter51));
-    }
-    xfer += oprot->writeListEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("column_path", ::apache::thrift::protocol::T_STRUCT, 3);
-  xfer += this->column_path.write(oprot);
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 4);
-  xfer += oprot->writeI32((int32_t)this->consistency_level);
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldStop();
-  xfer += oprot->writeStructEnd();
-  return xfer;
-}
-
-uint32_t Cassandra_multiget_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
-  uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("Cassandra_multiget_pargs");
-  xfer += oprot->writeFieldBegin("keyspace", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString((*(this->keyspace)));
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("keys", ::apache::thrift::protocol::T_LIST, 2);
-  {
-    xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRING, (*(this->keys)).size());
-    std::vector<std::string> ::const_iterator _iter52;
-    for (_iter52 = (*(this->keys)).begin(); _iter52 != (*(this->keys)).end(); ++_iter52)
-    {
-      xfer += oprot->writeString((*_iter52));
-    }
-    xfer += oprot->writeListEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("column_path", ::apache::thrift::protocol::T_STRUCT, 3);
-  xfer += (*(this->column_path)).write(oprot);
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 4);
-  xfer += oprot->writeI32((int32_t)(*(this->consistency_level)));
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldStop();
-  xfer += oprot->writeStructEnd();
-  return xfer;
-}
-
-uint32_t Cassandra_multiget_result::read(::apache::thrift::protocol::TProtocol* iprot) {
-
-  uint32_t xfer = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TType ftype;
-  int16_t fid;
-
-  xfer += iprot->readStructBegin(fname);
-
-  using ::apache::thrift::protocol::TProtocolException;
-
-
-  while (true)
-  {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == ::apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 0:
-        if (ftype == ::apache::thrift::protocol::T_MAP) {
-          {
-            this->success.clear();
-            uint32_t _size53;
-            ::apache::thrift::protocol::TType _ktype54;
-            ::apache::thrift::protocol::TType _vtype55;
-            iprot->readMapBegin(_ktype54, _vtype55, _size53);
-            uint32_t _i57;
-            for (_i57 = 0; _i57 < _size53; ++_i57)
-            {
-              std::string _key58;
-              xfer += iprot->readString(_key58);
-              ColumnOrSuperColumn& _val59 = this->success[_key58];
-              xfer += _val59.read(iprot);
-            }
-            iprot->readMapEnd();
-          }
-          this->__isset.success = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->ire.read(iprot);
-          this->__isset.ire = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 2:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->ue.read(iprot);
-          this->__isset.ue = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 3:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->te.read(iprot);
-          this->__isset.te = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
-    xfer += iprot->readFieldEnd();
-  }
-
-  xfer += iprot->readStructEnd();
-
-  return xfer;
-}
-
-uint32_t Cassandra_multiget_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
-
-  uint32_t xfer = 0;
-
-  xfer += oprot->writeStructBegin("Cassandra_multiget_result");
-
-  if (this->__isset.success) {
-    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_MAP, 0);
-    {
-      xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRUCT, this->success.size());
-      std::map<std::string, ColumnOrSuperColumn> ::const_iterator _iter60;
-      for (_iter60 = this->success.begin(); _iter60 != this->success.end(); ++_iter60)
-      {
-        xfer += oprot->writeString(_iter60->first);
-        xfer += _iter60->second.write(oprot);
-      }
-      xfer += oprot->writeMapEnd();
-    }
-    xfer += oprot->writeFieldEnd();
-  } else if (this->__isset.ire) {
-    xfer += oprot->writeFieldBegin("ire", ::apache::thrift::protocol::T_STRUCT, 1);
-    xfer += this->ire.write(oprot);
-    xfer += oprot->writeFieldEnd();
-  } else if (this->__isset.ue) {
-    xfer += oprot->writeFieldBegin("ue", ::apache::thrift::protocol::T_STRUCT, 2);
-    xfer += this->ue.write(oprot);
-    xfer += oprot->writeFieldEnd();
-  } else if (this->__isset.te) {
-    xfer += oprot->writeFieldBegin("te", ::apache::thrift::protocol::T_STRUCT, 3);
-    xfer += this->te.write(oprot);
-    xfer += oprot->writeFieldEnd();
-  }
-  xfer += oprot->writeFieldStop();
-  xfer += oprot->writeStructEnd();
-  return xfer;
-}
-
-uint32_t Cassandra_multiget_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
-
-  uint32_t xfer = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TType ftype;
-  int16_t fid;
-
-  xfer += iprot->readStructBegin(fname);
-
-  using ::apache::thrift::protocol::TProtocolException;
-
-
-  while (true)
-  {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == ::apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 0:
-        if (ftype == ::apache::thrift::protocol::T_MAP) {
-          {
-            (*(this->success)).clear();
-            uint32_t _size61;
-            ::apache::thrift::protocol::TType _ktype62;
-            ::apache::thrift::protocol::TType _vtype63;
-            iprot->readMapBegin(_ktype62, _vtype63, _size61);
-            uint32_t _i65;
-            for (_i65 = 0; _i65 < _size61; ++_i65)
-            {
-              std::string _key66;
-              xfer += iprot->readString(_key66);
-              ColumnOrSuperColumn& _val67 = (*(this->success))[_key66];
-              xfer += _val67.read(iprot);
-            }
-            iprot->readMapEnd();
-          }
-          this->__isset.success = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->ire.read(iprot);
-          this->__isset.ire = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 2:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->ue.read(iprot);
-          this->__isset.ue = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 3:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->te.read(iprot);
-          this->__isset.te = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
-    xfer += iprot->readFieldEnd();
-  }
-
-  xfer += iprot->readStructEnd();
-
-  return xfer;
-}
-
-uint32_t Cassandra_multiget_slice_args::read(::apache::thrift::protocol::TProtocol* iprot) {
-
-  uint32_t xfer = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TType ftype;
-  int16_t fid;
-
-  xfer += iprot->readStructBegin(fname);
-
-  using ::apache::thrift::protocol::TProtocolException;
-
-  bool isset_keyspace = false;
-  bool isset_keys = false;
-  bool isset_column_parent = false;
-  bool isset_predicate = false;
-  bool isset_consistency_level = false;
-
-  while (true)
-  {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == ::apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->keyspace);
-          isset_keyspace = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 2:
-        if (ftype == ::apache::thrift::protocol::T_LIST) {
-          {
-            this->keys.clear();
-            uint32_t _size68;
-            ::apache::thrift::protocol::TType _etype71;
-            iprot->readListBegin(_etype71, _size68);
-            this->keys.resize(_size68);
-            uint32_t _i72;
-            for (_i72 = 0; _i72 < _size68; ++_i72)
-            {
-              xfer += iprot->readString(this->keys[_i72]);
-            }
-            iprot->readListEnd();
-          }
-          isset_keys = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 3:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->column_parent.read(iprot);
-          isset_column_parent = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 4:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->predicate.read(iprot);
-          isset_predicate = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 5:
-        if (ftype == ::apache::thrift::protocol::T_I32) {
-          int32_t ecast73;
-          xfer += iprot->readI32(ecast73);
-          this->consistency_level = (ConsistencyLevel)ecast73;
-          isset_consistency_level = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
-    xfer += iprot->readFieldEnd();
-  }
-
-  xfer += iprot->readStructEnd();
-
-  if (!isset_keyspace)
-    throw TProtocolException(TProtocolException::INVALID_DATA);
-  if (!isset_keys)
-    throw TProtocolException(TProtocolException::INVALID_DATA);
-  if (!isset_column_parent)
-    throw TProtocolException(TProtocolException::INVALID_DATA);
-  if (!isset_predicate)
-    throw TProtocolException(TProtocolException::INVALID_DATA);
-  if (!isset_consistency_level)
-    throw TProtocolException(TProtocolException::INVALID_DATA);
-  return xfer;
-}
-
-uint32_t Cassandra_multiget_slice_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
-  uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("Cassandra_multiget_slice_args");
-  xfer += oprot->writeFieldBegin("keyspace", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString(this->keyspace);
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("keys", ::apache::thrift::protocol::T_LIST, 2);
-  {
-    xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRING, this->keys.size());
-    std::vector<std::string> ::const_iterator _iter74;
-    for (_iter74 = this->keys.begin(); _iter74 != this->keys.end(); ++_iter74)
-    {
-      xfer += oprot->writeString((*_iter74));
-    }
-    xfer += oprot->writeListEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("column_parent", ::apache::thrift::protocol::T_STRUCT, 3);
-  xfer += this->column_parent.write(oprot);
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("predicate", ::apache::thrift::protocol::T_STRUCT, 4);
-  xfer += this->predicate.write(oprot);
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 5);
-  xfer += oprot->writeI32((int32_t)this->consistency_level);
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldStop();
-  xfer += oprot->writeStructEnd();
-  return xfer;
-}
-
-uint32_t Cassandra_multiget_slice_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
-  uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("Cassandra_multiget_slice_pargs");
-  xfer += oprot->writeFieldBegin("keyspace", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString((*(this->keyspace)));
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("keys", ::apache::thrift::protocol::T_LIST, 2);
-  {
-    xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRING, (*(this->keys)).size());
-    std::vector<std::string> ::const_iterator _iter75;
-    for (_iter75 = (*(this->keys)).begin(); _iter75 != (*(this->keys)).end(); ++_iter75)
-    {
-      xfer += oprot->writeString((*_iter75));
-    }
-    xfer += oprot->writeListEnd();
-  }
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("column_parent", ::apache::thrift::protocol::T_STRUCT, 3);
-  xfer += (*(this->column_parent)).write(oprot);
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("predicate", ::apache::thrift::protocol::T_STRUCT, 4);
-  xfer += (*(this->predicate)).write(oprot);
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 5);
-  xfer += oprot->writeI32((int32_t)(*(this->consistency_level)));
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldStop();
-  xfer += oprot->writeStructEnd();
-  return xfer;
-}
-
-uint32_t Cassandra_multiget_slice_result::read(::apache::thrift::protocol::TProtocol* iprot) {
-
-  uint32_t xfer = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TType ftype;
-  int16_t fid;
-
-  xfer += iprot->readStructBegin(fname);
-
-  using ::apache::thrift::protocol::TProtocolException;
-
-
-  while (true)
-  {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == ::apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 0:
-        if (ftype == ::apache::thrift::protocol::T_MAP) {
-          {
-            this->success.clear();
-            uint32_t _size76;
-            ::apache::thrift::protocol::TType _ktype77;
-            ::apache::thrift::protocol::TType _vtype78;
-            iprot->readMapBegin(_ktype77, _vtype78, _size76);
-            uint32_t _i80;
-            for (_i80 = 0; _i80 < _size76; ++_i80)
-            {
-              std::string _key81;
-              xfer += iprot->readString(_key81);
-              std::vector<ColumnOrSuperColumn> & _val82 = this->success[_key81];
-              {
-                _val82.clear();
-                uint32_t _size83;
-                ::apache::thrift::protocol::TType _etype86;
-                iprot->readListBegin(_etype86, _size83);
-                _val82.resize(_size83);
-                uint32_t _i87;
-                for (_i87 = 0; _i87 < _size83; ++_i87)
-                {
-                  xfer += _val82[_i87].read(iprot);
-                }
-                iprot->readListEnd();
-              }
-            }
-            iprot->readMapEnd();
-          }
-          this->__isset.success = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->ire.read(iprot);
-          this->__isset.ire = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 2:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->ue.read(iprot);
-          this->__isset.ue = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 3:
-        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->te.read(iprot);
-          this->__isset.te = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
-    xfer += iprot->readFieldEnd();
-  }
-
-  xfer += iprot->readStructEnd();
-
-  return xfer;
-}
-
-uint32_t Cassandra_multiget_slice_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
-
-  uint32_t xfer = 0;
-
-  xfer += oprot->writeStructBegin("Cassandra_multiget_slice_result");
-
-  if (this->__isset.success) {
-    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_MAP, 0);
-    {
-      xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_LIST, this->success.size());
-      std::map<std::string, std::vector<ColumnOrSuperColumn> > ::const_iterator _iter88;
-      for (_iter88 = this->success.begin(); _iter88 != this->success.end(); ++_iter88)
-      {
-        xfer += oprot->writeString(_iter88->first);
-        {
-          xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, _iter88->second.size());
-          std::vector<ColumnOrSuperColumn> ::const_iterator _iter89;
-          for (_iter89 = _iter88->second.begin(); _iter89 != _iter88->second.end(); ++_iter89)
-          {
-            xfer += (*_iter89).write(oprot);
-          }
-          xfer += oprot->writeListEnd();
-        }
-      }
-      xfer += oprot->writeMapEnd();
-    }
-    xfer += oprot->writeFieldEnd();
-  } else if (this->__isset.ire) {
-    xfer += oprot->writeFieldBegin("ire", ::apache::thrift::protocol::T_STRUCT, 1);
-    xfer += this->ire.write(oprot);
-    xfer += oprot->writeFieldEnd();
-  } else if (this->__isset.ue) {
-    xfer += oprot->writeFieldBegin("ue", ::apache::thrift::protocol::T_STRUCT, 2);
-    xfer += this->ue.write(oprot);
-    xfer += oprot->writeFieldEnd();
-  } else if (this->__isset.te) {
-    xfer += oprot->writeFieldBegin("te", ::apache::thrift::protocol::T_STRUCT, 3);
-    xfer += this->te.write(oprot);
-    xfer += oprot->writeFieldEnd();
-  }
-  xfer += oprot->writeFieldStop();
-  xfer += oprot->writeStructEnd();
-  return xfer;
-}
-
-uint32_t Cassandra_multiget_slice_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
-
-  uint32_t xfer = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TType ftype;
-  int16_t fid;
-
-  xfer += iprot->readStructBegin(fname);
-
-  using ::apache::thrift::protocol::TProtocolException;
-
-
-  while (true)
-  {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == ::apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 0:
-        if (ftype == ::apache::thrift::protocol::T_MAP) {
-          {
-            (*(this->success)).clear();
-            uint32_t _size90;
-            ::apache::thrift::protocol::TType _ktype91;
-            ::apache::thrift::protocol::TType _vtype92;
-            iprot->readMapBegin(_ktype91, _vtype92, _size90);
-            uint32_t _i94;
-            for (_i94 = 0; _i94 < _size90; ++_i94)
-            {
-              std::string _key95;
-              xfer += iprot->readString(_key95);
-              std::vector<ColumnOrSuperColumn> & _val96 = (*(this->success))[_key95];
-              {
-                _val96.clear();
-                uint32_t _size97;
-                ::apache::thrift::protocol::TType _etype100;
-                iprot->readListBegin(_etype100, _size97);
-                _val96.resize(_size97);
-                uint32_t _i101;
-                for (_i101 = 0; _i101 < _size97; ++_i101)
-                {
-                  xfer += _val96[_i101].read(iprot);
-                }
-                iprot->readListEnd();
-              }
-            }
-            iprot->readMapEnd();
           }
           this->__isset.success = true;
         } else {
@@ -1564,9 +943,9 @@ uint32_t Cassandra_get_count_args::read(::apache::thrift::protocol::TProtocol* i
 
   using ::apache::thrift::protocol::TProtocolException;
 
-  bool isset_keyspace = false;
   bool isset_key = false;
   bool isset_column_parent = false;
+  bool isset_predicate = false;
   bool isset_consistency_level = false;
 
   while (true)
@@ -1579,21 +958,13 @@ uint32_t Cassandra_get_count_args::read(::apache::thrift::protocol::TProtocol* i
     {
       case 1:
         if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->keyspace);
-          isset_keyspace = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 2:
-        if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->key);
+          xfer += iprot->readBinary(this->key);
           isset_key = true;
         } else {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 3:
+      case 2:
         if (ftype == ::apache::thrift::protocol::T_STRUCT) {
           xfer += this->column_parent.read(iprot);
           isset_column_parent = true;
@@ -1601,11 +972,19 @@ uint32_t Cassandra_get_count_args::read(::apache::thrift::protocol::TProtocol* i
           xfer += iprot->skip(ftype);
         }
         break;
+      case 3:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->predicate.read(iprot);
+          isset_predicate = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
       case 4:
         if (ftype == ::apache::thrift::protocol::T_I32) {
-          int32_t ecast102;
-          xfer += iprot->readI32(ecast102);
-          this->consistency_level = (ConsistencyLevel)ecast102;
+          int32_t ecast138;
+          xfer += iprot->readI32(ecast138);
+          this->consistency_level = (ConsistencyLevel::type)ecast138;
           isset_consistency_level = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -1620,11 +999,11 @@ uint32_t Cassandra_get_count_args::read(::apache::thrift::protocol::TProtocol* i
 
   xfer += iprot->readStructEnd();
 
-  if (!isset_keyspace)
-    throw TProtocolException(TProtocolException::INVALID_DATA);
   if (!isset_key)
     throw TProtocolException(TProtocolException::INVALID_DATA);
   if (!isset_column_parent)
+    throw TProtocolException(TProtocolException::INVALID_DATA);
+  if (!isset_predicate)
     throw TProtocolException(TProtocolException::INVALID_DATA);
   if (!isset_consistency_level)
     throw TProtocolException(TProtocolException::INVALID_DATA);
@@ -1634,14 +1013,14 @@ uint32_t Cassandra_get_count_args::read(::apache::thrift::protocol::TProtocol* i
 uint32_t Cassandra_get_count_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   xfer += oprot->writeStructBegin("Cassandra_get_count_args");
-  xfer += oprot->writeFieldBegin("keyspace", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString(this->keyspace);
+  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeBinary(this->key);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_STRING, 2);
-  xfer += oprot->writeString(this->key);
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("column_parent", ::apache::thrift::protocol::T_STRUCT, 3);
+  xfer += oprot->writeFieldBegin("column_parent", ::apache::thrift::protocol::T_STRUCT, 2);
   xfer += this->column_parent.write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("predicate", ::apache::thrift::protocol::T_STRUCT, 3);
+  xfer += this->predicate.write(oprot);
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 4);
   xfer += oprot->writeI32((int32_t)this->consistency_level);
@@ -1654,14 +1033,14 @@ uint32_t Cassandra_get_count_args::write(::apache::thrift::protocol::TProtocol* 
 uint32_t Cassandra_get_count_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   xfer += oprot->writeStructBegin("Cassandra_get_count_pargs");
-  xfer += oprot->writeFieldBegin("keyspace", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString((*(this->keyspace)));
+  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeBinary((*(this->key)));
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_STRING, 2);
-  xfer += oprot->writeString((*(this->key)));
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("column_parent", ::apache::thrift::protocol::T_STRUCT, 3);
+  xfer += oprot->writeFieldBegin("column_parent", ::apache::thrift::protocol::T_STRUCT, 2);
   xfer += (*(this->column_parent)).write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("predicate", ::apache::thrift::protocol::T_STRUCT, 3);
+  xfer += (*(this->predicate)).write(oprot);
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 4);
   xfer += oprot->writeI32((int32_t)(*(this->consistency_level)));
@@ -1827,7 +1206,7 @@ uint32_t Cassandra_get_count_presult::read(::apache::thrift::protocol::TProtocol
   return xfer;
 }
 
-uint32_t Cassandra_get_range_slice_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t Cassandra_multiget_slice_args::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
   std::string fname;
@@ -1838,12 +1217,9 @@ uint32_t Cassandra_get_range_slice_args::read(::apache::thrift::protocol::TProto
 
   using ::apache::thrift::protocol::TProtocolException;
 
-  bool isset_keyspace = false;
+  bool isset_keys = false;
   bool isset_column_parent = false;
   bool isset_predicate = false;
-  bool isset_start_key = false;
-  bool isset_finish_key = false;
-  bool isset_row_count = false;
   bool isset_consistency_level = false;
 
   while (true)
@@ -1855,9 +1231,21 @@ uint32_t Cassandra_get_range_slice_args::read(::apache::thrift::protocol::TProto
     switch (fid)
     {
       case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->keyspace);
-          isset_keyspace = true;
+        if (ftype == ::apache::thrift::protocol::T_LIST) {
+          {
+            this->keys.clear();
+            uint32_t _size139;
+            ::apache::thrift::protocol::TType _etype142;
+            iprot->readListBegin(_etype142, _size139);
+            this->keys.resize(_size139);
+            uint32_t _i143;
+            for (_i143 = 0; _i143 < _size139; ++_i143)
+            {
+              xfer += iprot->readBinary(this->keys[_i143]);
+            }
+            iprot->readListEnd();
+          }
+          isset_keys = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -1879,34 +1267,10 @@ uint32_t Cassandra_get_range_slice_args::read(::apache::thrift::protocol::TProto
         }
         break;
       case 4:
-        if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->start_key);
-          isset_start_key = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 5:
-        if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->finish_key);
-          isset_finish_key = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 6:
         if (ftype == ::apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32(this->row_count);
-          isset_row_count = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 7:
-        if (ftype == ::apache::thrift::protocol::T_I32) {
-          int32_t ecast103;
-          xfer += iprot->readI32(ecast103);
-          this->consistency_level = (ConsistencyLevel)ecast103;
+          int32_t ecast144;
+          xfer += iprot->readI32(ecast144);
+          this->consistency_level = (ConsistencyLevel::type)ecast144;
           isset_consistency_level = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -1921,28 +1285,30 @@ uint32_t Cassandra_get_range_slice_args::read(::apache::thrift::protocol::TProto
 
   xfer += iprot->readStructEnd();
 
-  if (!isset_keyspace)
+  if (!isset_keys)
     throw TProtocolException(TProtocolException::INVALID_DATA);
   if (!isset_column_parent)
     throw TProtocolException(TProtocolException::INVALID_DATA);
   if (!isset_predicate)
-    throw TProtocolException(TProtocolException::INVALID_DATA);
-  if (!isset_start_key)
-    throw TProtocolException(TProtocolException::INVALID_DATA);
-  if (!isset_finish_key)
-    throw TProtocolException(TProtocolException::INVALID_DATA);
-  if (!isset_row_count)
     throw TProtocolException(TProtocolException::INVALID_DATA);
   if (!isset_consistency_level)
     throw TProtocolException(TProtocolException::INVALID_DATA);
   return xfer;
 }
 
-uint32_t Cassandra_get_range_slice_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t Cassandra_multiget_slice_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("Cassandra_get_range_slice_args");
-  xfer += oprot->writeFieldBegin("keyspace", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString(this->keyspace);
+  xfer += oprot->writeStructBegin("Cassandra_multiget_slice_args");
+  xfer += oprot->writeFieldBegin("keys", ::apache::thrift::protocol::T_LIST, 1);
+  {
+    xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRING, this->keys.size());
+    std::vector<std::string> ::const_iterator _iter145;
+    for (_iter145 = this->keys.begin(); _iter145 != this->keys.end(); ++_iter145)
+    {
+      xfer += oprot->writeBinary((*_iter145));
+    }
+    xfer += oprot->writeListEnd();
+  }
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldBegin("column_parent", ::apache::thrift::protocol::T_STRUCT, 2);
   xfer += this->column_parent.write(oprot);
@@ -1950,16 +1316,7 @@ uint32_t Cassandra_get_range_slice_args::write(::apache::thrift::protocol::TProt
   xfer += oprot->writeFieldBegin("predicate", ::apache::thrift::protocol::T_STRUCT, 3);
   xfer += this->predicate.write(oprot);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("start_key", ::apache::thrift::protocol::T_STRING, 4);
-  xfer += oprot->writeString(this->start_key);
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("finish_key", ::apache::thrift::protocol::T_STRING, 5);
-  xfer += oprot->writeString(this->finish_key);
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("row_count", ::apache::thrift::protocol::T_I32, 6);
-  xfer += oprot->writeI32(this->row_count);
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 7);
+  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 4);
   xfer += oprot->writeI32((int32_t)this->consistency_level);
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldStop();
@@ -1967,11 +1324,19 @@ uint32_t Cassandra_get_range_slice_args::write(::apache::thrift::protocol::TProt
   return xfer;
 }
 
-uint32_t Cassandra_get_range_slice_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t Cassandra_multiget_slice_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("Cassandra_get_range_slice_pargs");
-  xfer += oprot->writeFieldBegin("keyspace", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString((*(this->keyspace)));
+  xfer += oprot->writeStructBegin("Cassandra_multiget_slice_pargs");
+  xfer += oprot->writeFieldBegin("keys", ::apache::thrift::protocol::T_LIST, 1);
+  {
+    xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRING, (*(this->keys)).size());
+    std::vector<std::string> ::const_iterator _iter146;
+    for (_iter146 = (*(this->keys)).begin(); _iter146 != (*(this->keys)).end(); ++_iter146)
+    {
+      xfer += oprot->writeBinary((*_iter146));
+    }
+    xfer += oprot->writeListEnd();
+  }
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldBegin("column_parent", ::apache::thrift::protocol::T_STRUCT, 2);
   xfer += (*(this->column_parent)).write(oprot);
@@ -1979,16 +1344,7 @@ uint32_t Cassandra_get_range_slice_pargs::write(::apache::thrift::protocol::TPro
   xfer += oprot->writeFieldBegin("predicate", ::apache::thrift::protocol::T_STRUCT, 3);
   xfer += (*(this->predicate)).write(oprot);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("start_key", ::apache::thrift::protocol::T_STRING, 4);
-  xfer += oprot->writeString((*(this->start_key)));
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("finish_key", ::apache::thrift::protocol::T_STRING, 5);
-  xfer += oprot->writeString((*(this->finish_key)));
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("row_count", ::apache::thrift::protocol::T_I32, 6);
-  xfer += oprot->writeI32((*(this->row_count)));
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 7);
+  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 4);
   xfer += oprot->writeI32((int32_t)(*(this->consistency_level)));
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldStop();
@@ -1996,7 +1352,7 @@ uint32_t Cassandra_get_range_slice_pargs::write(::apache::thrift::protocol::TPro
   return xfer;
 }
 
-uint32_t Cassandra_get_range_slice_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t Cassandra_multiget_slice_result::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
   std::string fname;
@@ -2017,19 +1373,34 @@ uint32_t Cassandra_get_range_slice_result::read(::apache::thrift::protocol::TPro
     switch (fid)
     {
       case 0:
-        if (ftype == ::apache::thrift::protocol::T_LIST) {
+        if (ftype == ::apache::thrift::protocol::T_MAP) {
           {
             this->success.clear();
-            uint32_t _size104;
-            ::apache::thrift::protocol::TType _etype107;
-            iprot->readListBegin(_etype107, _size104);
-            this->success.resize(_size104);
-            uint32_t _i108;
-            for (_i108 = 0; _i108 < _size104; ++_i108)
+            uint32_t _size147;
+            ::apache::thrift::protocol::TType _ktype148;
+            ::apache::thrift::protocol::TType _vtype149;
+            iprot->readMapBegin(_ktype148, _vtype149, _size147);
+            uint32_t _i151;
+            for (_i151 = 0; _i151 < _size147; ++_i151)
             {
-              xfer += this->success[_i108].read(iprot);
+              std::string _key152;
+              xfer += iprot->readBinary(_key152);
+              std::vector<ColumnOrSuperColumn> & _val153 = this->success[_key152];
+              {
+                _val153.clear();
+                uint32_t _size154;
+                ::apache::thrift::protocol::TType _etype157;
+                iprot->readListBegin(_etype157, _size154);
+                _val153.resize(_size154);
+                uint32_t _i158;
+                for (_i158 = 0; _i158 < _size154; ++_i158)
+                {
+                  xfer += _val153[_i158].read(iprot);
+                }
+                iprot->readListEnd();
+              }
             }
-            iprot->readListEnd();
+            iprot->readMapEnd();
           }
           this->__isset.success = true;
         } else {
@@ -2072,22 +1443,31 @@ uint32_t Cassandra_get_range_slice_result::read(::apache::thrift::protocol::TPro
   return xfer;
 }
 
-uint32_t Cassandra_get_range_slice_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t Cassandra_multiget_slice_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
 
   uint32_t xfer = 0;
 
-  xfer += oprot->writeStructBegin("Cassandra_get_range_slice_result");
+  xfer += oprot->writeStructBegin("Cassandra_multiget_slice_result");
 
   if (this->__isset.success) {
-    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_MAP, 0);
     {
-      xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, this->success.size());
-      std::vector<KeySlice> ::const_iterator _iter109;
-      for (_iter109 = this->success.begin(); _iter109 != this->success.end(); ++_iter109)
+      xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_LIST, this->success.size());
+      std::map<std::string, std::vector<ColumnOrSuperColumn> > ::const_iterator _iter159;
+      for (_iter159 = this->success.begin(); _iter159 != this->success.end(); ++_iter159)
       {
-        xfer += (*_iter109).write(oprot);
+        xfer += oprot->writeBinary(_iter159->first);
+        {
+          xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, _iter159->second.size());
+          std::vector<ColumnOrSuperColumn> ::const_iterator _iter160;
+          for (_iter160 = _iter159->second.begin(); _iter160 != _iter159->second.end(); ++_iter160)
+          {
+            xfer += (*_iter160).write(oprot);
+          }
+          xfer += oprot->writeListEnd();
+        }
       }
-      xfer += oprot->writeListEnd();
+      xfer += oprot->writeMapEnd();
     }
     xfer += oprot->writeFieldEnd();
   } else if (this->__isset.ire) {
@@ -2108,7 +1488,7 @@ uint32_t Cassandra_get_range_slice_result::write(::apache::thrift::protocol::TPr
   return xfer;
 }
 
-uint32_t Cassandra_get_range_slice_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t Cassandra_multiget_slice_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
   std::string fname;
@@ -2129,19 +1509,375 @@ uint32_t Cassandra_get_range_slice_presult::read(::apache::thrift::protocol::TPr
     switch (fid)
     {
       case 0:
-        if (ftype == ::apache::thrift::protocol::T_LIST) {
+        if (ftype == ::apache::thrift::protocol::T_MAP) {
           {
             (*(this->success)).clear();
-            uint32_t _size110;
-            ::apache::thrift::protocol::TType _etype113;
-            iprot->readListBegin(_etype113, _size110);
-            (*(this->success)).resize(_size110);
-            uint32_t _i114;
-            for (_i114 = 0; _i114 < _size110; ++_i114)
+            uint32_t _size161;
+            ::apache::thrift::protocol::TType _ktype162;
+            ::apache::thrift::protocol::TType _vtype163;
+            iprot->readMapBegin(_ktype162, _vtype163, _size161);
+            uint32_t _i165;
+            for (_i165 = 0; _i165 < _size161; ++_i165)
             {
-              xfer += (*(this->success))[_i114].read(iprot);
+              std::string _key166;
+              xfer += iprot->readBinary(_key166);
+              std::vector<ColumnOrSuperColumn> & _val167 = (*(this->success))[_key166];
+              {
+                _val167.clear();
+                uint32_t _size168;
+                ::apache::thrift::protocol::TType _etype171;
+                iprot->readListBegin(_etype171, _size168);
+                _val167.resize(_size168);
+                uint32_t _i172;
+                for (_i172 = 0; _i172 < _size168; ++_i172)
+                {
+                  xfer += _val167[_i172].read(iprot);
+                }
+                iprot->readListEnd();
+              }
+            }
+            iprot->readMapEnd();
+          }
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ue.read(iprot);
+          this->__isset.ue = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->te.read(iprot);
+          this->__isset.te = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Cassandra_multiget_count_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+  bool isset_keys = false;
+  bool isset_column_parent = false;
+  bool isset_predicate = false;
+  bool isset_consistency_level = false;
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_LIST) {
+          {
+            this->keys.clear();
+            uint32_t _size173;
+            ::apache::thrift::protocol::TType _etype176;
+            iprot->readListBegin(_etype176, _size173);
+            this->keys.resize(_size173);
+            uint32_t _i177;
+            for (_i177 = 0; _i177 < _size173; ++_i177)
+            {
+              xfer += iprot->readBinary(this->keys[_i177]);
             }
             iprot->readListEnd();
+          }
+          isset_keys = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->column_parent.read(iprot);
+          isset_column_parent = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->predicate.read(iprot);
+          isset_predicate = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 4:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          int32_t ecast178;
+          xfer += iprot->readI32(ecast178);
+          this->consistency_level = (ConsistencyLevel::type)ecast178;
+          isset_consistency_level = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  if (!isset_keys)
+    throw TProtocolException(TProtocolException::INVALID_DATA);
+  if (!isset_column_parent)
+    throw TProtocolException(TProtocolException::INVALID_DATA);
+  if (!isset_predicate)
+    throw TProtocolException(TProtocolException::INVALID_DATA);
+  if (!isset_consistency_level)
+    throw TProtocolException(TProtocolException::INVALID_DATA);
+  return xfer;
+}
+
+uint32_t Cassandra_multiget_count_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("Cassandra_multiget_count_args");
+  xfer += oprot->writeFieldBegin("keys", ::apache::thrift::protocol::T_LIST, 1);
+  {
+    xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRING, this->keys.size());
+    std::vector<std::string> ::const_iterator _iter179;
+    for (_iter179 = this->keys.begin(); _iter179 != this->keys.end(); ++_iter179)
+    {
+      xfer += oprot->writeBinary((*_iter179));
+    }
+    xfer += oprot->writeListEnd();
+  }
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("column_parent", ::apache::thrift::protocol::T_STRUCT, 2);
+  xfer += this->column_parent.write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("predicate", ::apache::thrift::protocol::T_STRUCT, 3);
+  xfer += this->predicate.write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 4);
+  xfer += oprot->writeI32((int32_t)this->consistency_level);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_multiget_count_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("Cassandra_multiget_count_pargs");
+  xfer += oprot->writeFieldBegin("keys", ::apache::thrift::protocol::T_LIST, 1);
+  {
+    xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRING, (*(this->keys)).size());
+    std::vector<std::string> ::const_iterator _iter180;
+    for (_iter180 = (*(this->keys)).begin(); _iter180 != (*(this->keys)).end(); ++_iter180)
+    {
+      xfer += oprot->writeBinary((*_iter180));
+    }
+    xfer += oprot->writeListEnd();
+  }
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("column_parent", ::apache::thrift::protocol::T_STRUCT, 2);
+  xfer += (*(this->column_parent)).write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("predicate", ::apache::thrift::protocol::T_STRUCT, 3);
+  xfer += (*(this->predicate)).write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 4);
+  xfer += oprot->writeI32((int32_t)(*(this->consistency_level)));
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_multiget_count_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_MAP) {
+          {
+            this->success.clear();
+            uint32_t _size181;
+            ::apache::thrift::protocol::TType _ktype182;
+            ::apache::thrift::protocol::TType _vtype183;
+            iprot->readMapBegin(_ktype182, _vtype183, _size181);
+            uint32_t _i185;
+            for (_i185 = 0; _i185 < _size181; ++_i185)
+            {
+              std::string _key186;
+              xfer += iprot->readBinary(_key186);
+              int32_t& _val187 = this->success[_key186];
+              xfer += iprot->readI32(_val187);
+            }
+            iprot->readMapEnd();
+          }
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ue.read(iprot);
+          this->__isset.ue = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->te.read(iprot);
+          this->__isset.te = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Cassandra_multiget_count_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("Cassandra_multiget_count_result");
+
+  if (this->__isset.success) {
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_MAP, 0);
+    {
+      xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_I32, this->success.size());
+      std::map<std::string, int32_t> ::const_iterator _iter188;
+      for (_iter188 = this->success.begin(); _iter188 != this->success.end(); ++_iter188)
+      {
+        xfer += oprot->writeBinary(_iter188->first);
+        xfer += oprot->writeI32(_iter188->second);
+      }
+      xfer += oprot->writeMapEnd();
+    }
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.ire) {
+    xfer += oprot->writeFieldBegin("ire", ::apache::thrift::protocol::T_STRUCT, 1);
+    xfer += this->ire.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.ue) {
+    xfer += oprot->writeFieldBegin("ue", ::apache::thrift::protocol::T_STRUCT, 2);
+    xfer += this->ue.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.te) {
+    xfer += oprot->writeFieldBegin("te", ::apache::thrift::protocol::T_STRUCT, 3);
+    xfer += this->te.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_multiget_count_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_MAP) {
+          {
+            (*(this->success)).clear();
+            uint32_t _size189;
+            ::apache::thrift::protocol::TType _ktype190;
+            ::apache::thrift::protocol::TType _vtype191;
+            iprot->readMapBegin(_ktype190, _vtype191, _size189);
+            uint32_t _i193;
+            for (_i193 = 0; _i193 < _size189; ++_i193)
+            {
+              std::string _key194;
+              xfer += iprot->readBinary(_key194);
+              int32_t& _val195 = (*(this->success))[_key194];
+              xfer += iprot->readI32(_val195);
+            }
+            iprot->readMapEnd();
           }
           this->__isset.success = true;
         } else {
@@ -2195,7 +1931,6 @@ uint32_t Cassandra_get_range_slices_args::read(::apache::thrift::protocol::TProt
 
   using ::apache::thrift::protocol::TProtocolException;
 
-  bool isset_keyspace = false;
   bool isset_column_parent = false;
   bool isset_predicate = false;
   bool isset_range = false;
@@ -2210,14 +1945,6 @@ uint32_t Cassandra_get_range_slices_args::read(::apache::thrift::protocol::TProt
     switch (fid)
     {
       case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->keyspace);
-          isset_keyspace = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 2:
         if (ftype == ::apache::thrift::protocol::T_STRUCT) {
           xfer += this->column_parent.read(iprot);
           isset_column_parent = true;
@@ -2225,7 +1952,7 @@ uint32_t Cassandra_get_range_slices_args::read(::apache::thrift::protocol::TProt
           xfer += iprot->skip(ftype);
         }
         break;
-      case 3:
+      case 2:
         if (ftype == ::apache::thrift::protocol::T_STRUCT) {
           xfer += this->predicate.read(iprot);
           isset_predicate = true;
@@ -2233,7 +1960,7 @@ uint32_t Cassandra_get_range_slices_args::read(::apache::thrift::protocol::TProt
           xfer += iprot->skip(ftype);
         }
         break;
-      case 4:
+      case 3:
         if (ftype == ::apache::thrift::protocol::T_STRUCT) {
           xfer += this->range.read(iprot);
           isset_range = true;
@@ -2241,11 +1968,11 @@ uint32_t Cassandra_get_range_slices_args::read(::apache::thrift::protocol::TProt
           xfer += iprot->skip(ftype);
         }
         break;
-      case 5:
+      case 4:
         if (ftype == ::apache::thrift::protocol::T_I32) {
-          int32_t ecast115;
-          xfer += iprot->readI32(ecast115);
-          this->consistency_level = (ConsistencyLevel)ecast115;
+          int32_t ecast196;
+          xfer += iprot->readI32(ecast196);
+          this->consistency_level = (ConsistencyLevel::type)ecast196;
           isset_consistency_level = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -2260,8 +1987,6 @@ uint32_t Cassandra_get_range_slices_args::read(::apache::thrift::protocol::TProt
 
   xfer += iprot->readStructEnd();
 
-  if (!isset_keyspace)
-    throw TProtocolException(TProtocolException::INVALID_DATA);
   if (!isset_column_parent)
     throw TProtocolException(TProtocolException::INVALID_DATA);
   if (!isset_predicate)
@@ -2276,19 +2001,16 @@ uint32_t Cassandra_get_range_slices_args::read(::apache::thrift::protocol::TProt
 uint32_t Cassandra_get_range_slices_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   xfer += oprot->writeStructBegin("Cassandra_get_range_slices_args");
-  xfer += oprot->writeFieldBegin("keyspace", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString(this->keyspace);
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("column_parent", ::apache::thrift::protocol::T_STRUCT, 2);
+  xfer += oprot->writeFieldBegin("column_parent", ::apache::thrift::protocol::T_STRUCT, 1);
   xfer += this->column_parent.write(oprot);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("predicate", ::apache::thrift::protocol::T_STRUCT, 3);
+  xfer += oprot->writeFieldBegin("predicate", ::apache::thrift::protocol::T_STRUCT, 2);
   xfer += this->predicate.write(oprot);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("range", ::apache::thrift::protocol::T_STRUCT, 4);
+  xfer += oprot->writeFieldBegin("range", ::apache::thrift::protocol::T_STRUCT, 3);
   xfer += this->range.write(oprot);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 5);
+  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 4);
   xfer += oprot->writeI32((int32_t)this->consistency_level);
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldStop();
@@ -2299,19 +2021,16 @@ uint32_t Cassandra_get_range_slices_args::write(::apache::thrift::protocol::TPro
 uint32_t Cassandra_get_range_slices_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   xfer += oprot->writeStructBegin("Cassandra_get_range_slices_pargs");
-  xfer += oprot->writeFieldBegin("keyspace", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString((*(this->keyspace)));
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("column_parent", ::apache::thrift::protocol::T_STRUCT, 2);
+  xfer += oprot->writeFieldBegin("column_parent", ::apache::thrift::protocol::T_STRUCT, 1);
   xfer += (*(this->column_parent)).write(oprot);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("predicate", ::apache::thrift::protocol::T_STRUCT, 3);
+  xfer += oprot->writeFieldBegin("predicate", ::apache::thrift::protocol::T_STRUCT, 2);
   xfer += (*(this->predicate)).write(oprot);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("range", ::apache::thrift::protocol::T_STRUCT, 4);
+  xfer += oprot->writeFieldBegin("range", ::apache::thrift::protocol::T_STRUCT, 3);
   xfer += (*(this->range)).write(oprot);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 5);
+  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 4);
   xfer += oprot->writeI32((int32_t)(*(this->consistency_level)));
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldStop();
@@ -2343,14 +2062,14 @@ uint32_t Cassandra_get_range_slices_result::read(::apache::thrift::protocol::TPr
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size116;
-            ::apache::thrift::protocol::TType _etype119;
-            iprot->readListBegin(_etype119, _size116);
-            this->success.resize(_size116);
-            uint32_t _i120;
-            for (_i120 = 0; _i120 < _size116; ++_i120)
+            uint32_t _size197;
+            ::apache::thrift::protocol::TType _etype200;
+            iprot->readListBegin(_etype200, _size197);
+            this->success.resize(_size197);
+            uint32_t _i201;
+            for (_i201 = 0; _i201 < _size197; ++_i201)
             {
-              xfer += this->success[_i120].read(iprot);
+              xfer += this->success[_i201].read(iprot);
             }
             iprot->readListEnd();
           }
@@ -2405,10 +2124,10 @@ uint32_t Cassandra_get_range_slices_result::write(::apache::thrift::protocol::TP
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, this->success.size());
-      std::vector<KeySlice> ::const_iterator _iter121;
-      for (_iter121 = this->success.begin(); _iter121 != this->success.end(); ++_iter121)
+      std::vector<KeySlice> ::const_iterator _iter202;
+      for (_iter202 = this->success.begin(); _iter202 != this->success.end(); ++_iter202)
       {
-        xfer += (*_iter121).write(oprot);
+        xfer += (*_iter202).write(oprot);
       }
       xfer += oprot->writeListEnd();
     }
@@ -2455,14 +2174,320 @@ uint32_t Cassandra_get_range_slices_presult::read(::apache::thrift::protocol::TP
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size122;
-            ::apache::thrift::protocol::TType _etype125;
-            iprot->readListBegin(_etype125, _size122);
-            (*(this->success)).resize(_size122);
-            uint32_t _i126;
-            for (_i126 = 0; _i126 < _size122; ++_i126)
+            uint32_t _size203;
+            ::apache::thrift::protocol::TType _etype206;
+            iprot->readListBegin(_etype206, _size203);
+            (*(this->success)).resize(_size203);
+            uint32_t _i207;
+            for (_i207 = 0; _i207 < _size203; ++_i207)
             {
-              xfer += (*(this->success))[_i126].read(iprot);
+              xfer += (*(this->success))[_i207].read(iprot);
+            }
+            iprot->readListEnd();
+          }
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ue.read(iprot);
+          this->__isset.ue = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->te.read(iprot);
+          this->__isset.te = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Cassandra_get_indexed_slices_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+  bool isset_column_parent = false;
+  bool isset_index_clause = false;
+  bool isset_column_predicate = false;
+  bool isset_consistency_level = false;
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->column_parent.read(iprot);
+          isset_column_parent = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->index_clause.read(iprot);
+          isset_index_clause = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->column_predicate.read(iprot);
+          isset_column_predicate = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 4:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          int32_t ecast208;
+          xfer += iprot->readI32(ecast208);
+          this->consistency_level = (ConsistencyLevel::type)ecast208;
+          isset_consistency_level = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  if (!isset_column_parent)
+    throw TProtocolException(TProtocolException::INVALID_DATA);
+  if (!isset_index_clause)
+    throw TProtocolException(TProtocolException::INVALID_DATA);
+  if (!isset_column_predicate)
+    throw TProtocolException(TProtocolException::INVALID_DATA);
+  if (!isset_consistency_level)
+    throw TProtocolException(TProtocolException::INVALID_DATA);
+  return xfer;
+}
+
+uint32_t Cassandra_get_indexed_slices_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("Cassandra_get_indexed_slices_args");
+  xfer += oprot->writeFieldBegin("column_parent", ::apache::thrift::protocol::T_STRUCT, 1);
+  xfer += this->column_parent.write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("index_clause", ::apache::thrift::protocol::T_STRUCT, 2);
+  xfer += this->index_clause.write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("column_predicate", ::apache::thrift::protocol::T_STRUCT, 3);
+  xfer += this->column_predicate.write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 4);
+  xfer += oprot->writeI32((int32_t)this->consistency_level);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_get_indexed_slices_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("Cassandra_get_indexed_slices_pargs");
+  xfer += oprot->writeFieldBegin("column_parent", ::apache::thrift::protocol::T_STRUCT, 1);
+  xfer += (*(this->column_parent)).write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("index_clause", ::apache::thrift::protocol::T_STRUCT, 2);
+  xfer += (*(this->index_clause)).write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("column_predicate", ::apache::thrift::protocol::T_STRUCT, 3);
+  xfer += (*(this->column_predicate)).write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 4);
+  xfer += oprot->writeI32((int32_t)(*(this->consistency_level)));
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_get_indexed_slices_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_LIST) {
+          {
+            this->success.clear();
+            uint32_t _size209;
+            ::apache::thrift::protocol::TType _etype212;
+            iprot->readListBegin(_etype212, _size209);
+            this->success.resize(_size209);
+            uint32_t _i213;
+            for (_i213 = 0; _i213 < _size209; ++_i213)
+            {
+              xfer += this->success[_i213].read(iprot);
+            }
+            iprot->readListEnd();
+          }
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ue.read(iprot);
+          this->__isset.ue = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->te.read(iprot);
+          this->__isset.te = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Cassandra_get_indexed_slices_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("Cassandra_get_indexed_slices_result");
+
+  if (this->__isset.success) {
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
+    {
+      xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, this->success.size());
+      std::vector<KeySlice> ::const_iterator _iter214;
+      for (_iter214 = this->success.begin(); _iter214 != this->success.end(); ++_iter214)
+      {
+        xfer += (*_iter214).write(oprot);
+      }
+      xfer += oprot->writeListEnd();
+    }
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.ire) {
+    xfer += oprot->writeFieldBegin("ire", ::apache::thrift::protocol::T_STRUCT, 1);
+    xfer += this->ire.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.ue) {
+    xfer += oprot->writeFieldBegin("ue", ::apache::thrift::protocol::T_STRUCT, 2);
+    xfer += this->ue.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.te) {
+    xfer += oprot->writeFieldBegin("te", ::apache::thrift::protocol::T_STRUCT, 3);
+    xfer += this->te.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_get_indexed_slices_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_LIST) {
+          {
+            (*(this->success)).clear();
+            uint32_t _size215;
+            ::apache::thrift::protocol::TType _etype218;
+            iprot->readListBegin(_etype218, _size215);
+            (*(this->success)).resize(_size215);
+            uint32_t _i219;
+            for (_i219 = 0; _i219 < _size215; ++_i219)
+            {
+              xfer += (*(this->success))[_i219].read(iprot);
             }
             iprot->readListEnd();
           }
@@ -2518,11 +2543,9 @@ uint32_t Cassandra_insert_args::read(::apache::thrift::protocol::TProtocol* ipro
 
   using ::apache::thrift::protocol::TProtocolException;
 
-  bool isset_keyspace = false;
   bool isset_key = false;
-  bool isset_column_path = false;
-  bool isset_value = false;
-  bool isset_timestamp = false;
+  bool isset_column_parent = false;
+  bool isset_column = false;
   bool isset_consistency_level = false;
 
   while (true)
@@ -2535,49 +2558,33 @@ uint32_t Cassandra_insert_args::read(::apache::thrift::protocol::TProtocol* ipro
     {
       case 1:
         if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->keyspace);
-          isset_keyspace = true;
+          xfer += iprot->readBinary(this->key);
+          isset_key = true;
         } else {
           xfer += iprot->skip(ftype);
         }
         break;
       case 2:
-        if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->key);
-          isset_key = true;
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->column_parent.read(iprot);
+          isset_column_parent = true;
         } else {
           xfer += iprot->skip(ftype);
         }
         break;
       case 3:
         if (ftype == ::apache::thrift::protocol::T_STRUCT) {
-          xfer += this->column_path.read(iprot);
-          isset_column_path = true;
+          xfer += this->column.read(iprot);
+          isset_column = true;
         } else {
           xfer += iprot->skip(ftype);
         }
         break;
       case 4:
-        if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readBinary(this->value);
-          isset_value = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 5:
-        if (ftype == ::apache::thrift::protocol::T_I64) {
-          xfer += iprot->readI64(this->timestamp);
-          isset_timestamp = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 6:
         if (ftype == ::apache::thrift::protocol::T_I32) {
-          int32_t ecast127;
-          xfer += iprot->readI32(ecast127);
-          this->consistency_level = (ConsistencyLevel)ecast127;
+          int32_t ecast220;
+          xfer += iprot->readI32(ecast220);
+          this->consistency_level = (ConsistencyLevel::type)ecast220;
           isset_consistency_level = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -2592,15 +2599,11 @@ uint32_t Cassandra_insert_args::read(::apache::thrift::protocol::TProtocol* ipro
 
   xfer += iprot->readStructEnd();
 
-  if (!isset_keyspace)
-    throw TProtocolException(TProtocolException::INVALID_DATA);
   if (!isset_key)
     throw TProtocolException(TProtocolException::INVALID_DATA);
-  if (!isset_column_path)
+  if (!isset_column_parent)
     throw TProtocolException(TProtocolException::INVALID_DATA);
-  if (!isset_value)
-    throw TProtocolException(TProtocolException::INVALID_DATA);
-  if (!isset_timestamp)
+  if (!isset_column)
     throw TProtocolException(TProtocolException::INVALID_DATA);
   if (!isset_consistency_level)
     throw TProtocolException(TProtocolException::INVALID_DATA);
@@ -2610,22 +2613,16 @@ uint32_t Cassandra_insert_args::read(::apache::thrift::protocol::TProtocol* ipro
 uint32_t Cassandra_insert_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   xfer += oprot->writeStructBegin("Cassandra_insert_args");
-  xfer += oprot->writeFieldBegin("keyspace", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString(this->keyspace);
+  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeBinary(this->key);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_STRING, 2);
-  xfer += oprot->writeString(this->key);
+  xfer += oprot->writeFieldBegin("column_parent", ::apache::thrift::protocol::T_STRUCT, 2);
+  xfer += this->column_parent.write(oprot);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("column_path", ::apache::thrift::protocol::T_STRUCT, 3);
-  xfer += this->column_path.write(oprot);
+  xfer += oprot->writeFieldBegin("column", ::apache::thrift::protocol::T_STRUCT, 3);
+  xfer += this->column.write(oprot);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("value", ::apache::thrift::protocol::T_STRING, 4);
-  xfer += oprot->writeBinary(this->value);
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("timestamp", ::apache::thrift::protocol::T_I64, 5);
-  xfer += oprot->writeI64(this->timestamp);
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 6);
+  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 4);
   xfer += oprot->writeI32((int32_t)this->consistency_level);
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldStop();
@@ -2636,22 +2633,16 @@ uint32_t Cassandra_insert_args::write(::apache::thrift::protocol::TProtocol* opr
 uint32_t Cassandra_insert_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   xfer += oprot->writeStructBegin("Cassandra_insert_pargs");
-  xfer += oprot->writeFieldBegin("keyspace", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString((*(this->keyspace)));
+  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeBinary((*(this->key)));
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_STRING, 2);
-  xfer += oprot->writeString((*(this->key)));
+  xfer += oprot->writeFieldBegin("column_parent", ::apache::thrift::protocol::T_STRUCT, 2);
+  xfer += (*(this->column_parent)).write(oprot);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("column_path", ::apache::thrift::protocol::T_STRUCT, 3);
-  xfer += (*(this->column_path)).write(oprot);
+  xfer += oprot->writeFieldBegin("column", ::apache::thrift::protocol::T_STRUCT, 3);
+  xfer += (*(this->column)).write(oprot);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("value", ::apache::thrift::protocol::T_STRING, 4);
-  xfer += oprot->writeBinary((*(this->value)));
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("timestamp", ::apache::thrift::protocol::T_I64, 5);
-  xfer += oprot->writeI64((*(this->timestamp)));
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 6);
+  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 4);
   xfer += oprot->writeI32((int32_t)(*(this->consistency_level)));
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldStop();
@@ -2795,7 +2786,7 @@ uint32_t Cassandra_insert_presult::read(::apache::thrift::protocol::TProtocol* i
   return xfer;
 }
 
-uint32_t Cassandra_batch_insert_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t Cassandra_add_args::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
   std::string fname;
@@ -2806,9 +2797,9 @@ uint32_t Cassandra_batch_insert_args::read(::apache::thrift::protocol::TProtocol
 
   using ::apache::thrift::protocol::TProtocolException;
 
-  bool isset_keyspace = false;
   bool isset_key = false;
-  bool isset_cfmap = false;
+  bool isset_column_parent = false;
+  bool isset_column = false;
   bool isset_consistency_level = false;
 
   while (true)
@@ -2821,60 +2812,33 @@ uint32_t Cassandra_batch_insert_args::read(::apache::thrift::protocol::TProtocol
     {
       case 1:
         if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->keyspace);
-          isset_keyspace = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 2:
-        if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->key);
+          xfer += iprot->readBinary(this->key);
           isset_key = true;
         } else {
           xfer += iprot->skip(ftype);
         }
         break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->column_parent.read(iprot);
+          isset_column_parent = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
       case 3:
-        if (ftype == ::apache::thrift::protocol::T_MAP) {
-          {
-            this->cfmap.clear();
-            uint32_t _size128;
-            ::apache::thrift::protocol::TType _ktype129;
-            ::apache::thrift::protocol::TType _vtype130;
-            iprot->readMapBegin(_ktype129, _vtype130, _size128);
-            uint32_t _i132;
-            for (_i132 = 0; _i132 < _size128; ++_i132)
-            {
-              std::string _key133;
-              xfer += iprot->readString(_key133);
-              std::vector<ColumnOrSuperColumn> & _val134 = this->cfmap[_key133];
-              {
-                _val134.clear();
-                uint32_t _size135;
-                ::apache::thrift::protocol::TType _etype138;
-                iprot->readListBegin(_etype138, _size135);
-                _val134.resize(_size135);
-                uint32_t _i139;
-                for (_i139 = 0; _i139 < _size135; ++_i139)
-                {
-                  xfer += _val134[_i139].read(iprot);
-                }
-                iprot->readListEnd();
-              }
-            }
-            iprot->readMapEnd();
-          }
-          isset_cfmap = true;
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->column.read(iprot);
+          isset_column = true;
         } else {
           xfer += iprot->skip(ftype);
         }
         break;
       case 4:
         if (ftype == ::apache::thrift::protocol::T_I32) {
-          int32_t ecast140;
-          xfer += iprot->readI32(ecast140);
-          this->consistency_level = (ConsistencyLevel)ecast140;
+          int32_t ecast221;
+          xfer += iprot->readI32(ecast221);
+          this->consistency_level = (ConsistencyLevel::type)ecast221;
           isset_consistency_level = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -2889,45 +2853,28 @@ uint32_t Cassandra_batch_insert_args::read(::apache::thrift::protocol::TProtocol
 
   xfer += iprot->readStructEnd();
 
-  if (!isset_keyspace)
-    throw TProtocolException(TProtocolException::INVALID_DATA);
   if (!isset_key)
     throw TProtocolException(TProtocolException::INVALID_DATA);
-  if (!isset_cfmap)
+  if (!isset_column_parent)
+    throw TProtocolException(TProtocolException::INVALID_DATA);
+  if (!isset_column)
     throw TProtocolException(TProtocolException::INVALID_DATA);
   if (!isset_consistency_level)
     throw TProtocolException(TProtocolException::INVALID_DATA);
   return xfer;
 }
 
-uint32_t Cassandra_batch_insert_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t Cassandra_add_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("Cassandra_batch_insert_args");
-  xfer += oprot->writeFieldBegin("keyspace", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString(this->keyspace);
+  xfer += oprot->writeStructBegin("Cassandra_add_args");
+  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeBinary(this->key);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_STRING, 2);
-  xfer += oprot->writeString(this->key);
+  xfer += oprot->writeFieldBegin("column_parent", ::apache::thrift::protocol::T_STRUCT, 2);
+  xfer += this->column_parent.write(oprot);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("cfmap", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_LIST, this->cfmap.size());
-    std::map<std::string, std::vector<ColumnOrSuperColumn> > ::const_iterator _iter141;
-    for (_iter141 = this->cfmap.begin(); _iter141 != this->cfmap.end(); ++_iter141)
-    {
-      xfer += oprot->writeString(_iter141->first);
-      {
-        xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, _iter141->second.size());
-        std::vector<ColumnOrSuperColumn> ::const_iterator _iter142;
-        for (_iter142 = _iter141->second.begin(); _iter142 != _iter141->second.end(); ++_iter142)
-        {
-          xfer += (*_iter142).write(oprot);
-        }
-        xfer += oprot->writeListEnd();
-      }
-    }
-    xfer += oprot->writeMapEnd();
-  }
+  xfer += oprot->writeFieldBegin("column", ::apache::thrift::protocol::T_STRUCT, 3);
+  xfer += this->column.write(oprot);
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 4);
   xfer += oprot->writeI32((int32_t)this->consistency_level);
@@ -2937,34 +2884,17 @@ uint32_t Cassandra_batch_insert_args::write(::apache::thrift::protocol::TProtoco
   return xfer;
 }
 
-uint32_t Cassandra_batch_insert_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t Cassandra_add_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("Cassandra_batch_insert_pargs");
-  xfer += oprot->writeFieldBegin("keyspace", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString((*(this->keyspace)));
+  xfer += oprot->writeStructBegin("Cassandra_add_pargs");
+  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeBinary((*(this->key)));
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_STRING, 2);
-  xfer += oprot->writeString((*(this->key)));
+  xfer += oprot->writeFieldBegin("column_parent", ::apache::thrift::protocol::T_STRUCT, 2);
+  xfer += (*(this->column_parent)).write(oprot);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("cfmap", ::apache::thrift::protocol::T_MAP, 3);
-  {
-    xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_LIST, (*(this->cfmap)).size());
-    std::map<std::string, std::vector<ColumnOrSuperColumn> > ::const_iterator _iter143;
-    for (_iter143 = (*(this->cfmap)).begin(); _iter143 != (*(this->cfmap)).end(); ++_iter143)
-    {
-      xfer += oprot->writeString(_iter143->first);
-      {
-        xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, _iter143->second.size());
-        std::vector<ColumnOrSuperColumn> ::const_iterator _iter144;
-        for (_iter144 = _iter143->second.begin(); _iter144 != _iter143->second.end(); ++_iter144)
-        {
-          xfer += (*_iter144).write(oprot);
-        }
-        xfer += oprot->writeListEnd();
-      }
-    }
-    xfer += oprot->writeMapEnd();
-  }
+  xfer += oprot->writeFieldBegin("column", ::apache::thrift::protocol::T_STRUCT, 3);
+  xfer += (*(this->column)).write(oprot);
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 4);
   xfer += oprot->writeI32((int32_t)(*(this->consistency_level)));
@@ -2974,7 +2904,7 @@ uint32_t Cassandra_batch_insert_pargs::write(::apache::thrift::protocol::TProtoc
   return xfer;
 }
 
-uint32_t Cassandra_batch_insert_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t Cassandra_add_result::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
   std::string fname;
@@ -3030,11 +2960,11 @@ uint32_t Cassandra_batch_insert_result::read(::apache::thrift::protocol::TProtoc
   return xfer;
 }
 
-uint32_t Cassandra_batch_insert_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t Cassandra_add_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
 
   uint32_t xfer = 0;
 
-  xfer += oprot->writeStructBegin("Cassandra_batch_insert_result");
+  xfer += oprot->writeStructBegin("Cassandra_add_result");
 
   if (this->__isset.ire) {
     xfer += oprot->writeFieldBegin("ire", ::apache::thrift::protocol::T_STRUCT, 1);
@@ -3054,7 +2984,7 @@ uint32_t Cassandra_batch_insert_result::write(::apache::thrift::protocol::TProto
   return xfer;
 }
 
-uint32_t Cassandra_batch_insert_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t Cassandra_add_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
   std::string fname;
@@ -3121,7 +3051,6 @@ uint32_t Cassandra_remove_args::read(::apache::thrift::protocol::TProtocol* ipro
 
   using ::apache::thrift::protocol::TProtocolException;
 
-  bool isset_keyspace = false;
   bool isset_key = false;
   bool isset_column_path = false;
   bool isset_timestamp = false;
@@ -3136,21 +3065,13 @@ uint32_t Cassandra_remove_args::read(::apache::thrift::protocol::TProtocol* ipro
     {
       case 1:
         if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->keyspace);
-          isset_keyspace = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      case 2:
-        if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->key);
+          xfer += iprot->readBinary(this->key);
           isset_key = true;
         } else {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 3:
+      case 2:
         if (ftype == ::apache::thrift::protocol::T_STRUCT) {
           xfer += this->column_path.read(iprot);
           isset_column_path = true;
@@ -3158,7 +3079,7 @@ uint32_t Cassandra_remove_args::read(::apache::thrift::protocol::TProtocol* ipro
           xfer += iprot->skip(ftype);
         }
         break;
-      case 4:
+      case 3:
         if (ftype == ::apache::thrift::protocol::T_I64) {
           xfer += iprot->readI64(this->timestamp);
           isset_timestamp = true;
@@ -3166,11 +3087,11 @@ uint32_t Cassandra_remove_args::read(::apache::thrift::protocol::TProtocol* ipro
           xfer += iprot->skip(ftype);
         }
         break;
-      case 5:
+      case 4:
         if (ftype == ::apache::thrift::protocol::T_I32) {
-          int32_t ecast145;
-          xfer += iprot->readI32(ecast145);
-          this->consistency_level = (ConsistencyLevel)ecast145;
+          int32_t ecast222;
+          xfer += iprot->readI32(ecast222);
+          this->consistency_level = (ConsistencyLevel::type)ecast222;
           this->__isset.consistency_level = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -3185,8 +3106,6 @@ uint32_t Cassandra_remove_args::read(::apache::thrift::protocol::TProtocol* ipro
 
   xfer += iprot->readStructEnd();
 
-  if (!isset_keyspace)
-    throw TProtocolException(TProtocolException::INVALID_DATA);
   if (!isset_key)
     throw TProtocolException(TProtocolException::INVALID_DATA);
   if (!isset_column_path)
@@ -3199,19 +3118,16 @@ uint32_t Cassandra_remove_args::read(::apache::thrift::protocol::TProtocol* ipro
 uint32_t Cassandra_remove_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   xfer += oprot->writeStructBegin("Cassandra_remove_args");
-  xfer += oprot->writeFieldBegin("keyspace", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString(this->keyspace);
+  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeBinary(this->key);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_STRING, 2);
-  xfer += oprot->writeString(this->key);
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("column_path", ::apache::thrift::protocol::T_STRUCT, 3);
+  xfer += oprot->writeFieldBegin("column_path", ::apache::thrift::protocol::T_STRUCT, 2);
   xfer += this->column_path.write(oprot);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("timestamp", ::apache::thrift::protocol::T_I64, 4);
+  xfer += oprot->writeFieldBegin("timestamp", ::apache::thrift::protocol::T_I64, 3);
   xfer += oprot->writeI64(this->timestamp);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 5);
+  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 4);
   xfer += oprot->writeI32((int32_t)this->consistency_level);
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldStop();
@@ -3222,19 +3138,16 @@ uint32_t Cassandra_remove_args::write(::apache::thrift::protocol::TProtocol* opr
 uint32_t Cassandra_remove_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   xfer += oprot->writeStructBegin("Cassandra_remove_pargs");
-  xfer += oprot->writeFieldBegin("keyspace", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString((*(this->keyspace)));
+  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeBinary((*(this->key)));
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_STRING, 2);
-  xfer += oprot->writeString((*(this->key)));
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("column_path", ::apache::thrift::protocol::T_STRUCT, 3);
+  xfer += oprot->writeFieldBegin("column_path", ::apache::thrift::protocol::T_STRUCT, 2);
   xfer += (*(this->column_path)).write(oprot);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("timestamp", ::apache::thrift::protocol::T_I64, 4);
+  xfer += oprot->writeFieldBegin("timestamp", ::apache::thrift::protocol::T_I64, 3);
   xfer += oprot->writeI64((*(this->timestamp)));
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 5);
+  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 4);
   xfer += oprot->writeI32((int32_t)(*(this->consistency_level)));
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldStop();
@@ -3378,7 +3291,7 @@ uint32_t Cassandra_remove_presult::read(::apache::thrift::protocol::TProtocol* i
   return xfer;
 }
 
-uint32_t Cassandra_batch_mutate_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t Cassandra_remove_counter_args::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
   std::string fname;
@@ -3389,8 +3302,8 @@ uint32_t Cassandra_batch_mutate_args::read(::apache::thrift::protocol::TProtocol
 
   using ::apache::thrift::protocol::TProtocolException;
 
-  bool isset_keyspace = false;
-  bool isset_mutation_map = false;
+  bool isset_key = false;
+  bool isset_path = false;
   bool isset_consistency_level = false;
 
   while (true)
@@ -3403,67 +3316,25 @@ uint32_t Cassandra_batch_mutate_args::read(::apache::thrift::protocol::TProtocol
     {
       case 1:
         if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->keyspace);
-          isset_keyspace = true;
+          xfer += iprot->readBinary(this->key);
+          isset_key = true;
         } else {
           xfer += iprot->skip(ftype);
         }
         break;
       case 2:
-        if (ftype == ::apache::thrift::protocol::T_MAP) {
-          {
-            this->mutation_map.clear();
-            uint32_t _size146;
-            ::apache::thrift::protocol::TType _ktype147;
-            ::apache::thrift::protocol::TType _vtype148;
-            iprot->readMapBegin(_ktype147, _vtype148, _size146);
-            uint32_t _i150;
-            for (_i150 = 0; _i150 < _size146; ++_i150)
-            {
-              std::string _key151;
-              xfer += iprot->readString(_key151);
-              std::map<std::string, std::vector<Mutation> > & _val152 = this->mutation_map[_key151];
-              {
-                _val152.clear();
-                uint32_t _size153;
-                ::apache::thrift::protocol::TType _ktype154;
-                ::apache::thrift::protocol::TType _vtype155;
-                iprot->readMapBegin(_ktype154, _vtype155, _size153);
-                uint32_t _i157;
-                for (_i157 = 0; _i157 < _size153; ++_i157)
-                {
-                  std::string _key158;
-                  xfer += iprot->readString(_key158);
-                  std::vector<Mutation> & _val159 = _val152[_key158];
-                  {
-                    _val159.clear();
-                    uint32_t _size160;
-                    ::apache::thrift::protocol::TType _etype163;
-                    iprot->readListBegin(_etype163, _size160);
-                    _val159.resize(_size160);
-                    uint32_t _i164;
-                    for (_i164 = 0; _i164 < _size160; ++_i164)
-                    {
-                      xfer += _val159[_i164].read(iprot);
-                    }
-                    iprot->readListEnd();
-                  }
-                }
-                iprot->readMapEnd();
-              }
-            }
-            iprot->readMapEnd();
-          }
-          isset_mutation_map = true;
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->path.read(iprot);
+          isset_path = true;
         } else {
           xfer += iprot->skip(ftype);
         }
         break;
       case 3:
         if (ftype == ::apache::thrift::protocol::T_I32) {
-          int32_t ecast165;
-          xfer += iprot->readI32(ecast165);
-          this->consistency_level = (ConsistencyLevel)ecast165;
+          int32_t ecast223;
+          xfer += iprot->readI32(ecast223);
+          this->consistency_level = (ConsistencyLevel::type)ecast223;
           isset_consistency_level = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -3478,8 +3349,276 @@ uint32_t Cassandra_batch_mutate_args::read(::apache::thrift::protocol::TProtocol
 
   xfer += iprot->readStructEnd();
 
-  if (!isset_keyspace)
+  if (!isset_key)
     throw TProtocolException(TProtocolException::INVALID_DATA);
+  if (!isset_path)
+    throw TProtocolException(TProtocolException::INVALID_DATA);
+  if (!isset_consistency_level)
+    throw TProtocolException(TProtocolException::INVALID_DATA);
+  return xfer;
+}
+
+uint32_t Cassandra_remove_counter_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("Cassandra_remove_counter_args");
+  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeBinary(this->key);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("path", ::apache::thrift::protocol::T_STRUCT, 2);
+  xfer += this->path.write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 3);
+  xfer += oprot->writeI32((int32_t)this->consistency_level);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_remove_counter_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("Cassandra_remove_counter_pargs");
+  xfer += oprot->writeFieldBegin("key", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeBinary((*(this->key)));
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("path", ::apache::thrift::protocol::T_STRUCT, 2);
+  xfer += (*(this->path)).write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 3);
+  xfer += oprot->writeI32((int32_t)(*(this->consistency_level)));
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_remove_counter_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ue.read(iprot);
+          this->__isset.ue = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->te.read(iprot);
+          this->__isset.te = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Cassandra_remove_counter_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("Cassandra_remove_counter_result");
+
+  if (this->__isset.ire) {
+    xfer += oprot->writeFieldBegin("ire", ::apache::thrift::protocol::T_STRUCT, 1);
+    xfer += this->ire.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.ue) {
+    xfer += oprot->writeFieldBegin("ue", ::apache::thrift::protocol::T_STRUCT, 2);
+    xfer += this->ue.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.te) {
+    xfer += oprot->writeFieldBegin("te", ::apache::thrift::protocol::T_STRUCT, 3);
+    xfer += this->te.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_remove_counter_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ue.read(iprot);
+          this->__isset.ue = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->te.read(iprot);
+          this->__isset.te = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Cassandra_batch_mutate_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+  bool isset_mutation_map = false;
+  bool isset_consistency_level = false;
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_MAP) {
+          {
+            this->mutation_map.clear();
+            uint32_t _size224;
+            ::apache::thrift::protocol::TType _ktype225;
+            ::apache::thrift::protocol::TType _vtype226;
+            iprot->readMapBegin(_ktype225, _vtype226, _size224);
+            uint32_t _i228;
+            for (_i228 = 0; _i228 < _size224; ++_i228)
+            {
+              std::string _key229;
+              xfer += iprot->readBinary(_key229);
+              std::map<std::string, std::vector<Mutation> > & _val230 = this->mutation_map[_key229];
+              {
+                _val230.clear();
+                uint32_t _size231;
+                ::apache::thrift::protocol::TType _ktype232;
+                ::apache::thrift::protocol::TType _vtype233;
+                iprot->readMapBegin(_ktype232, _vtype233, _size231);
+                uint32_t _i235;
+                for (_i235 = 0; _i235 < _size231; ++_i235)
+                {
+                  std::string _key236;
+                  xfer += iprot->readString(_key236);
+                  std::vector<Mutation> & _val237 = _val230[_key236];
+                  {
+                    _val237.clear();
+                    uint32_t _size238;
+                    ::apache::thrift::protocol::TType _etype241;
+                    iprot->readListBegin(_etype241, _size238);
+                    _val237.resize(_size238);
+                    uint32_t _i242;
+                    for (_i242 = 0; _i242 < _size238; ++_i242)
+                    {
+                      xfer += _val237[_i242].read(iprot);
+                    }
+                    iprot->readListEnd();
+                  }
+                }
+                iprot->readMapEnd();
+              }
+            }
+            iprot->readMapEnd();
+          }
+          isset_mutation_map = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          int32_t ecast243;
+          xfer += iprot->readI32(ecast243);
+          this->consistency_level = (ConsistencyLevel::type)ecast243;
+          isset_consistency_level = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
   if (!isset_mutation_map)
     throw TProtocolException(TProtocolException::INVALID_DATA);
   if (!isset_consistency_level)
@@ -3490,28 +3629,25 @@ uint32_t Cassandra_batch_mutate_args::read(::apache::thrift::protocol::TProtocol
 uint32_t Cassandra_batch_mutate_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   xfer += oprot->writeStructBegin("Cassandra_batch_mutate_args");
-  xfer += oprot->writeFieldBegin("keyspace", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString(this->keyspace);
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("mutation_map", ::apache::thrift::protocol::T_MAP, 2);
+  xfer += oprot->writeFieldBegin("mutation_map", ::apache::thrift::protocol::T_MAP, 1);
   {
     xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_MAP, this->mutation_map.size());
-    std::map<std::string, std::map<std::string, std::vector<Mutation> > > ::const_iterator _iter166;
-    for (_iter166 = this->mutation_map.begin(); _iter166 != this->mutation_map.end(); ++_iter166)
+    std::map<std::string, std::map<std::string, std::vector<Mutation> > > ::const_iterator _iter244;
+    for (_iter244 = this->mutation_map.begin(); _iter244 != this->mutation_map.end(); ++_iter244)
     {
-      xfer += oprot->writeString(_iter166->first);
+      xfer += oprot->writeBinary(_iter244->first);
       {
-        xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_LIST, _iter166->second.size());
-        std::map<std::string, std::vector<Mutation> > ::const_iterator _iter167;
-        for (_iter167 = _iter166->second.begin(); _iter167 != _iter166->second.end(); ++_iter167)
+        xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_LIST, _iter244->second.size());
+        std::map<std::string, std::vector<Mutation> > ::const_iterator _iter245;
+        for (_iter245 = _iter244->second.begin(); _iter245 != _iter244->second.end(); ++_iter245)
         {
-          xfer += oprot->writeString(_iter167->first);
+          xfer += oprot->writeString(_iter245->first);
           {
-            xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, _iter167->second.size());
-            std::vector<Mutation> ::const_iterator _iter168;
-            for (_iter168 = _iter167->second.begin(); _iter168 != _iter167->second.end(); ++_iter168)
+            xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, _iter245->second.size());
+            std::vector<Mutation> ::const_iterator _iter246;
+            for (_iter246 = _iter245->second.begin(); _iter246 != _iter245->second.end(); ++_iter246)
             {
-              xfer += (*_iter168).write(oprot);
+              xfer += (*_iter246).write(oprot);
             }
             xfer += oprot->writeListEnd();
           }
@@ -3522,7 +3658,7 @@ uint32_t Cassandra_batch_mutate_args::write(::apache::thrift::protocol::TProtoco
     xfer += oprot->writeMapEnd();
   }
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 3);
+  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 2);
   xfer += oprot->writeI32((int32_t)this->consistency_level);
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldStop();
@@ -3533,28 +3669,25 @@ uint32_t Cassandra_batch_mutate_args::write(::apache::thrift::protocol::TProtoco
 uint32_t Cassandra_batch_mutate_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   xfer += oprot->writeStructBegin("Cassandra_batch_mutate_pargs");
-  xfer += oprot->writeFieldBegin("keyspace", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString((*(this->keyspace)));
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("mutation_map", ::apache::thrift::protocol::T_MAP, 2);
+  xfer += oprot->writeFieldBegin("mutation_map", ::apache::thrift::protocol::T_MAP, 1);
   {
     xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_MAP, (*(this->mutation_map)).size());
-    std::map<std::string, std::map<std::string, std::vector<Mutation> > > ::const_iterator _iter169;
-    for (_iter169 = (*(this->mutation_map)).begin(); _iter169 != (*(this->mutation_map)).end(); ++_iter169)
+    std::map<std::string, std::map<std::string, std::vector<Mutation> > > ::const_iterator _iter247;
+    for (_iter247 = (*(this->mutation_map)).begin(); _iter247 != (*(this->mutation_map)).end(); ++_iter247)
     {
-      xfer += oprot->writeString(_iter169->first);
+      xfer += oprot->writeBinary(_iter247->first);
       {
-        xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_LIST, _iter169->second.size());
-        std::map<std::string, std::vector<Mutation> > ::const_iterator _iter170;
-        for (_iter170 = _iter169->second.begin(); _iter170 != _iter169->second.end(); ++_iter170)
+        xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_LIST, _iter247->second.size());
+        std::map<std::string, std::vector<Mutation> > ::const_iterator _iter248;
+        for (_iter248 = _iter247->second.begin(); _iter248 != _iter247->second.end(); ++_iter248)
         {
-          xfer += oprot->writeString(_iter170->first);
+          xfer += oprot->writeString(_iter248->first);
           {
-            xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, _iter170->second.size());
-            std::vector<Mutation> ::const_iterator _iter171;
-            for (_iter171 = _iter170->second.begin(); _iter171 != _iter170->second.end(); ++_iter171)
+            xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, _iter248->second.size());
+            std::vector<Mutation> ::const_iterator _iter249;
+            for (_iter249 = _iter248->second.begin(); _iter249 != _iter248->second.end(); ++_iter249)
             {
-              xfer += (*_iter171).write(oprot);
+              xfer += (*_iter249).write(oprot);
             }
             xfer += oprot->writeListEnd();
           }
@@ -3565,7 +3698,7 @@ uint32_t Cassandra_batch_mutate_pargs::write(::apache::thrift::protocol::TProtoc
     xfer += oprot->writeMapEnd();
   }
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 3);
+  xfer += oprot->writeFieldBegin("consistency_level", ::apache::thrift::protocol::T_I32, 2);
   xfer += oprot->writeI32((int32_t)(*(this->consistency_level)));
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldStop();
@@ -3709,7 +3842,7 @@ uint32_t Cassandra_batch_mutate_presult::read(::apache::thrift::protocol::TProto
   return xfer;
 }
 
-uint32_t Cassandra_get_string_property_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t Cassandra_truncate_args::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
   std::string fname;
@@ -3720,7 +3853,7 @@ uint32_t Cassandra_get_string_property_args::read(::apache::thrift::protocol::TP
 
   using ::apache::thrift::protocol::TProtocolException;
 
-  bool isset_property = false;
+  bool isset_cfname = false;
 
   while (true)
   {
@@ -3732,8 +3865,8 @@ uint32_t Cassandra_get_string_property_args::read(::apache::thrift::protocol::TP
     {
       case 1:
         if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->property);
-          isset_property = true;
+          xfer += iprot->readString(this->cfname);
+          isset_cfname = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -3747,34 +3880,34 @@ uint32_t Cassandra_get_string_property_args::read(::apache::thrift::protocol::TP
 
   xfer += iprot->readStructEnd();
 
-  if (!isset_property)
+  if (!isset_cfname)
     throw TProtocolException(TProtocolException::INVALID_DATA);
   return xfer;
 }
 
-uint32_t Cassandra_get_string_property_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t Cassandra_truncate_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("Cassandra_get_string_property_args");
-  xfer += oprot->writeFieldBegin("property", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString(this->property);
+  xfer += oprot->writeStructBegin("Cassandra_truncate_args");
+  xfer += oprot->writeFieldBegin("cfname", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString(this->cfname);
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
 }
 
-uint32_t Cassandra_get_string_property_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t Cassandra_truncate_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("Cassandra_get_string_property_pargs");
-  xfer += oprot->writeFieldBegin("property", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString((*(this->property)));
+  xfer += oprot->writeStructBegin("Cassandra_truncate_pargs");
+  xfer += oprot->writeFieldBegin("cfname", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString((*(this->cfname)));
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
 }
 
-uint32_t Cassandra_get_string_property_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t Cassandra_truncate_result::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
   std::string fname;
@@ -3794,10 +3927,18 @@ uint32_t Cassandra_get_string_property_result::read(::apache::thrift::protocol::
     }
     switch (fid)
     {
-      case 0:
-        if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->success);
-          this->__isset.success = true;
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ue.read(iprot);
+          this->__isset.ue = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -3814,15 +3955,19 @@ uint32_t Cassandra_get_string_property_result::read(::apache::thrift::protocol::
   return xfer;
 }
 
-uint32_t Cassandra_get_string_property_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t Cassandra_truncate_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
 
   uint32_t xfer = 0;
 
-  xfer += oprot->writeStructBegin("Cassandra_get_string_property_result");
+  xfer += oprot->writeStructBegin("Cassandra_truncate_result");
 
-  if (this->__isset.success) {
-    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_STRING, 0);
-    xfer += oprot->writeString(this->success);
+  if (this->__isset.ire) {
+    xfer += oprot->writeFieldBegin("ire", ::apache::thrift::protocol::T_STRUCT, 1);
+    xfer += this->ire.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.ue) {
+    xfer += oprot->writeFieldBegin("ue", ::apache::thrift::protocol::T_STRUCT, 2);
+    xfer += this->ue.write(oprot);
     xfer += oprot->writeFieldEnd();
   }
   xfer += oprot->writeFieldStop();
@@ -3830,7 +3975,7 @@ uint32_t Cassandra_get_string_property_result::write(::apache::thrift::protocol:
   return xfer;
 }
 
-uint32_t Cassandra_get_string_property_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t Cassandra_truncate_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
   std::string fname;
@@ -3841,47 +3986,6 @@ uint32_t Cassandra_get_string_property_presult::read(::apache::thrift::protocol:
 
   using ::apache::thrift::protocol::TProtocolException;
 
-
-  while (true)
-  {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == ::apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 0:
-        if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString((*(this->success)));
-          this->__isset.success = true;
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
-    }
-    xfer += iprot->readFieldEnd();
-  }
-
-  xfer += iprot->readStructEnd();
-
-  return xfer;
-}
-
-uint32_t Cassandra_get_string_list_property_args::read(::apache::thrift::protocol::TProtocol* iprot) {
-
-  uint32_t xfer = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TType ftype;
-  int16_t fid;
-
-  xfer += iprot->readStructBegin(fname);
-
-  using ::apache::thrift::protocol::TProtocolException;
-
-  bool isset_property = false;
 
   while (true)
   {
@@ -3892,9 +3996,17 @@ uint32_t Cassandra_get_string_list_property_args::read(::apache::thrift::protoco
     switch (fid)
     {
       case 1:
-        if (ftype == ::apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->property);
-          isset_property = true;
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ue.read(iprot);
+          this->__isset.ue = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -3908,34 +4020,58 @@ uint32_t Cassandra_get_string_list_property_args::read(::apache::thrift::protoco
 
   xfer += iprot->readStructEnd();
 
-  if (!isset_property)
-    throw TProtocolException(TProtocolException::INVALID_DATA);
   return xfer;
 }
 
-uint32_t Cassandra_get_string_list_property_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t Cassandra_describe_schema_versions_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
   uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("Cassandra_get_string_list_property_args");
-  xfer += oprot->writeFieldBegin("property", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString(this->property);
-  xfer += oprot->writeFieldEnd();
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Cassandra_describe_schema_versions_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("Cassandra_describe_schema_versions_args");
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
 }
 
-uint32_t Cassandra_get_string_list_property_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t Cassandra_describe_schema_versions_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
-  xfer += oprot->writeStructBegin("Cassandra_get_string_list_property_pargs");
-  xfer += oprot->writeFieldBegin("property", ::apache::thrift::protocol::T_STRING, 1);
-  xfer += oprot->writeString((*(this->property)));
-  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeStructBegin("Cassandra_describe_schema_versions_pargs");
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
 }
 
-uint32_t Cassandra_get_string_list_property_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t Cassandra_describe_schema_versions_result::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
   std::string fname;
@@ -3956,21 +4092,44 @@ uint32_t Cassandra_get_string_list_property_result::read(::apache::thrift::proto
     switch (fid)
     {
       case 0:
-        if (ftype == ::apache::thrift::protocol::T_LIST) {
+        if (ftype == ::apache::thrift::protocol::T_MAP) {
           {
             this->success.clear();
-            uint32_t _size172;
-            ::apache::thrift::protocol::TType _etype175;
-            iprot->readListBegin(_etype175, _size172);
-            this->success.resize(_size172);
-            uint32_t _i176;
-            for (_i176 = 0; _i176 < _size172; ++_i176)
+            uint32_t _size250;
+            ::apache::thrift::protocol::TType _ktype251;
+            ::apache::thrift::protocol::TType _vtype252;
+            iprot->readMapBegin(_ktype251, _vtype252, _size250);
+            uint32_t _i254;
+            for (_i254 = 0; _i254 < _size250; ++_i254)
             {
-              xfer += iprot->readString(this->success[_i176]);
+              std::string _key255;
+              xfer += iprot->readString(_key255);
+              std::vector<std::string> & _val256 = this->success[_key255];
+              {
+                _val256.clear();
+                uint32_t _size257;
+                ::apache::thrift::protocol::TType _etype260;
+                iprot->readListBegin(_etype260, _size257);
+                _val256.resize(_size257);
+                uint32_t _i261;
+                for (_i261 = 0; _i261 < _size257; ++_i261)
+                {
+                  xfer += iprot->readString(_val256[_i261]);
+                }
+                iprot->readListEnd();
+              }
             }
-            iprot->readListEnd();
+            iprot->readMapEnd();
           }
           this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -3987,23 +4146,36 @@ uint32_t Cassandra_get_string_list_property_result::read(::apache::thrift::proto
   return xfer;
 }
 
-uint32_t Cassandra_get_string_list_property_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+uint32_t Cassandra_describe_schema_versions_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
 
   uint32_t xfer = 0;
 
-  xfer += oprot->writeStructBegin("Cassandra_get_string_list_property_result");
+  xfer += oprot->writeStructBegin("Cassandra_describe_schema_versions_result");
 
   if (this->__isset.success) {
-    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_MAP, 0);
     {
-      xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRING, this->success.size());
-      std::vector<std::string> ::const_iterator _iter177;
-      for (_iter177 = this->success.begin(); _iter177 != this->success.end(); ++_iter177)
+      xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_LIST, this->success.size());
+      std::map<std::string, std::vector<std::string> > ::const_iterator _iter262;
+      for (_iter262 = this->success.begin(); _iter262 != this->success.end(); ++_iter262)
       {
-        xfer += oprot->writeString((*_iter177));
+        xfer += oprot->writeString(_iter262->first);
+        {
+          xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRING, _iter262->second.size());
+          std::vector<std::string> ::const_iterator _iter263;
+          for (_iter263 = _iter262->second.begin(); _iter263 != _iter262->second.end(); ++_iter263)
+          {
+            xfer += oprot->writeString((*_iter263));
+          }
+          xfer += oprot->writeListEnd();
+        }
       }
-      xfer += oprot->writeListEnd();
+      xfer += oprot->writeMapEnd();
     }
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.ire) {
+    xfer += oprot->writeFieldBegin("ire", ::apache::thrift::protocol::T_STRUCT, 1);
+    xfer += this->ire.write(oprot);
     xfer += oprot->writeFieldEnd();
   }
   xfer += oprot->writeFieldStop();
@@ -4011,7 +4183,7 @@ uint32_t Cassandra_get_string_list_property_result::write(::apache::thrift::prot
   return xfer;
 }
 
-uint32_t Cassandra_get_string_list_property_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+uint32_t Cassandra_describe_schema_versions_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
   std::string fname;
@@ -4032,21 +4204,44 @@ uint32_t Cassandra_get_string_list_property_presult::read(::apache::thrift::prot
     switch (fid)
     {
       case 0:
-        if (ftype == ::apache::thrift::protocol::T_LIST) {
+        if (ftype == ::apache::thrift::protocol::T_MAP) {
           {
             (*(this->success)).clear();
-            uint32_t _size178;
-            ::apache::thrift::protocol::TType _etype181;
-            iprot->readListBegin(_etype181, _size178);
-            (*(this->success)).resize(_size178);
-            uint32_t _i182;
-            for (_i182 = 0; _i182 < _size178; ++_i182)
+            uint32_t _size264;
+            ::apache::thrift::protocol::TType _ktype265;
+            ::apache::thrift::protocol::TType _vtype266;
+            iprot->readMapBegin(_ktype265, _vtype266, _size264);
+            uint32_t _i268;
+            for (_i268 = 0; _i268 < _size264; ++_i268)
             {
-              xfer += iprot->readString((*(this->success))[_i182]);
+              std::string _key269;
+              xfer += iprot->readString(_key269);
+              std::vector<std::string> & _val270 = (*(this->success))[_key269];
+              {
+                _val270.clear();
+                uint32_t _size271;
+                ::apache::thrift::protocol::TType _etype274;
+                iprot->readListBegin(_etype274, _size271);
+                _val270.resize(_size271);
+                uint32_t _i275;
+                for (_i275 = 0; _i275 < _size271; ++_i275)
+                {
+                  xfer += iprot->readString(_val270[_i275]);
+                }
+                iprot->readListEnd();
+              }
             }
-            iprot->readListEnd();
+            iprot->readMapEnd();
           }
           this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -4132,22 +4327,29 @@ uint32_t Cassandra_describe_keyspaces_result::read(::apache::thrift::protocol::T
     switch (fid)
     {
       case 0:
-        if (ftype == ::apache::thrift::protocol::T_SET) {
+        if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size183;
-            ::apache::thrift::protocol::TType _etype186;
-            iprot->readSetBegin(_etype186, _size183);
-            uint32_t _i187;
-            for (_i187 = 0; _i187 < _size183; ++_i187)
+            uint32_t _size276;
+            ::apache::thrift::protocol::TType _etype279;
+            iprot->readListBegin(_etype279, _size276);
+            this->success.resize(_size276);
+            uint32_t _i280;
+            for (_i280 = 0; _i280 < _size276; ++_i280)
             {
-              std::string _elem188;
-              xfer += iprot->readString(_elem188);
-              this->success.insert(_elem188);
+              xfer += this->success[_i280].read(iprot);
             }
-            iprot->readSetEnd();
+            iprot->readListEnd();
           }
           this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -4171,16 +4373,20 @@ uint32_t Cassandra_describe_keyspaces_result::write(::apache::thrift::protocol::
   xfer += oprot->writeStructBegin("Cassandra_describe_keyspaces_result");
 
   if (this->__isset.success) {
-    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_SET, 0);
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
-      xfer += oprot->writeSetBegin(::apache::thrift::protocol::T_STRING, this->success.size());
-      std::set<std::string> ::const_iterator _iter189;
-      for (_iter189 = this->success.begin(); _iter189 != this->success.end(); ++_iter189)
+      xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, this->success.size());
+      std::vector<KsDef> ::const_iterator _iter281;
+      for (_iter281 = this->success.begin(); _iter281 != this->success.end(); ++_iter281)
       {
-        xfer += oprot->writeString((*_iter189));
+        xfer += (*_iter281).write(oprot);
       }
-      xfer += oprot->writeSetEnd();
+      xfer += oprot->writeListEnd();
     }
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.ire) {
+    xfer += oprot->writeFieldBegin("ire", ::apache::thrift::protocol::T_STRUCT, 1);
+    xfer += this->ire.write(oprot);
     xfer += oprot->writeFieldEnd();
   }
   xfer += oprot->writeFieldStop();
@@ -4209,22 +4415,29 @@ uint32_t Cassandra_describe_keyspaces_presult::read(::apache::thrift::protocol::
     switch (fid)
     {
       case 0:
-        if (ftype == ::apache::thrift::protocol::T_SET) {
+        if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size190;
-            ::apache::thrift::protocol::TType _etype193;
-            iprot->readSetBegin(_etype193, _size190);
-            uint32_t _i194;
-            for (_i194 = 0; _i194 < _size190; ++_i194)
+            uint32_t _size282;
+            ::apache::thrift::protocol::TType _etype285;
+            iprot->readListBegin(_etype285, _size282);
+            (*(this->success)).resize(_size282);
+            uint32_t _i286;
+            for (_i286 = 0; _i286 < _size282; ++_i286)
             {
-              std::string _elem195;
-              xfer += iprot->readString(_elem195);
-              (*(this->success)).insert(_elem195);
+              xfer += (*(this->success))[_i286].read(iprot);
             }
-            iprot->readSetEnd();
+            iprot->readListEnd();
           }
           this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -4618,14 +4831,14 @@ uint32_t Cassandra_describe_ring_result::read(::apache::thrift::protocol::TProto
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size196;
-            ::apache::thrift::protocol::TType _etype199;
-            iprot->readListBegin(_etype199, _size196);
-            this->success.resize(_size196);
-            uint32_t _i200;
-            for (_i200 = 0; _i200 < _size196; ++_i200)
+            uint32_t _size287;
+            ::apache::thrift::protocol::TType _etype290;
+            iprot->readListBegin(_etype290, _size287);
+            this->success.resize(_size287);
+            uint32_t _i291;
+            for (_i291 = 0; _i291 < _size287; ++_i291)
             {
-              xfer += this->success[_i200].read(iprot);
+              xfer += this->success[_i291].read(iprot);
             }
             iprot->readListEnd();
           }
@@ -4664,10 +4877,10 @@ uint32_t Cassandra_describe_ring_result::write(::apache::thrift::protocol::TProt
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRUCT, this->success.size());
-      std::vector<TokenRange> ::const_iterator _iter201;
-      for (_iter201 = this->success.begin(); _iter201 != this->success.end(); ++_iter201)
+      std::vector<TokenRange> ::const_iterator _iter292;
+      for (_iter292 = this->success.begin(); _iter292 != this->success.end(); ++_iter292)
       {
-        xfer += (*_iter201).write(oprot);
+        xfer += (*_iter292).write(oprot);
       }
       xfer += oprot->writeListEnd();
     }
@@ -4706,14 +4919,14 @@ uint32_t Cassandra_describe_ring_presult::read(::apache::thrift::protocol::TProt
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size202;
-            ::apache::thrift::protocol::TType _etype205;
-            iprot->readListBegin(_etype205, _size202);
-            (*(this->success)).resize(_size202);
-            uint32_t _i206;
-            for (_i206 = 0; _i206 < _size202; ++_i206)
+            uint32_t _size293;
+            ::apache::thrift::protocol::TType _etype296;
+            iprot->readListBegin(_etype296, _size293);
+            (*(this->success)).resize(_size293);
+            uint32_t _i297;
+            for (_i297 = 0; _i297 < _size293; ++_i297)
             {
-              xfer += (*(this->success))[_i206].read(iprot);
+              xfer += (*(this->success))[_i297].read(iprot);
             }
             iprot->readListEnd();
           }
@@ -4886,6 +5099,150 @@ uint32_t Cassandra_describe_partitioner_presult::read(::apache::thrift::protocol
   return xfer;
 }
 
+uint32_t Cassandra_describe_snitch_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Cassandra_describe_snitch_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("Cassandra_describe_snitch_args");
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_describe_snitch_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("Cassandra_describe_snitch_pargs");
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_describe_snitch_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->success);
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Cassandra_describe_snitch_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("Cassandra_describe_snitch_result");
+
+  if (this->__isset.success) {
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_STRING, 0);
+    xfer += oprot->writeString(this->success);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_describe_snitch_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString((*(this->success)));
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
 uint32_t Cassandra_describe_keyspace_args::read(::apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
@@ -4972,38 +5329,8 @@ uint32_t Cassandra_describe_keyspace_result::read(::apache::thrift::protocol::TP
     switch (fid)
     {
       case 0:
-        if (ftype == ::apache::thrift::protocol::T_MAP) {
-          {
-            this->success.clear();
-            uint32_t _size207;
-            ::apache::thrift::protocol::TType _ktype208;
-            ::apache::thrift::protocol::TType _vtype209;
-            iprot->readMapBegin(_ktype208, _vtype209, _size207);
-            uint32_t _i211;
-            for (_i211 = 0; _i211 < _size207; ++_i211)
-            {
-              std::string _key212;
-              xfer += iprot->readString(_key212);
-              std::map<std::string, std::string> & _val213 = this->success[_key212];
-              {
-                _val213.clear();
-                uint32_t _size214;
-                ::apache::thrift::protocol::TType _ktype215;
-                ::apache::thrift::protocol::TType _vtype216;
-                iprot->readMapBegin(_ktype215, _vtype216, _size214);
-                uint32_t _i218;
-                for (_i218 = 0; _i218 < _size214; ++_i218)
-                {
-                  std::string _key219;
-                  xfer += iprot->readString(_key219);
-                  std::string& _val220 = _val213[_key219];
-                  xfer += iprot->readString(_val220);
-                }
-                iprot->readMapEnd();
-              }
-            }
-            iprot->readMapEnd();
-          }
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->success.read(iprot);
           this->__isset.success = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -5013,6 +5340,14 @@ uint32_t Cassandra_describe_keyspace_result::read(::apache::thrift::protocol::TP
         if (ftype == ::apache::thrift::protocol::T_STRUCT) {
           xfer += this->nfe.read(iprot);
           this->__isset.nfe = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -5036,30 +5371,16 @@ uint32_t Cassandra_describe_keyspace_result::write(::apache::thrift::protocol::T
   xfer += oprot->writeStructBegin("Cassandra_describe_keyspace_result");
 
   if (this->__isset.success) {
-    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_MAP, 0);
-    {
-      xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_MAP, this->success.size());
-      std::map<std::string, std::map<std::string, std::string> > ::const_iterator _iter221;
-      for (_iter221 = this->success.begin(); _iter221 != this->success.end(); ++_iter221)
-      {
-        xfer += oprot->writeString(_iter221->first);
-        {
-          xfer += oprot->writeMapBegin(::apache::thrift::protocol::T_STRING, ::apache::thrift::protocol::T_STRING, _iter221->second.size());
-          std::map<std::string, std::string> ::const_iterator _iter222;
-          for (_iter222 = _iter221->second.begin(); _iter222 != _iter221->second.end(); ++_iter222)
-          {
-            xfer += oprot->writeString(_iter222->first);
-            xfer += oprot->writeString(_iter222->second);
-          }
-          xfer += oprot->writeMapEnd();
-        }
-      }
-      xfer += oprot->writeMapEnd();
-    }
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_STRUCT, 0);
+    xfer += this->success.write(oprot);
     xfer += oprot->writeFieldEnd();
   } else if (this->__isset.nfe) {
     xfer += oprot->writeFieldBegin("nfe", ::apache::thrift::protocol::T_STRUCT, 1);
     xfer += this->nfe.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.ire) {
+    xfer += oprot->writeFieldBegin("ire", ::apache::thrift::protocol::T_STRUCT, 2);
+    xfer += this->ire.write(oprot);
     xfer += oprot->writeFieldEnd();
   }
   xfer += oprot->writeFieldStop();
@@ -5088,38 +5409,8 @@ uint32_t Cassandra_describe_keyspace_presult::read(::apache::thrift::protocol::T
     switch (fid)
     {
       case 0:
-        if (ftype == ::apache::thrift::protocol::T_MAP) {
-          {
-            (*(this->success)).clear();
-            uint32_t _size223;
-            ::apache::thrift::protocol::TType _ktype224;
-            ::apache::thrift::protocol::TType _vtype225;
-            iprot->readMapBegin(_ktype224, _vtype225, _size223);
-            uint32_t _i227;
-            for (_i227 = 0; _i227 < _size223; ++_i227)
-            {
-              std::string _key228;
-              xfer += iprot->readString(_key228);
-              std::map<std::string, std::string> & _val229 = (*(this->success))[_key228];
-              {
-                _val229.clear();
-                uint32_t _size230;
-                ::apache::thrift::protocol::TType _ktype231;
-                ::apache::thrift::protocol::TType _vtype232;
-                iprot->readMapBegin(_ktype231, _vtype232, _size230);
-                uint32_t _i234;
-                for (_i234 = 0; _i234 < _size230; ++_i234)
-                {
-                  std::string _key235;
-                  xfer += iprot->readString(_key235);
-                  std::string& _val236 = _val229[_key235];
-                  xfer += iprot->readString(_val236);
-                }
-                iprot->readMapEnd();
-              }
-            }
-            iprot->readMapEnd();
-          }
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += (*(this->success)).read(iprot);
           this->__isset.success = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -5129,6 +5420,14 @@ uint32_t Cassandra_describe_keyspace_presult::read(::apache::thrift::protocol::T
         if (ftype == ::apache::thrift::protocol::T_STRUCT) {
           xfer += this->nfe.read(iprot);
           this->__isset.nfe = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -5156,6 +5455,7 @@ uint32_t Cassandra_describe_splits_args::read(::apache::thrift::protocol::TProto
 
   using ::apache::thrift::protocol::TProtocolException;
 
+  bool isset_cfName = false;
   bool isset_start_token = false;
   bool isset_end_token = false;
   bool isset_keys_per_split = false;
@@ -5170,13 +5470,21 @@ uint32_t Cassandra_describe_splits_args::read(::apache::thrift::protocol::TProto
     {
       case 1:
         if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->cfName);
+          isset_cfName = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
           xfer += iprot->readString(this->start_token);
           isset_start_token = true;
         } else {
           xfer += iprot->skip(ftype);
         }
         break;
-      case 2:
+      case 3:
         if (ftype == ::apache::thrift::protocol::T_STRING) {
           xfer += iprot->readString(this->end_token);
           isset_end_token = true;
@@ -5184,7 +5492,7 @@ uint32_t Cassandra_describe_splits_args::read(::apache::thrift::protocol::TProto
           xfer += iprot->skip(ftype);
         }
         break;
-      case 3:
+      case 4:
         if (ftype == ::apache::thrift::protocol::T_I32) {
           xfer += iprot->readI32(this->keys_per_split);
           isset_keys_per_split = true;
@@ -5201,6 +5509,8 @@ uint32_t Cassandra_describe_splits_args::read(::apache::thrift::protocol::TProto
 
   xfer += iprot->readStructEnd();
 
+  if (!isset_cfName)
+    throw TProtocolException(TProtocolException::INVALID_DATA);
   if (!isset_start_token)
     throw TProtocolException(TProtocolException::INVALID_DATA);
   if (!isset_end_token)
@@ -5213,13 +5523,16 @@ uint32_t Cassandra_describe_splits_args::read(::apache::thrift::protocol::TProto
 uint32_t Cassandra_describe_splits_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   xfer += oprot->writeStructBegin("Cassandra_describe_splits_args");
-  xfer += oprot->writeFieldBegin("start_token", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeFieldBegin("cfName", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString(this->cfName);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("start_token", ::apache::thrift::protocol::T_STRING, 2);
   xfer += oprot->writeString(this->start_token);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("end_token", ::apache::thrift::protocol::T_STRING, 2);
+  xfer += oprot->writeFieldBegin("end_token", ::apache::thrift::protocol::T_STRING, 3);
   xfer += oprot->writeString(this->end_token);
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("keys_per_split", ::apache::thrift::protocol::T_I32, 3);
+  xfer += oprot->writeFieldBegin("keys_per_split", ::apache::thrift::protocol::T_I32, 4);
   xfer += oprot->writeI32(this->keys_per_split);
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldStop();
@@ -5230,13 +5543,16 @@ uint32_t Cassandra_describe_splits_args::write(::apache::thrift::protocol::TProt
 uint32_t Cassandra_describe_splits_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   xfer += oprot->writeStructBegin("Cassandra_describe_splits_pargs");
-  xfer += oprot->writeFieldBegin("start_token", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeFieldBegin("cfName", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString((*(this->cfName)));
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("start_token", ::apache::thrift::protocol::T_STRING, 2);
   xfer += oprot->writeString((*(this->start_token)));
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("end_token", ::apache::thrift::protocol::T_STRING, 2);
+  xfer += oprot->writeFieldBegin("end_token", ::apache::thrift::protocol::T_STRING, 3);
   xfer += oprot->writeString((*(this->end_token)));
   xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("keys_per_split", ::apache::thrift::protocol::T_I32, 3);
+  xfer += oprot->writeFieldBegin("keys_per_split", ::apache::thrift::protocol::T_I32, 4);
   xfer += oprot->writeI32((*(this->keys_per_split)));
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldStop();
@@ -5268,18 +5584,26 @@ uint32_t Cassandra_describe_splits_result::read(::apache::thrift::protocol::TPro
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             this->success.clear();
-            uint32_t _size237;
-            ::apache::thrift::protocol::TType _etype240;
-            iprot->readListBegin(_etype240, _size237);
-            this->success.resize(_size237);
-            uint32_t _i241;
-            for (_i241 = 0; _i241 < _size237; ++_i241)
+            uint32_t _size298;
+            ::apache::thrift::protocol::TType _etype301;
+            iprot->readListBegin(_etype301, _size298);
+            this->success.resize(_size298);
+            uint32_t _i302;
+            for (_i302 = 0; _i302 < _size298; ++_i302)
             {
-              xfer += iprot->readString(this->success[_i241]);
+              xfer += iprot->readString(this->success[_i302]);
             }
             iprot->readListEnd();
           }
           this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -5306,13 +5630,17 @@ uint32_t Cassandra_describe_splits_result::write(::apache::thrift::protocol::TPr
     xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_LIST, 0);
     {
       xfer += oprot->writeListBegin(::apache::thrift::protocol::T_STRING, this->success.size());
-      std::vector<std::string> ::const_iterator _iter242;
-      for (_iter242 = this->success.begin(); _iter242 != this->success.end(); ++_iter242)
+      std::vector<std::string> ::const_iterator _iter303;
+      for (_iter303 = this->success.begin(); _iter303 != this->success.end(); ++_iter303)
       {
-        xfer += oprot->writeString((*_iter242));
+        xfer += oprot->writeString((*_iter303));
       }
       xfer += oprot->writeListEnd();
     }
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.ire) {
+    xfer += oprot->writeFieldBegin("ire", ::apache::thrift::protocol::T_STRUCT, 1);
+    xfer += this->ire.write(oprot);
     xfer += oprot->writeFieldEnd();
   }
   xfer += oprot->writeFieldStop();
@@ -5344,18 +5672,26 @@ uint32_t Cassandra_describe_splits_presult::read(::apache::thrift::protocol::TPr
         if (ftype == ::apache::thrift::protocol::T_LIST) {
           {
             (*(this->success)).clear();
-            uint32_t _size243;
-            ::apache::thrift::protocol::TType _etype246;
-            iprot->readListBegin(_etype246, _size243);
-            (*(this->success)).resize(_size243);
-            uint32_t _i247;
-            for (_i247 = 0; _i247 < _size243; ++_i247)
+            uint32_t _size304;
+            ::apache::thrift::protocol::TType _etype307;
+            iprot->readListBegin(_etype307, _size304);
+            (*(this->success)).resize(_size304);
+            uint32_t _i308;
+            for (_i308 = 0; _i308 < _size304; ++_i308)
             {
-              xfer += iprot->readString((*(this->success))[_i247]);
+              xfer += iprot->readString((*(this->success))[_i308]);
             }
             iprot->readListEnd();
           }
           this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -5372,25 +5708,1490 @@ uint32_t Cassandra_describe_splits_presult::read(::apache::thrift::protocol::TPr
   return xfer;
 }
 
-void CassandraClient::login(const std::string& keyspace, const AuthenticationRequest& auth_request)
+uint32_t Cassandra_system_add_column_family_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+  bool isset_cf_def = false;
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->cf_def.read(iprot);
+          isset_cf_def = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  if (!isset_cf_def)
+    throw TProtocolException(TProtocolException::INVALID_DATA);
+  return xfer;
+}
+
+uint32_t Cassandra_system_add_column_family_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("Cassandra_system_add_column_family_args");
+  xfer += oprot->writeFieldBegin("cf_def", ::apache::thrift::protocol::T_STRUCT, 1);
+  xfer += this->cf_def.write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_system_add_column_family_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("Cassandra_system_add_column_family_pargs");
+  xfer += oprot->writeFieldBegin("cf_def", ::apache::thrift::protocol::T_STRUCT, 1);
+  xfer += (*(this->cf_def)).write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_system_add_column_family_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->success);
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->sde.read(iprot);
+          this->__isset.sde = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Cassandra_system_add_column_family_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("Cassandra_system_add_column_family_result");
+
+  if (this->__isset.success) {
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_STRING, 0);
+    xfer += oprot->writeString(this->success);
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.ire) {
+    xfer += oprot->writeFieldBegin("ire", ::apache::thrift::protocol::T_STRUCT, 1);
+    xfer += this->ire.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.sde) {
+    xfer += oprot->writeFieldBegin("sde", ::apache::thrift::protocol::T_STRUCT, 2);
+    xfer += this->sde.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_system_add_column_family_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString((*(this->success)));
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->sde.read(iprot);
+          this->__isset.sde = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Cassandra_system_drop_column_family_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+  bool isset_column_family = false;
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->column_family);
+          isset_column_family = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  if (!isset_column_family)
+    throw TProtocolException(TProtocolException::INVALID_DATA);
+  return xfer;
+}
+
+uint32_t Cassandra_system_drop_column_family_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("Cassandra_system_drop_column_family_args");
+  xfer += oprot->writeFieldBegin("column_family", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString(this->column_family);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_system_drop_column_family_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("Cassandra_system_drop_column_family_pargs");
+  xfer += oprot->writeFieldBegin("column_family", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString((*(this->column_family)));
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_system_drop_column_family_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->success);
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->sde.read(iprot);
+          this->__isset.sde = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Cassandra_system_drop_column_family_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("Cassandra_system_drop_column_family_result");
+
+  if (this->__isset.success) {
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_STRING, 0);
+    xfer += oprot->writeString(this->success);
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.ire) {
+    xfer += oprot->writeFieldBegin("ire", ::apache::thrift::protocol::T_STRUCT, 1);
+    xfer += this->ire.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.sde) {
+    xfer += oprot->writeFieldBegin("sde", ::apache::thrift::protocol::T_STRUCT, 2);
+    xfer += this->sde.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_system_drop_column_family_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString((*(this->success)));
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->sde.read(iprot);
+          this->__isset.sde = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Cassandra_system_add_keyspace_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+  bool isset_ks_def = false;
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ks_def.read(iprot);
+          isset_ks_def = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  if (!isset_ks_def)
+    throw TProtocolException(TProtocolException::INVALID_DATA);
+  return xfer;
+}
+
+uint32_t Cassandra_system_add_keyspace_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("Cassandra_system_add_keyspace_args");
+  xfer += oprot->writeFieldBegin("ks_def", ::apache::thrift::protocol::T_STRUCT, 1);
+  xfer += this->ks_def.write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_system_add_keyspace_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("Cassandra_system_add_keyspace_pargs");
+  xfer += oprot->writeFieldBegin("ks_def", ::apache::thrift::protocol::T_STRUCT, 1);
+  xfer += (*(this->ks_def)).write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_system_add_keyspace_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->success);
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->sde.read(iprot);
+          this->__isset.sde = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Cassandra_system_add_keyspace_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("Cassandra_system_add_keyspace_result");
+
+  if (this->__isset.success) {
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_STRING, 0);
+    xfer += oprot->writeString(this->success);
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.ire) {
+    xfer += oprot->writeFieldBegin("ire", ::apache::thrift::protocol::T_STRUCT, 1);
+    xfer += this->ire.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.sde) {
+    xfer += oprot->writeFieldBegin("sde", ::apache::thrift::protocol::T_STRUCT, 2);
+    xfer += this->sde.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_system_add_keyspace_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString((*(this->success)));
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->sde.read(iprot);
+          this->__isset.sde = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Cassandra_system_drop_keyspace_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+  bool isset_keyspace = false;
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->keyspace);
+          isset_keyspace = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  if (!isset_keyspace)
+    throw TProtocolException(TProtocolException::INVALID_DATA);
+  return xfer;
+}
+
+uint32_t Cassandra_system_drop_keyspace_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("Cassandra_system_drop_keyspace_args");
+  xfer += oprot->writeFieldBegin("keyspace", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString(this->keyspace);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_system_drop_keyspace_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("Cassandra_system_drop_keyspace_pargs");
+  xfer += oprot->writeFieldBegin("keyspace", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString((*(this->keyspace)));
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_system_drop_keyspace_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->success);
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->sde.read(iprot);
+          this->__isset.sde = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Cassandra_system_drop_keyspace_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("Cassandra_system_drop_keyspace_result");
+
+  if (this->__isset.success) {
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_STRING, 0);
+    xfer += oprot->writeString(this->success);
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.ire) {
+    xfer += oprot->writeFieldBegin("ire", ::apache::thrift::protocol::T_STRUCT, 1);
+    xfer += this->ire.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.sde) {
+    xfer += oprot->writeFieldBegin("sde", ::apache::thrift::protocol::T_STRUCT, 2);
+    xfer += this->sde.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_system_drop_keyspace_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString((*(this->success)));
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->sde.read(iprot);
+          this->__isset.sde = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Cassandra_system_update_keyspace_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+  bool isset_ks_def = false;
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ks_def.read(iprot);
+          isset_ks_def = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  if (!isset_ks_def)
+    throw TProtocolException(TProtocolException::INVALID_DATA);
+  return xfer;
+}
+
+uint32_t Cassandra_system_update_keyspace_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("Cassandra_system_update_keyspace_args");
+  xfer += oprot->writeFieldBegin("ks_def", ::apache::thrift::protocol::T_STRUCT, 1);
+  xfer += this->ks_def.write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_system_update_keyspace_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("Cassandra_system_update_keyspace_pargs");
+  xfer += oprot->writeFieldBegin("ks_def", ::apache::thrift::protocol::T_STRUCT, 1);
+  xfer += (*(this->ks_def)).write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_system_update_keyspace_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->success);
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->sde.read(iprot);
+          this->__isset.sde = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Cassandra_system_update_keyspace_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("Cassandra_system_update_keyspace_result");
+
+  if (this->__isset.success) {
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_STRING, 0);
+    xfer += oprot->writeString(this->success);
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.ire) {
+    xfer += oprot->writeFieldBegin("ire", ::apache::thrift::protocol::T_STRUCT, 1);
+    xfer += this->ire.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.sde) {
+    xfer += oprot->writeFieldBegin("sde", ::apache::thrift::protocol::T_STRUCT, 2);
+    xfer += this->sde.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_system_update_keyspace_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString((*(this->success)));
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->sde.read(iprot);
+          this->__isset.sde = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Cassandra_system_update_column_family_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+  bool isset_cf_def = false;
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->cf_def.read(iprot);
+          isset_cf_def = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  if (!isset_cf_def)
+    throw TProtocolException(TProtocolException::INVALID_DATA);
+  return xfer;
+}
+
+uint32_t Cassandra_system_update_column_family_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("Cassandra_system_update_column_family_args");
+  xfer += oprot->writeFieldBegin("cf_def", ::apache::thrift::protocol::T_STRUCT, 1);
+  xfer += this->cf_def.write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_system_update_column_family_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("Cassandra_system_update_column_family_pargs");
+  xfer += oprot->writeFieldBegin("cf_def", ::apache::thrift::protocol::T_STRUCT, 1);
+  xfer += (*(this->cf_def)).write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_system_update_column_family_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->success);
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->sde.read(iprot);
+          this->__isset.sde = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Cassandra_system_update_column_family_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("Cassandra_system_update_column_family_result");
+
+  if (this->__isset.success) {
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_STRING, 0);
+    xfer += oprot->writeString(this->success);
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.ire) {
+    xfer += oprot->writeFieldBegin("ire", ::apache::thrift::protocol::T_STRUCT, 1);
+    xfer += this->ire.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.sde) {
+    xfer += oprot->writeFieldBegin("sde", ::apache::thrift::protocol::T_STRUCT, 2);
+    xfer += this->sde.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_system_update_column_family_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString((*(this->success)));
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->sde.read(iprot);
+          this->__isset.sde = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Cassandra_execute_cql_query_args::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+  bool isset_query = false;
+  bool isset_compression = false;
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readBinary(this->query);
+          isset_query = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_I32) {
+          int32_t ecast309;
+          xfer += iprot->readI32(ecast309);
+          this->compression = (Compression::type)ecast309;
+          isset_compression = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  if (!isset_query)
+    throw TProtocolException(TProtocolException::INVALID_DATA);
+  if (!isset_compression)
+    throw TProtocolException(TProtocolException::INVALID_DATA);
+  return xfer;
+}
+
+uint32_t Cassandra_execute_cql_query_args::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("Cassandra_execute_cql_query_args");
+  xfer += oprot->writeFieldBegin("query", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeBinary(this->query);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("compression", ::apache::thrift::protocol::T_I32, 2);
+  xfer += oprot->writeI32((int32_t)this->compression);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_execute_cql_query_pargs::write(::apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("Cassandra_execute_cql_query_pargs");
+  xfer += oprot->writeFieldBegin("query", ::apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeBinary((*(this->query)));
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("compression", ::apache::thrift::protocol::T_I32, 2);
+  xfer += oprot->writeI32((int32_t)(*(this->compression)));
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_execute_cql_query_result::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->success.read(iprot);
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ue.read(iprot);
+          this->__isset.ue = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->te.read(iprot);
+          this->__isset.te = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 4:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->sde.read(iprot);
+          this->__isset.sde = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t Cassandra_execute_cql_query_result::write(::apache::thrift::protocol::TProtocol* oprot) const {
+
+  uint32_t xfer = 0;
+
+  xfer += oprot->writeStructBegin("Cassandra_execute_cql_query_result");
+
+  if (this->__isset.success) {
+    xfer += oprot->writeFieldBegin("success", ::apache::thrift::protocol::T_STRUCT, 0);
+    xfer += this->success.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.ire) {
+    xfer += oprot->writeFieldBegin("ire", ::apache::thrift::protocol::T_STRUCT, 1);
+    xfer += this->ire.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.ue) {
+    xfer += oprot->writeFieldBegin("ue", ::apache::thrift::protocol::T_STRUCT, 2);
+    xfer += this->ue.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.te) {
+    xfer += oprot->writeFieldBegin("te", ::apache::thrift::protocol::T_STRUCT, 3);
+    xfer += this->te.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  } else if (this->__isset.sde) {
+    xfer += oprot->writeFieldBegin("sde", ::apache::thrift::protocol::T_STRUCT, 4);
+    xfer += this->sde.write(oprot);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t Cassandra_execute_cql_query_presult::read(::apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using ::apache::thrift::protocol::TProtocolException;
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == ::apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += (*(this->success)).read(iprot);
+          this->__isset.success = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 1:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ire.read(iprot);
+          this->__isset.ire = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->ue.read(iprot);
+          this->__isset.ue = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->te.read(iprot);
+          this->__isset.te = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 4:
+        if (ftype == ::apache::thrift::protocol::T_STRUCT) {
+          xfer += this->sde.read(iprot);
+          this->__isset.sde = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+void CassandraClient::login(const AuthenticationRequest& auth_request)
 {
-  send_login(keyspace, auth_request);
+  send_login(auth_request);
   recv_login();
 }
 
-void CassandraClient::send_login(const std::string& keyspace, const AuthenticationRequest& auth_request)
+void CassandraClient::send_login(const AuthenticationRequest& auth_request)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("login", ::apache::thrift::protocol::T_CALL, cseqid);
 
   Cassandra_login_pargs args;
-  args.keyspace = &keyspace;
   args.auth_request = &auth_request;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  oprot_->getTransport()->flush();
   oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
 }
 
 void CassandraClient::recv_login()
@@ -5412,13 +7213,11 @@ void CassandraClient::recv_login()
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
   }
   if (fname.compare("login") != 0) {
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::WRONG_METHOD_NAME);
   }
   Cassandra_login_presult result;
   result.read(iprot_);
@@ -5434,27 +7233,82 @@ void CassandraClient::recv_login()
   return;
 }
 
-void CassandraClient::get(ColumnOrSuperColumn& _return, const std::string& keyspace, const std::string& key, const ColumnPath& column_path, const ConsistencyLevel consistency_level)
+void CassandraClient::set_keyspace(const std::string& keyspace)
 {
-  send_get(keyspace, key, column_path, consistency_level);
+  send_set_keyspace(keyspace);
+  recv_set_keyspace();
+}
+
+void CassandraClient::send_set_keyspace(const std::string& keyspace)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("set_keyspace", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Cassandra_set_keyspace_pargs args;
+  args.keyspace = &keyspace;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void CassandraClient::recv_set_keyspace()
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("set_keyspace") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  Cassandra_set_keyspace_presult result;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  if (result.__isset.ire) {
+    throw result.ire;
+  }
+  return;
+}
+
+void CassandraClient::get(ColumnOrSuperColumn& _return, const std::string& key, const ColumnPath& column_path, const ConsistencyLevel::type consistency_level)
+{
+  send_get(key, column_path, consistency_level);
   recv_get(_return);
 }
 
-void CassandraClient::send_get(const std::string& keyspace, const std::string& key, const ColumnPath& column_path, const ConsistencyLevel consistency_level)
+void CassandraClient::send_get(const std::string& key, const ColumnPath& column_path, const ConsistencyLevel::type consistency_level)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("get", ::apache::thrift::protocol::T_CALL, cseqid);
 
   Cassandra_get_pargs args;
-  args.keyspace = &keyspace;
   args.key = &key;
   args.column_path = &column_path;
   args.consistency_level = &consistency_level;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  oprot_->getTransport()->flush();
   oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
 }
 
 void CassandraClient::recv_get(ColumnOrSuperColumn& _return)
@@ -5476,13 +7330,11 @@ void CassandraClient::recv_get(ColumnOrSuperColumn& _return)
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
   }
   if (fname.compare("get") != 0) {
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::WRONG_METHOD_NAME);
   }
   Cassandra_get_presult result;
   result.success = &_return;
@@ -5509,19 +7361,18 @@ void CassandraClient::recv_get(ColumnOrSuperColumn& _return)
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "get failed: unknown result");
 }
 
-void CassandraClient::get_slice(std::vector<ColumnOrSuperColumn> & _return, const std::string& keyspace, const std::string& key, const ColumnParent& column_parent, const SlicePredicate& predicate, const ConsistencyLevel consistency_level)
+void CassandraClient::get_slice(std::vector<ColumnOrSuperColumn> & _return, const std::string& key, const ColumnParent& column_parent, const SlicePredicate& predicate, const ConsistencyLevel::type consistency_level)
 {
-  send_get_slice(keyspace, key, column_parent, predicate, consistency_level);
+  send_get_slice(key, column_parent, predicate, consistency_level);
   recv_get_slice(_return);
 }
 
-void CassandraClient::send_get_slice(const std::string& keyspace, const std::string& key, const ColumnParent& column_parent, const SlicePredicate& predicate, const ConsistencyLevel consistency_level)
+void CassandraClient::send_get_slice(const std::string& key, const ColumnParent& column_parent, const SlicePredicate& predicate, const ConsistencyLevel::type consistency_level)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("get_slice", ::apache::thrift::protocol::T_CALL, cseqid);
 
   Cassandra_get_slice_pargs args;
-  args.keyspace = &keyspace;
   args.key = &key;
   args.column_parent = &column_parent;
   args.predicate = &predicate;
@@ -5529,8 +7380,8 @@ void CassandraClient::send_get_slice(const std::string& keyspace, const std::str
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  oprot_->getTransport()->flush();
   oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
 }
 
 void CassandraClient::recv_get_slice(std::vector<ColumnOrSuperColumn> & _return)
@@ -5552,13 +7403,11 @@ void CassandraClient::recv_get_slice(std::vector<ColumnOrSuperColumn> & _return)
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
   }
   if (fname.compare("get_slice") != 0) {
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::WRONG_METHOD_NAME);
   }
   Cassandra_get_slice_presult result;
   result.success = &_return;
@@ -5582,172 +7431,27 @@ void CassandraClient::recv_get_slice(std::vector<ColumnOrSuperColumn> & _return)
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "get_slice failed: unknown result");
 }
 
-void CassandraClient::multiget(std::map<std::string, ColumnOrSuperColumn> & _return, const std::string& keyspace, const std::vector<std::string> & keys, const ColumnPath& column_path, const ConsistencyLevel consistency_level)
+int32_t CassandraClient::get_count(const std::string& key, const ColumnParent& column_parent, const SlicePredicate& predicate, const ConsistencyLevel::type consistency_level)
 {
-  send_multiget(keyspace, keys, column_path, consistency_level);
-  recv_multiget(_return);
+  send_get_count(key, column_parent, predicate, consistency_level);
+  return recv_get_count();
 }
 
-void CassandraClient::send_multiget(const std::string& keyspace, const std::vector<std::string> & keys, const ColumnPath& column_path, const ConsistencyLevel consistency_level)
+void CassandraClient::send_get_count(const std::string& key, const ColumnParent& column_parent, const SlicePredicate& predicate, const ConsistencyLevel::type consistency_level)
 {
   int32_t cseqid = 0;
-  oprot_->writeMessageBegin("multiget", ::apache::thrift::protocol::T_CALL, cseqid);
+  oprot_->writeMessageBegin("get_count", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  Cassandra_multiget_pargs args;
-  args.keyspace = &keyspace;
-  args.keys = &keys;
-  args.column_path = &column_path;
-  args.consistency_level = &consistency_level;
-  args.write(oprot_);
-
-  oprot_->writeMessageEnd();
-  oprot_->getTransport()->flush();
-  oprot_->getTransport()->writeEnd();
-}
-
-void CassandraClient::recv_multiget(std::map<std::string, ColumnOrSuperColumn> & _return)
-{
-
-  int32_t rseqid = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TMessageType mtype;
-
-  iprot_->readMessageBegin(fname, mtype, rseqid);
-  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
-    ::apache::thrift::TApplicationException x;
-    x.read(iprot_);
-    iprot_->readMessageEnd();
-    iprot_->getTransport()->readEnd();
-    throw x;
-  }
-  if (mtype != ::apache::thrift::protocol::T_REPLY) {
-    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
-    iprot_->readMessageEnd();
-    iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
-  }
-  if (fname.compare("multiget") != 0) {
-    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
-    iprot_->readMessageEnd();
-    iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::WRONG_METHOD_NAME);
-  }
-  Cassandra_multiget_presult result;
-  result.success = &_return;
-  result.read(iprot_);
-  iprot_->readMessageEnd();
-  iprot_->getTransport()->readEnd();
-
-  if (result.__isset.success) {
-    // _return pointer has now been filled
-    return;
-  }
-  if (result.__isset.ire) {
-    throw result.ire;
-  }
-  if (result.__isset.ue) {
-    throw result.ue;
-  }
-  if (result.__isset.te) {
-    throw result.te;
-  }
-  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "multiget failed: unknown result");
-}
-
-void CassandraClient::multiget_slice(std::map<std::string, std::vector<ColumnOrSuperColumn> > & _return, const std::string& keyspace, const std::vector<std::string> & keys, const ColumnParent& column_parent, const SlicePredicate& predicate, const ConsistencyLevel consistency_level)
-{
-  send_multiget_slice(keyspace, keys, column_parent, predicate, consistency_level);
-  recv_multiget_slice(_return);
-}
-
-void CassandraClient::send_multiget_slice(const std::string& keyspace, const std::vector<std::string> & keys, const ColumnParent& column_parent, const SlicePredicate& predicate, const ConsistencyLevel consistency_level)
-{
-  int32_t cseqid = 0;
-  oprot_->writeMessageBegin("multiget_slice", ::apache::thrift::protocol::T_CALL, cseqid);
-
-  Cassandra_multiget_slice_pargs args;
-  args.keyspace = &keyspace;
-  args.keys = &keys;
+  Cassandra_get_count_pargs args;
+  args.key = &key;
   args.column_parent = &column_parent;
   args.predicate = &predicate;
   args.consistency_level = &consistency_level;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  oprot_->getTransport()->flush();
   oprot_->getTransport()->writeEnd();
-}
-
-void CassandraClient::recv_multiget_slice(std::map<std::string, std::vector<ColumnOrSuperColumn> > & _return)
-{
-
-  int32_t rseqid = 0;
-  std::string fname;
-  ::apache::thrift::protocol::TMessageType mtype;
-
-  iprot_->readMessageBegin(fname, mtype, rseqid);
-  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
-    ::apache::thrift::TApplicationException x;
-    x.read(iprot_);
-    iprot_->readMessageEnd();
-    iprot_->getTransport()->readEnd();
-    throw x;
-  }
-  if (mtype != ::apache::thrift::protocol::T_REPLY) {
-    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
-    iprot_->readMessageEnd();
-    iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
-  }
-  if (fname.compare("multiget_slice") != 0) {
-    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
-    iprot_->readMessageEnd();
-    iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::WRONG_METHOD_NAME);
-  }
-  Cassandra_multiget_slice_presult result;
-  result.success = &_return;
-  result.read(iprot_);
-  iprot_->readMessageEnd();
-  iprot_->getTransport()->readEnd();
-
-  if (result.__isset.success) {
-    // _return pointer has now been filled
-    return;
-  }
-  if (result.__isset.ire) {
-    throw result.ire;
-  }
-  if (result.__isset.ue) {
-    throw result.ue;
-  }
-  if (result.__isset.te) {
-    throw result.te;
-  }
-  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "multiget_slice failed: unknown result");
-}
-
-int32_t CassandraClient::get_count(const std::string& keyspace, const std::string& key, const ColumnParent& column_parent, const ConsistencyLevel consistency_level)
-{
-  send_get_count(keyspace, key, column_parent, consistency_level);
-  return recv_get_count();
-}
-
-void CassandraClient::send_get_count(const std::string& keyspace, const std::string& key, const ColumnParent& column_parent, const ConsistencyLevel consistency_level)
-{
-  int32_t cseqid = 0;
-  oprot_->writeMessageBegin("get_count", ::apache::thrift::protocol::T_CALL, cseqid);
-
-  Cassandra_get_count_pargs args;
-  args.keyspace = &keyspace;
-  args.key = &key;
-  args.column_parent = &column_parent;
-  args.consistency_level = &consistency_level;
-  args.write(oprot_);
-
-  oprot_->writeMessageEnd();
   oprot_->getTransport()->flush();
-  oprot_->getTransport()->writeEnd();
 }
 
 int32_t CassandraClient::recv_get_count()
@@ -5769,13 +7473,11 @@ int32_t CassandraClient::recv_get_count()
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
   }
   if (fname.compare("get_count") != 0) {
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::WRONG_METHOD_NAME);
   }
   int32_t _return;
   Cassandra_get_count_presult result;
@@ -5799,33 +7501,30 @@ int32_t CassandraClient::recv_get_count()
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "get_count failed: unknown result");
 }
 
-void CassandraClient::get_range_slice(std::vector<KeySlice> & _return, const std::string& keyspace, const ColumnParent& column_parent, const SlicePredicate& predicate, const std::string& start_key, const std::string& finish_key, const int32_t row_count, const ConsistencyLevel consistency_level)
+void CassandraClient::multiget_slice(std::map<std::string, std::vector<ColumnOrSuperColumn> > & _return, const std::vector<std::string> & keys, const ColumnParent& column_parent, const SlicePredicate& predicate, const ConsistencyLevel::type consistency_level)
 {
-  send_get_range_slice(keyspace, column_parent, predicate, start_key, finish_key, row_count, consistency_level);
-  recv_get_range_slice(_return);
+  send_multiget_slice(keys, column_parent, predicate, consistency_level);
+  recv_multiget_slice(_return);
 }
 
-void CassandraClient::send_get_range_slice(const std::string& keyspace, const ColumnParent& column_parent, const SlicePredicate& predicate, const std::string& start_key, const std::string& finish_key, const int32_t row_count, const ConsistencyLevel consistency_level)
+void CassandraClient::send_multiget_slice(const std::vector<std::string> & keys, const ColumnParent& column_parent, const SlicePredicate& predicate, const ConsistencyLevel::type consistency_level)
 {
   int32_t cseqid = 0;
-  oprot_->writeMessageBegin("get_range_slice", ::apache::thrift::protocol::T_CALL, cseqid);
+  oprot_->writeMessageBegin("multiget_slice", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  Cassandra_get_range_slice_pargs args;
-  args.keyspace = &keyspace;
+  Cassandra_multiget_slice_pargs args;
+  args.keys = &keys;
   args.column_parent = &column_parent;
   args.predicate = &predicate;
-  args.start_key = &start_key;
-  args.finish_key = &finish_key;
-  args.row_count = &row_count;
   args.consistency_level = &consistency_level;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  oprot_->getTransport()->flush();
   oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
 }
 
-void CassandraClient::recv_get_range_slice(std::vector<KeySlice> & _return)
+void CassandraClient::recv_multiget_slice(std::map<std::string, std::vector<ColumnOrSuperColumn> > & _return)
 {
 
   int32_t rseqid = 0;
@@ -5844,15 +7543,13 @@ void CassandraClient::recv_get_range_slice(std::vector<KeySlice> & _return)
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
   }
-  if (fname.compare("get_range_slice") != 0) {
+  if (fname.compare("multiget_slice") != 0) {
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::WRONG_METHOD_NAME);
   }
-  Cassandra_get_range_slice_presult result;
+  Cassandra_multiget_slice_presult result;
   result.success = &_return;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -5871,22 +7568,91 @@ void CassandraClient::recv_get_range_slice(std::vector<KeySlice> & _return)
   if (result.__isset.te) {
     throw result.te;
   }
-  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "get_range_slice failed: unknown result");
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "multiget_slice failed: unknown result");
 }
 
-void CassandraClient::get_range_slices(std::vector<KeySlice> & _return, const std::string& keyspace, const ColumnParent& column_parent, const SlicePredicate& predicate, const KeyRange& range, const ConsistencyLevel consistency_level)
+void CassandraClient::multiget_count(std::map<std::string, int32_t> & _return, const std::vector<std::string> & keys, const ColumnParent& column_parent, const SlicePredicate& predicate, const ConsistencyLevel::type consistency_level)
 {
-  send_get_range_slices(keyspace, column_parent, predicate, range, consistency_level);
+  send_multiget_count(keys, column_parent, predicate, consistency_level);
+  recv_multiget_count(_return);
+}
+
+void CassandraClient::send_multiget_count(const std::vector<std::string> & keys, const ColumnParent& column_parent, const SlicePredicate& predicate, const ConsistencyLevel::type consistency_level)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("multiget_count", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Cassandra_multiget_count_pargs args;
+  args.keys = &keys;
+  args.column_parent = &column_parent;
+  args.predicate = &predicate;
+  args.consistency_level = &consistency_level;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void CassandraClient::recv_multiget_count(std::map<std::string, int32_t> & _return)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("multiget_count") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  Cassandra_multiget_count_presult result;
+  result.success = &_return;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  if (result.__isset.success) {
+    // _return pointer has now been filled
+    return;
+  }
+  if (result.__isset.ire) {
+    throw result.ire;
+  }
+  if (result.__isset.ue) {
+    throw result.ue;
+  }
+  if (result.__isset.te) {
+    throw result.te;
+  }
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "multiget_count failed: unknown result");
+}
+
+void CassandraClient::get_range_slices(std::vector<KeySlice> & _return, const ColumnParent& column_parent, const SlicePredicate& predicate, const KeyRange& range, const ConsistencyLevel::type consistency_level)
+{
+  send_get_range_slices(column_parent, predicate, range, consistency_level);
   recv_get_range_slices(_return);
 }
 
-void CassandraClient::send_get_range_slices(const std::string& keyspace, const ColumnParent& column_parent, const SlicePredicate& predicate, const KeyRange& range, const ConsistencyLevel consistency_level)
+void CassandraClient::send_get_range_slices(const ColumnParent& column_parent, const SlicePredicate& predicate, const KeyRange& range, const ConsistencyLevel::type consistency_level)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("get_range_slices", ::apache::thrift::protocol::T_CALL, cseqid);
 
   Cassandra_get_range_slices_pargs args;
-  args.keyspace = &keyspace;
   args.column_parent = &column_parent;
   args.predicate = &predicate;
   args.range = &range;
@@ -5894,8 +7660,8 @@ void CassandraClient::send_get_range_slices(const std::string& keyspace, const C
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  oprot_->getTransport()->flush();
   oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
 }
 
 void CassandraClient::recv_get_range_slices(std::vector<KeySlice> & _return)
@@ -5917,13 +7683,11 @@ void CassandraClient::recv_get_range_slices(std::vector<KeySlice> & _return)
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
   }
   if (fname.compare("get_range_slices") != 0) {
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::WRONG_METHOD_NAME);
   }
   Cassandra_get_range_slices_presult result;
   result.success = &_return;
@@ -5947,29 +7711,97 @@ void CassandraClient::recv_get_range_slices(std::vector<KeySlice> & _return)
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "get_range_slices failed: unknown result");
 }
 
-void CassandraClient::insert(const std::string& keyspace, const std::string& key, const ColumnPath& column_path, const std::string& value, const int64_t timestamp, const ConsistencyLevel consistency_level)
+void CassandraClient::get_indexed_slices(std::vector<KeySlice> & _return, const ColumnParent& column_parent, const IndexClause& index_clause, const SlicePredicate& column_predicate, const ConsistencyLevel::type consistency_level)
 {
-  send_insert(keyspace, key, column_path, value, timestamp, consistency_level);
+  send_get_indexed_slices(column_parent, index_clause, column_predicate, consistency_level);
+  recv_get_indexed_slices(_return);
+}
+
+void CassandraClient::send_get_indexed_slices(const ColumnParent& column_parent, const IndexClause& index_clause, const SlicePredicate& column_predicate, const ConsistencyLevel::type consistency_level)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("get_indexed_slices", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Cassandra_get_indexed_slices_pargs args;
+  args.column_parent = &column_parent;
+  args.index_clause = &index_clause;
+  args.column_predicate = &column_predicate;
+  args.consistency_level = &consistency_level;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void CassandraClient::recv_get_indexed_slices(std::vector<KeySlice> & _return)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("get_indexed_slices") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  Cassandra_get_indexed_slices_presult result;
+  result.success = &_return;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  if (result.__isset.success) {
+    // _return pointer has now been filled
+    return;
+  }
+  if (result.__isset.ire) {
+    throw result.ire;
+  }
+  if (result.__isset.ue) {
+    throw result.ue;
+  }
+  if (result.__isset.te) {
+    throw result.te;
+  }
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "get_indexed_slices failed: unknown result");
+}
+
+void CassandraClient::insert(const std::string& key, const ColumnParent& column_parent, const Column& column, const ConsistencyLevel::type consistency_level)
+{
+  send_insert(key, column_parent, column, consistency_level);
   recv_insert();
 }
 
-void CassandraClient::send_insert(const std::string& keyspace, const std::string& key, const ColumnPath& column_path, const std::string& value, const int64_t timestamp, const ConsistencyLevel consistency_level)
+void CassandraClient::send_insert(const std::string& key, const ColumnParent& column_parent, const Column& column, const ConsistencyLevel::type consistency_level)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("insert", ::apache::thrift::protocol::T_CALL, cseqid);
 
   Cassandra_insert_pargs args;
-  args.keyspace = &keyspace;
   args.key = &key;
-  args.column_path = &column_path;
-  args.value = &value;
-  args.timestamp = &timestamp;
+  args.column_parent = &column_parent;
+  args.column = &column;
   args.consistency_level = &consistency_level;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  oprot_->getTransport()->flush();
   oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
 }
 
 void CassandraClient::recv_insert()
@@ -5991,13 +7823,11 @@ void CassandraClient::recv_insert()
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
   }
   if (fname.compare("insert") != 0) {
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::WRONG_METHOD_NAME);
   }
   Cassandra_insert_presult result;
   result.read(iprot_);
@@ -6016,30 +7846,30 @@ void CassandraClient::recv_insert()
   return;
 }
 
-void CassandraClient::batch_insert(const std::string& keyspace, const std::string& key, const std::map<std::string, std::vector<ColumnOrSuperColumn> > & cfmap, const ConsistencyLevel consistency_level)
+void CassandraClient::add(const std::string& key, const ColumnParent& column_parent, const CounterColumn& column, const ConsistencyLevel::type consistency_level)
 {
-  send_batch_insert(keyspace, key, cfmap, consistency_level);
-  recv_batch_insert();
+  send_add(key, column_parent, column, consistency_level);
+  recv_add();
 }
 
-void CassandraClient::send_batch_insert(const std::string& keyspace, const std::string& key, const std::map<std::string, std::vector<ColumnOrSuperColumn> > & cfmap, const ConsistencyLevel consistency_level)
+void CassandraClient::send_add(const std::string& key, const ColumnParent& column_parent, const CounterColumn& column, const ConsistencyLevel::type consistency_level)
 {
   int32_t cseqid = 0;
-  oprot_->writeMessageBegin("batch_insert", ::apache::thrift::protocol::T_CALL, cseqid);
+  oprot_->writeMessageBegin("add", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  Cassandra_batch_insert_pargs args;
-  args.keyspace = &keyspace;
+  Cassandra_add_pargs args;
   args.key = &key;
-  args.cfmap = &cfmap;
+  args.column_parent = &column_parent;
+  args.column = &column;
   args.consistency_level = &consistency_level;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  oprot_->getTransport()->flush();
   oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
 }
 
-void CassandraClient::recv_batch_insert()
+void CassandraClient::recv_add()
 {
 
   int32_t rseqid = 0;
@@ -6058,15 +7888,13 @@ void CassandraClient::recv_batch_insert()
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
   }
-  if (fname.compare("batch_insert") != 0) {
+  if (fname.compare("add") != 0) {
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::WRONG_METHOD_NAME);
   }
-  Cassandra_batch_insert_presult result;
+  Cassandra_add_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();
   iprot_->getTransport()->readEnd();
@@ -6083,19 +7911,18 @@ void CassandraClient::recv_batch_insert()
   return;
 }
 
-void CassandraClient::remove(const std::string& keyspace, const std::string& key, const ColumnPath& column_path, const int64_t timestamp, const ConsistencyLevel consistency_level)
+void CassandraClient::remove(const std::string& key, const ColumnPath& column_path, const int64_t timestamp, const ConsistencyLevel::type consistency_level)
 {
-  send_remove(keyspace, key, column_path, timestamp, consistency_level);
+  send_remove(key, column_path, timestamp, consistency_level);
   recv_remove();
 }
 
-void CassandraClient::send_remove(const std::string& keyspace, const std::string& key, const ColumnPath& column_path, const int64_t timestamp, const ConsistencyLevel consistency_level)
+void CassandraClient::send_remove(const std::string& key, const ColumnPath& column_path, const int64_t timestamp, const ConsistencyLevel::type consistency_level)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("remove", ::apache::thrift::protocol::T_CALL, cseqid);
 
   Cassandra_remove_pargs args;
-  args.keyspace = &keyspace;
   args.key = &key;
   args.column_path = &column_path;
   args.timestamp = &timestamp;
@@ -6103,8 +7930,8 @@ void CassandraClient::send_remove(const std::string& keyspace, const std::string
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  oprot_->getTransport()->flush();
   oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
 }
 
 void CassandraClient::recv_remove()
@@ -6126,13 +7953,11 @@ void CassandraClient::recv_remove()
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
   }
   if (fname.compare("remove") != 0) {
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::WRONG_METHOD_NAME);
   }
   Cassandra_remove_presult result;
   result.read(iprot_);
@@ -6151,26 +7976,89 @@ void CassandraClient::recv_remove()
   return;
 }
 
-void CassandraClient::batch_mutate(const std::string& keyspace, const std::map<std::string, std::map<std::string, std::vector<Mutation> > > & mutation_map, const ConsistencyLevel consistency_level)
+void CassandraClient::remove_counter(const std::string& key, const ColumnPath& path, const ConsistencyLevel::type consistency_level)
 {
-  send_batch_mutate(keyspace, mutation_map, consistency_level);
+  send_remove_counter(key, path, consistency_level);
+  recv_remove_counter();
+}
+
+void CassandraClient::send_remove_counter(const std::string& key, const ColumnPath& path, const ConsistencyLevel::type consistency_level)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("remove_counter", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Cassandra_remove_counter_pargs args;
+  args.key = &key;
+  args.path = &path;
+  args.consistency_level = &consistency_level;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void CassandraClient::recv_remove_counter()
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("remove_counter") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  Cassandra_remove_counter_presult result;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  if (result.__isset.ire) {
+    throw result.ire;
+  }
+  if (result.__isset.ue) {
+    throw result.ue;
+  }
+  if (result.__isset.te) {
+    throw result.te;
+  }
+  return;
+}
+
+void CassandraClient::batch_mutate(const std::map<std::string, std::map<std::string, std::vector<Mutation> > > & mutation_map, const ConsistencyLevel::type consistency_level)
+{
+  send_batch_mutate(mutation_map, consistency_level);
   recv_batch_mutate();
 }
 
-void CassandraClient::send_batch_mutate(const std::string& keyspace, const std::map<std::string, std::map<std::string, std::vector<Mutation> > > & mutation_map, const ConsistencyLevel consistency_level)
+void CassandraClient::send_batch_mutate(const std::map<std::string, std::map<std::string, std::vector<Mutation> > > & mutation_map, const ConsistencyLevel::type consistency_level)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("batch_mutate", ::apache::thrift::protocol::T_CALL, cseqid);
 
   Cassandra_batch_mutate_pargs args;
-  args.keyspace = &keyspace;
   args.mutation_map = &mutation_map;
   args.consistency_level = &consistency_level;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  oprot_->getTransport()->flush();
   oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
 }
 
 void CassandraClient::recv_batch_mutate()
@@ -6192,13 +8080,11 @@ void CassandraClient::recv_batch_mutate()
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
   }
   if (fname.compare("batch_mutate") != 0) {
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::WRONG_METHOD_NAME);
   }
   Cassandra_batch_mutate_presult result;
   result.read(iprot_);
@@ -6217,27 +8103,27 @@ void CassandraClient::recv_batch_mutate()
   return;
 }
 
-void CassandraClient::get_string_property(std::string& _return, const std::string& property)
+void CassandraClient::truncate(const std::string& cfname)
 {
-  send_get_string_property(property);
-  recv_get_string_property(_return);
+  send_truncate(cfname);
+  recv_truncate();
 }
 
-void CassandraClient::send_get_string_property(const std::string& property)
+void CassandraClient::send_truncate(const std::string& cfname)
 {
   int32_t cseqid = 0;
-  oprot_->writeMessageBegin("get_string_property", ::apache::thrift::protocol::T_CALL, cseqid);
+  oprot_->writeMessageBegin("truncate", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  Cassandra_get_string_property_pargs args;
-  args.property = &property;
+  Cassandra_truncate_pargs args;
+  args.cfname = &cfname;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  oprot_->getTransport()->flush();
   oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
 }
 
-void CassandraClient::recv_get_string_property(std::string& _return)
+void CassandraClient::recv_truncate()
 {
 
   int32_t rseqid = 0;
@@ -6256,48 +8142,46 @@ void CassandraClient::recv_get_string_property(std::string& _return)
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
   }
-  if (fname.compare("get_string_property") != 0) {
+  if (fname.compare("truncate") != 0) {
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::WRONG_METHOD_NAME);
   }
-  Cassandra_get_string_property_presult result;
-  result.success = &_return;
+  Cassandra_truncate_presult result;
   result.read(iprot_);
   iprot_->readMessageEnd();
   iprot_->getTransport()->readEnd();
 
-  if (result.__isset.success) {
-    // _return pointer has now been filled
-    return;
+  if (result.__isset.ire) {
+    throw result.ire;
   }
-  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "get_string_property failed: unknown result");
+  if (result.__isset.ue) {
+    throw result.ue;
+  }
+  return;
 }
 
-void CassandraClient::get_string_list_property(std::vector<std::string> & _return, const std::string& property)
+void CassandraClient::describe_schema_versions(std::map<std::string, std::vector<std::string> > & _return)
 {
-  send_get_string_list_property(property);
-  recv_get_string_list_property(_return);
+  send_describe_schema_versions();
+  recv_describe_schema_versions(_return);
 }
 
-void CassandraClient::send_get_string_list_property(const std::string& property)
+void CassandraClient::send_describe_schema_versions()
 {
   int32_t cseqid = 0;
-  oprot_->writeMessageBegin("get_string_list_property", ::apache::thrift::protocol::T_CALL, cseqid);
+  oprot_->writeMessageBegin("describe_schema_versions", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  Cassandra_get_string_list_property_pargs args;
-  args.property = &property;
+  Cassandra_describe_schema_versions_pargs args;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  oprot_->getTransport()->flush();
   oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
 }
 
-void CassandraClient::recv_get_string_list_property(std::vector<std::string> & _return)
+void CassandraClient::recv_describe_schema_versions(std::map<std::string, std::vector<std::string> > & _return)
 {
 
   int32_t rseqid = 0;
@@ -6316,15 +8200,13 @@ void CassandraClient::recv_get_string_list_property(std::vector<std::string> & _
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
   }
-  if (fname.compare("get_string_list_property") != 0) {
+  if (fname.compare("describe_schema_versions") != 0) {
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::WRONG_METHOD_NAME);
   }
-  Cassandra_get_string_list_property_presult result;
+  Cassandra_describe_schema_versions_presult result;
   result.success = &_return;
   result.read(iprot_);
   iprot_->readMessageEnd();
@@ -6334,10 +8216,13 @@ void CassandraClient::recv_get_string_list_property(std::vector<std::string> & _
     // _return pointer has now been filled
     return;
   }
-  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "get_string_list_property failed: unknown result");
+  if (result.__isset.ire) {
+    throw result.ire;
+  }
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "describe_schema_versions failed: unknown result");
 }
 
-void CassandraClient::describe_keyspaces(std::set<std::string> & _return)
+void CassandraClient::describe_keyspaces(std::vector<KsDef> & _return)
 {
   send_describe_keyspaces();
   recv_describe_keyspaces(_return);
@@ -6352,11 +8237,11 @@ void CassandraClient::send_describe_keyspaces()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  oprot_->getTransport()->flush();
   oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
 }
 
-void CassandraClient::recv_describe_keyspaces(std::set<std::string> & _return)
+void CassandraClient::recv_describe_keyspaces(std::vector<KsDef> & _return)
 {
 
   int32_t rseqid = 0;
@@ -6375,13 +8260,11 @@ void CassandraClient::recv_describe_keyspaces(std::set<std::string> & _return)
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
   }
   if (fname.compare("describe_keyspaces") != 0) {
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::WRONG_METHOD_NAME);
   }
   Cassandra_describe_keyspaces_presult result;
   result.success = &_return;
@@ -6392,6 +8275,9 @@ void CassandraClient::recv_describe_keyspaces(std::set<std::string> & _return)
   if (result.__isset.success) {
     // _return pointer has now been filled
     return;
+  }
+  if (result.__isset.ire) {
+    throw result.ire;
   }
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "describe_keyspaces failed: unknown result");
 }
@@ -6411,8 +8297,8 @@ void CassandraClient::send_describe_cluster_name()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  oprot_->getTransport()->flush();
   oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
 }
 
 void CassandraClient::recv_describe_cluster_name(std::string& _return)
@@ -6434,13 +8320,11 @@ void CassandraClient::recv_describe_cluster_name(std::string& _return)
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
   }
   if (fname.compare("describe_cluster_name") != 0) {
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::WRONG_METHOD_NAME);
   }
   Cassandra_describe_cluster_name_presult result;
   result.success = &_return;
@@ -6470,8 +8354,8 @@ void CassandraClient::send_describe_version()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  oprot_->getTransport()->flush();
   oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
 }
 
 void CassandraClient::recv_describe_version(std::string& _return)
@@ -6493,13 +8377,11 @@ void CassandraClient::recv_describe_version(std::string& _return)
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
   }
   if (fname.compare("describe_version") != 0) {
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::WRONG_METHOD_NAME);
   }
   Cassandra_describe_version_presult result;
   result.success = &_return;
@@ -6530,8 +8412,8 @@ void CassandraClient::send_describe_ring(const std::string& keyspace)
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  oprot_->getTransport()->flush();
   oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
 }
 
 void CassandraClient::recv_describe_ring(std::vector<TokenRange> & _return)
@@ -6553,13 +8435,11 @@ void CassandraClient::recv_describe_ring(std::vector<TokenRange> & _return)
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
   }
   if (fname.compare("describe_ring") != 0) {
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::WRONG_METHOD_NAME);
   }
   Cassandra_describe_ring_presult result;
   result.success = &_return;
@@ -6592,8 +8472,8 @@ void CassandraClient::send_describe_partitioner()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  oprot_->getTransport()->flush();
   oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
 }
 
 void CassandraClient::recv_describe_partitioner(std::string& _return)
@@ -6615,13 +8495,11 @@ void CassandraClient::recv_describe_partitioner(std::string& _return)
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
   }
   if (fname.compare("describe_partitioner") != 0) {
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::WRONG_METHOD_NAME);
   }
   Cassandra_describe_partitioner_presult result;
   result.success = &_return;
@@ -6636,27 +8514,26 @@ void CassandraClient::recv_describe_partitioner(std::string& _return)
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "describe_partitioner failed: unknown result");
 }
 
-void CassandraClient::describe_keyspace(std::map<std::string, std::map<std::string, std::string> > & _return, const std::string& keyspace)
+void CassandraClient::describe_snitch(std::string& _return)
 {
-  send_describe_keyspace(keyspace);
-  recv_describe_keyspace(_return);
+  send_describe_snitch();
+  recv_describe_snitch(_return);
 }
 
-void CassandraClient::send_describe_keyspace(const std::string& keyspace)
+void CassandraClient::send_describe_snitch()
 {
   int32_t cseqid = 0;
-  oprot_->writeMessageBegin("describe_keyspace", ::apache::thrift::protocol::T_CALL, cseqid);
+  oprot_->writeMessageBegin("describe_snitch", ::apache::thrift::protocol::T_CALL, cseqid);
 
-  Cassandra_describe_keyspace_pargs args;
-  args.keyspace = &keyspace;
+  Cassandra_describe_snitch_pargs args;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  oprot_->getTransport()->flush();
   oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
 }
 
-void CassandraClient::recv_describe_keyspace(std::map<std::string, std::map<std::string, std::string> > & _return)
+void CassandraClient::recv_describe_snitch(std::string& _return)
 {
 
   int32_t rseqid = 0;
@@ -6675,13 +8552,69 @@ void CassandraClient::recv_describe_keyspace(std::map<std::string, std::map<std:
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
+  }
+  if (fname.compare("describe_snitch") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  Cassandra_describe_snitch_presult result;
+  result.success = &_return;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  if (result.__isset.success) {
+    // _return pointer has now been filled
+    return;
+  }
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "describe_snitch failed: unknown result");
+}
+
+void CassandraClient::describe_keyspace(KsDef& _return, const std::string& keyspace)
+{
+  send_describe_keyspace(keyspace);
+  recv_describe_keyspace(_return);
+}
+
+void CassandraClient::send_describe_keyspace(const std::string& keyspace)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("describe_keyspace", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Cassandra_describe_keyspace_pargs args;
+  args.keyspace = &keyspace;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void CassandraClient::recv_describe_keyspace(KsDef& _return)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
   }
   if (fname.compare("describe_keyspace") != 0) {
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::WRONG_METHOD_NAME);
   }
   Cassandra_describe_keyspace_presult result;
   result.success = &_return;
@@ -6696,29 +8629,33 @@ void CassandraClient::recv_describe_keyspace(std::map<std::string, std::map<std:
   if (result.__isset.nfe) {
     throw result.nfe;
   }
+  if (result.__isset.ire) {
+    throw result.ire;
+  }
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "describe_keyspace failed: unknown result");
 }
 
-void CassandraClient::describe_splits(std::vector<std::string> & _return, const std::string& start_token, const std::string& end_token, const int32_t keys_per_split)
+void CassandraClient::describe_splits(std::vector<std::string> & _return, const std::string& cfName, const std::string& start_token, const std::string& end_token, const int32_t keys_per_split)
 {
-  send_describe_splits(start_token, end_token, keys_per_split);
+  send_describe_splits(cfName, start_token, end_token, keys_per_split);
   recv_describe_splits(_return);
 }
 
-void CassandraClient::send_describe_splits(const std::string& start_token, const std::string& end_token, const int32_t keys_per_split)
+void CassandraClient::send_describe_splits(const std::string& cfName, const std::string& start_token, const std::string& end_token, const int32_t keys_per_split)
 {
   int32_t cseqid = 0;
   oprot_->writeMessageBegin("describe_splits", ::apache::thrift::protocol::T_CALL, cseqid);
 
   Cassandra_describe_splits_pargs args;
+  args.cfName = &cfName;
   args.start_token = &start_token;
   args.end_token = &end_token;
   args.keys_per_split = &keys_per_split;
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  oprot_->getTransport()->flush();
   oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
 }
 
 void CassandraClient::recv_describe_splits(std::vector<std::string> & _return)
@@ -6740,13 +8677,11 @@ void CassandraClient::recv_describe_splits(std::vector<std::string> & _return)
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
   }
   if (fname.compare("describe_splits") != 0) {
     iprot_->skip(::apache::thrift::protocol::T_STRUCT);
     iprot_->readMessageEnd();
     iprot_->getTransport()->readEnd();
-    throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::WRONG_METHOD_NAME);
   }
   Cassandra_describe_splits_presult result;
   result.success = &_return;
@@ -6758,10 +8693,468 @@ void CassandraClient::recv_describe_splits(std::vector<std::string> & _return)
     // _return pointer has now been filled
     return;
   }
+  if (result.__isset.ire) {
+    throw result.ire;
+  }
   throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "describe_splits failed: unknown result");
 }
 
-bool CassandraProcessor::process(boost::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot, boost::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot) {
+void CassandraClient::system_add_column_family(std::string& _return, const CfDef& cf_def)
+{
+  send_system_add_column_family(cf_def);
+  recv_system_add_column_family(_return);
+}
+
+void CassandraClient::send_system_add_column_family(const CfDef& cf_def)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("system_add_column_family", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Cassandra_system_add_column_family_pargs args;
+  args.cf_def = &cf_def;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void CassandraClient::recv_system_add_column_family(std::string& _return)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("system_add_column_family") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  Cassandra_system_add_column_family_presult result;
+  result.success = &_return;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  if (result.__isset.success) {
+    // _return pointer has now been filled
+    return;
+  }
+  if (result.__isset.ire) {
+    throw result.ire;
+  }
+  if (result.__isset.sde) {
+    throw result.sde;
+  }
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "system_add_column_family failed: unknown result");
+}
+
+void CassandraClient::system_drop_column_family(std::string& _return, const std::string& column_family)
+{
+  send_system_drop_column_family(column_family);
+  recv_system_drop_column_family(_return);
+}
+
+void CassandraClient::send_system_drop_column_family(const std::string& column_family)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("system_drop_column_family", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Cassandra_system_drop_column_family_pargs args;
+  args.column_family = &column_family;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void CassandraClient::recv_system_drop_column_family(std::string& _return)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("system_drop_column_family") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  Cassandra_system_drop_column_family_presult result;
+  result.success = &_return;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  if (result.__isset.success) {
+    // _return pointer has now been filled
+    return;
+  }
+  if (result.__isset.ire) {
+    throw result.ire;
+  }
+  if (result.__isset.sde) {
+    throw result.sde;
+  }
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "system_drop_column_family failed: unknown result");
+}
+
+void CassandraClient::system_add_keyspace(std::string& _return, const KsDef& ks_def)
+{
+  send_system_add_keyspace(ks_def);
+  recv_system_add_keyspace(_return);
+}
+
+void CassandraClient::send_system_add_keyspace(const KsDef& ks_def)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("system_add_keyspace", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Cassandra_system_add_keyspace_pargs args;
+  args.ks_def = &ks_def;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void CassandraClient::recv_system_add_keyspace(std::string& _return)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("system_add_keyspace") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  Cassandra_system_add_keyspace_presult result;
+  result.success = &_return;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  if (result.__isset.success) {
+    // _return pointer has now been filled
+    return;
+  }
+  if (result.__isset.ire) {
+    throw result.ire;
+  }
+  if (result.__isset.sde) {
+    throw result.sde;
+  }
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "system_add_keyspace failed: unknown result");
+}
+
+void CassandraClient::system_drop_keyspace(std::string& _return, const std::string& keyspace)
+{
+  send_system_drop_keyspace(keyspace);
+  recv_system_drop_keyspace(_return);
+}
+
+void CassandraClient::send_system_drop_keyspace(const std::string& keyspace)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("system_drop_keyspace", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Cassandra_system_drop_keyspace_pargs args;
+  args.keyspace = &keyspace;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void CassandraClient::recv_system_drop_keyspace(std::string& _return)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("system_drop_keyspace") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  Cassandra_system_drop_keyspace_presult result;
+  result.success = &_return;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  if (result.__isset.success) {
+    // _return pointer has now been filled
+    return;
+  }
+  if (result.__isset.ire) {
+    throw result.ire;
+  }
+  if (result.__isset.sde) {
+    throw result.sde;
+  }
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "system_drop_keyspace failed: unknown result");
+}
+
+void CassandraClient::system_update_keyspace(std::string& _return, const KsDef& ks_def)
+{
+  send_system_update_keyspace(ks_def);
+  recv_system_update_keyspace(_return);
+}
+
+void CassandraClient::send_system_update_keyspace(const KsDef& ks_def)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("system_update_keyspace", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Cassandra_system_update_keyspace_pargs args;
+  args.ks_def = &ks_def;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void CassandraClient::recv_system_update_keyspace(std::string& _return)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("system_update_keyspace") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  Cassandra_system_update_keyspace_presult result;
+  result.success = &_return;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  if (result.__isset.success) {
+    // _return pointer has now been filled
+    return;
+  }
+  if (result.__isset.ire) {
+    throw result.ire;
+  }
+  if (result.__isset.sde) {
+    throw result.sde;
+  }
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "system_update_keyspace failed: unknown result");
+}
+
+void CassandraClient::system_update_column_family(std::string& _return, const CfDef& cf_def)
+{
+  send_system_update_column_family(cf_def);
+  recv_system_update_column_family(_return);
+}
+
+void CassandraClient::send_system_update_column_family(const CfDef& cf_def)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("system_update_column_family", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Cassandra_system_update_column_family_pargs args;
+  args.cf_def = &cf_def;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void CassandraClient::recv_system_update_column_family(std::string& _return)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("system_update_column_family") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  Cassandra_system_update_column_family_presult result;
+  result.success = &_return;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  if (result.__isset.success) {
+    // _return pointer has now been filled
+    return;
+  }
+  if (result.__isset.ire) {
+    throw result.ire;
+  }
+  if (result.__isset.sde) {
+    throw result.sde;
+  }
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "system_update_column_family failed: unknown result");
+}
+
+void CassandraClient::execute_cql_query(CqlResult& _return, const std::string& query, const Compression::type compression)
+{
+  send_execute_cql_query(query, compression);
+  recv_execute_cql_query(_return);
+}
+
+void CassandraClient::send_execute_cql_query(const std::string& query, const Compression::type compression)
+{
+  int32_t cseqid = 0;
+  oprot_->writeMessageBegin("execute_cql_query", ::apache::thrift::protocol::T_CALL, cseqid);
+
+  Cassandra_execute_cql_query_pargs args;
+  args.query = &query;
+  args.compression = &compression;
+  args.write(oprot_);
+
+  oprot_->writeMessageEnd();
+  oprot_->getTransport()->writeEnd();
+  oprot_->getTransport()->flush();
+}
+
+void CassandraClient::recv_execute_cql_query(CqlResult& _return)
+{
+
+  int32_t rseqid = 0;
+  std::string fname;
+  ::apache::thrift::protocol::TMessageType mtype;
+
+  iprot_->readMessageBegin(fname, mtype, rseqid);
+  if (mtype == ::apache::thrift::protocol::T_EXCEPTION) {
+    ::apache::thrift::TApplicationException x;
+    x.read(iprot_);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+    throw x;
+  }
+  if (mtype != ::apache::thrift::protocol::T_REPLY) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  if (fname.compare("execute_cql_query") != 0) {
+    iprot_->skip(::apache::thrift::protocol::T_STRUCT);
+    iprot_->readMessageEnd();
+    iprot_->getTransport()->readEnd();
+  }
+  Cassandra_execute_cql_query_presult result;
+  result.success = &_return;
+  result.read(iprot_);
+  iprot_->readMessageEnd();
+  iprot_->getTransport()->readEnd();
+
+  if (result.__isset.success) {
+    // _return pointer has now been filled
+    return;
+  }
+  if (result.__isset.ire) {
+    throw result.ire;
+  }
+  if (result.__isset.ue) {
+    throw result.ue;
+  }
+  if (result.__isset.te) {
+    throw result.te;
+  }
+  if (result.__isset.sde) {
+    throw result.sde;
+  }
+  throw ::apache::thrift::TApplicationException(::apache::thrift::TApplicationException::MISSING_RESULT, "execute_cql_query failed: unknown result");
+}
+
+bool CassandraProcessor::process(boost::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot, boost::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot, void* callContext) {
 
   ::apache::thrift::protocol::TProtocol* iprot = piprot.get();
   ::apache::thrift::protocol::TProtocol* oprot = poprot.get();
@@ -6779,16 +9172,16 @@ bool CassandraProcessor::process(boost::shared_ptr< ::apache::thrift::protocol::
     oprot->writeMessageBegin(fname, ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
-    oprot->getTransport()->flush();
     oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
     return true;
   }
 
-  return process_fn(iprot, oprot, fname, seqid);
+  return process_fn(iprot, oprot, fname, seqid, callContext);
 }
 
-bool CassandraProcessor::process_fn(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, std::string& fname, int32_t seqid) {
-  std::map<std::string, void (CassandraProcessor::*)(int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*)>::iterator pfn;
+bool CassandraProcessor::process_fn(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, std::string& fname, int32_t seqid, void* callContext) {
+  std::map<std::string, void (CassandraProcessor::*)(int32_t, ::apache::thrift::protocol::TProtocol*, ::apache::thrift::protocol::TProtocol*, void*)>::iterator pfn;
   pfn = processMap_.find(fname);
   if (pfn == processMap_.end()) {
     iprot->skip(::apache::thrift::protocol::T_STRUCT);
@@ -6798,24 +9191,38 @@ bool CassandraProcessor::process_fn(::apache::thrift::protocol::TProtocol* iprot
     oprot->writeMessageBegin(fname, ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
-    oprot->getTransport()->flush();
     oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
     return true;
   }
-  (this->*(pfn->second))(seqid, iprot, oprot);
+  (this->*(pfn->second))(seqid, iprot, oprot, callContext);
   return true;
 }
 
-void CassandraProcessor::process_login(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+void CassandraProcessor::process_login(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.login", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.login");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.login");
+  }
+
   Cassandra_login_args args;
   args.read(iprot);
   iprot->readMessageEnd();
-  iprot->getTransport()->readEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.login", bytes);
+  }
 
   Cassandra_login_result result;
   try {
-    iface_->login(args.keyspace, args.auth_request);
+    iface_->login(args.auth_request);
   } catch (AuthenticationException &authnx) {
     result.authnx = authnx;
     result.__isset.authnx = true;
@@ -6823,32 +9230,114 @@ void CassandraProcessor::process_login(int32_t seqid, ::apache::thrift::protocol
     result.authzx = authzx;
     result.__isset.authzx = true;
   } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.login");
+    }
+
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("login", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
-    oprot->getTransport()->flush();
     oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
     return;
+  }
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.login");
   }
 
   oprot->writeMessageBegin("login", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
-  oprot->getTransport()->writeEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.login", bytes);
+  }
 }
 
-void CassandraProcessor::process_get(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+void CassandraProcessor::process_set_keyspace(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.set_keyspace", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.set_keyspace");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.set_keyspace");
+  }
+
+  Cassandra_set_keyspace_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.set_keyspace", bytes);
+  }
+
+  Cassandra_set_keyspace_result result;
+  try {
+    iface_->set_keyspace(args.keyspace);
+  } catch (InvalidRequestException &ire) {
+    result.ire = ire;
+    result.__isset.ire = true;
+  } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.set_keyspace");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("set_keyspace", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.set_keyspace");
+  }
+
+  oprot->writeMessageBegin("set_keyspace", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.set_keyspace", bytes);
+  }
+}
+
+void CassandraProcessor::process_get(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.get", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.get");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.get");
+  }
+
   Cassandra_get_args args;
   args.read(iprot);
   iprot->readMessageEnd();
-  iprot->getTransport()->readEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.get", bytes);
+  }
 
   Cassandra_get_result result;
   try {
-    iface_->get(result.success, args.keyspace, args.key, args.column_path, args.consistency_level);
+    iface_->get(result.success, args.key, args.column_path, args.consistency_level);
     result.__isset.success = true;
   } catch (InvalidRequestException &ire) {
     result.ire = ire;
@@ -6863,32 +9352,58 @@ void CassandraProcessor::process_get(int32_t seqid, ::apache::thrift::protocol::
     result.te = te;
     result.__isset.te = true;
   } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.get");
+    }
+
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("get", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
-    oprot->getTransport()->flush();
     oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
     return;
+  }
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.get");
   }
 
   oprot->writeMessageBegin("get", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
-  oprot->getTransport()->writeEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.get", bytes);
+  }
 }
 
-void CassandraProcessor::process_get_slice(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+void CassandraProcessor::process_get_slice(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.get_slice", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.get_slice");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.get_slice");
+  }
+
   Cassandra_get_slice_args args;
   args.read(iprot);
   iprot->readMessageEnd();
-  iprot->getTransport()->readEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.get_slice", bytes);
+  }
 
   Cassandra_get_slice_result result;
   try {
-    iface_->get_slice(result.success, args.keyspace, args.key, args.column_parent, args.predicate, args.consistency_level);
+    iface_->get_slice(result.success, args.key, args.column_parent, args.predicate, args.consistency_level);
     result.__isset.success = true;
   } catch (InvalidRequestException &ire) {
     result.ire = ire;
@@ -6900,106 +9415,58 @@ void CassandraProcessor::process_get_slice(int32_t seqid, ::apache::thrift::prot
     result.te = te;
     result.__isset.te = true;
   } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.get_slice");
+    }
+
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("get_slice", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
-    oprot->getTransport()->flush();
     oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
     return;
+  }
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.get_slice");
   }
 
   oprot->writeMessageBegin("get_slice", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
-  oprot->getTransport()->writeEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.get_slice", bytes);
+  }
 }
 
-void CassandraProcessor::process_multiget(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+void CassandraProcessor::process_get_count(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
-  Cassandra_multiget_args args;
-  args.read(iprot);
-  iprot->readMessageEnd();
-  iprot->getTransport()->readEnd();
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.get_count", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.get_count");
 
-  Cassandra_multiget_result result;
-  try {
-    iface_->multiget(result.success, args.keyspace, args.keys, args.column_path, args.consistency_level);
-    result.__isset.success = true;
-  } catch (InvalidRequestException &ire) {
-    result.ire = ire;
-    result.__isset.ire = true;
-  } catch (UnavailableException &ue) {
-    result.ue = ue;
-    result.__isset.ue = true;
-  } catch (TimedOutException &te) {
-    result.te = te;
-    result.__isset.te = true;
-  } catch (const std::exception& e) {
-    ::apache::thrift::TApplicationException x(e.what());
-    oprot->writeMessageBegin("multiget", ::apache::thrift::protocol::T_EXCEPTION, seqid);
-    x.write(oprot);
-    oprot->writeMessageEnd();
-    oprot->getTransport()->flush();
-    oprot->getTransport()->writeEnd();
-    return;
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.get_count");
   }
 
-  oprot->writeMessageBegin("multiget", ::apache::thrift::protocol::T_REPLY, seqid);
-  result.write(oprot);
-  oprot->writeMessageEnd();
-  oprot->getTransport()->flush();
-  oprot->getTransport()->writeEnd();
-}
-
-void CassandraProcessor::process_multiget_slice(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
-{
-  Cassandra_multiget_slice_args args;
-  args.read(iprot);
-  iprot->readMessageEnd();
-  iprot->getTransport()->readEnd();
-
-  Cassandra_multiget_slice_result result;
-  try {
-    iface_->multiget_slice(result.success, args.keyspace, args.keys, args.column_parent, args.predicate, args.consistency_level);
-    result.__isset.success = true;
-  } catch (InvalidRequestException &ire) {
-    result.ire = ire;
-    result.__isset.ire = true;
-  } catch (UnavailableException &ue) {
-    result.ue = ue;
-    result.__isset.ue = true;
-  } catch (TimedOutException &te) {
-    result.te = te;
-    result.__isset.te = true;
-  } catch (const std::exception& e) {
-    ::apache::thrift::TApplicationException x(e.what());
-    oprot->writeMessageBegin("multiget_slice", ::apache::thrift::protocol::T_EXCEPTION, seqid);
-    x.write(oprot);
-    oprot->writeMessageEnd();
-    oprot->getTransport()->flush();
-    oprot->getTransport()->writeEnd();
-    return;
-  }
-
-  oprot->writeMessageBegin("multiget_slice", ::apache::thrift::protocol::T_REPLY, seqid);
-  result.write(oprot);
-  oprot->writeMessageEnd();
-  oprot->getTransport()->flush();
-  oprot->getTransport()->writeEnd();
-}
-
-void CassandraProcessor::process_get_count(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
-{
   Cassandra_get_count_args args;
   args.read(iprot);
   iprot->readMessageEnd();
-  iprot->getTransport()->readEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.get_count", bytes);
+  }
 
   Cassandra_get_count_result result;
   try {
-    result.success = iface_->get_count(args.keyspace, args.key, args.column_parent, args.consistency_level);
+    result.success = iface_->get_count(args.key, args.column_parent, args.predicate, args.consistency_level);
     result.__isset.success = true;
   } catch (InvalidRequestException &ire) {
     result.ire = ire;
@@ -7011,32 +9478,58 @@ void CassandraProcessor::process_get_count(int32_t seqid, ::apache::thrift::prot
     result.te = te;
     result.__isset.te = true;
   } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.get_count");
+    }
+
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("get_count", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
-    oprot->getTransport()->flush();
     oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
     return;
+  }
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.get_count");
   }
 
   oprot->writeMessageBegin("get_count", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
-  oprot->getTransport()->writeEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.get_count", bytes);
+  }
 }
 
-void CassandraProcessor::process_get_range_slice(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+void CassandraProcessor::process_multiget_slice(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
-  Cassandra_get_range_slice_args args;
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.multiget_slice", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.multiget_slice");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.multiget_slice");
+  }
+
+  Cassandra_multiget_slice_args args;
   args.read(iprot);
   iprot->readMessageEnd();
-  iprot->getTransport()->readEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
 
-  Cassandra_get_range_slice_result result;
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.multiget_slice", bytes);
+  }
+
+  Cassandra_multiget_slice_result result;
   try {
-    iface_->get_range_slice(result.success, args.keyspace, args.column_parent, args.predicate, args.start_key, args.finish_key, args.row_count, args.consistency_level);
+    iface_->multiget_slice(result.success, args.keys, args.column_parent, args.predicate, args.consistency_level);
     result.__isset.success = true;
   } catch (InvalidRequestException &ire) {
     result.ire = ire;
@@ -7048,32 +9541,58 @@ void CassandraProcessor::process_get_range_slice(int32_t seqid, ::apache::thrift
     result.te = te;
     result.__isset.te = true;
   } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.multiget_slice");
+    }
+
     ::apache::thrift::TApplicationException x(e.what());
-    oprot->writeMessageBegin("get_range_slice", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    oprot->writeMessageBegin("multiget_slice", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
-    oprot->getTransport()->flush();
     oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
     return;
   }
 
-  oprot->writeMessageBegin("get_range_slice", ::apache::thrift::protocol::T_REPLY, seqid);
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.multiget_slice");
+  }
+
+  oprot->writeMessageBegin("multiget_slice", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
-  oprot->getTransport()->writeEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.multiget_slice", bytes);
+  }
 }
 
-void CassandraProcessor::process_get_range_slices(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+void CassandraProcessor::process_multiget_count(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
-  Cassandra_get_range_slices_args args;
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.multiget_count", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.multiget_count");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.multiget_count");
+  }
+
+  Cassandra_multiget_count_args args;
   args.read(iprot);
   iprot->readMessageEnd();
-  iprot->getTransport()->readEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
 
-  Cassandra_get_range_slices_result result;
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.multiget_count", bytes);
+  }
+
+  Cassandra_multiget_count_result result;
   try {
-    iface_->get_range_slices(result.success, args.keyspace, args.column_parent, args.predicate, args.range, args.consistency_level);
+    iface_->multiget_count(result.success, args.keys, args.column_parent, args.predicate, args.consistency_level);
     result.__isset.success = true;
   } catch (InvalidRequestException &ire) {
     result.ire = ire;
@@ -7085,32 +9604,122 @@ void CassandraProcessor::process_get_range_slices(int32_t seqid, ::apache::thrif
     result.te = te;
     result.__isset.te = true;
   } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.multiget_count");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("multiget_count", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.multiget_count");
+  }
+
+  oprot->writeMessageBegin("multiget_count", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.multiget_count", bytes);
+  }
+}
+
+void CassandraProcessor::process_get_range_slices(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.get_range_slices", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.get_range_slices");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.get_range_slices");
+  }
+
+  Cassandra_get_range_slices_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.get_range_slices", bytes);
+  }
+
+  Cassandra_get_range_slices_result result;
+  try {
+    iface_->get_range_slices(result.success, args.column_parent, args.predicate, args.range, args.consistency_level);
+    result.__isset.success = true;
+  } catch (InvalidRequestException &ire) {
+    result.ire = ire;
+    result.__isset.ire = true;
+  } catch (UnavailableException &ue) {
+    result.ue = ue;
+    result.__isset.ue = true;
+  } catch (TimedOutException &te) {
+    result.te = te;
+    result.__isset.te = true;
+  } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.get_range_slices");
+    }
+
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("get_range_slices", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
-    oprot->getTransport()->flush();
     oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
     return;
+  }
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.get_range_slices");
   }
 
   oprot->writeMessageBegin("get_range_slices", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
-  oprot->getTransport()->writeEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.get_range_slices", bytes);
+  }
 }
 
-void CassandraProcessor::process_insert(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+void CassandraProcessor::process_get_indexed_slices(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
-  Cassandra_insert_args args;
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.get_indexed_slices", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.get_indexed_slices");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.get_indexed_slices");
+  }
+
+  Cassandra_get_indexed_slices_args args;
   args.read(iprot);
   iprot->readMessageEnd();
-  iprot->getTransport()->readEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
 
-  Cassandra_insert_result result;
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.get_indexed_slices", bytes);
+  }
+
+  Cassandra_get_indexed_slices_result result;
   try {
-    iface_->insert(args.keyspace, args.key, args.column_path, args.value, args.timestamp, args.consistency_level);
+    iface_->get_indexed_slices(result.success, args.column_parent, args.index_clause, args.column_predicate, args.consistency_level);
+    result.__isset.success = true;
   } catch (InvalidRequestException &ire) {
     result.ire = ire;
     result.__isset.ire = true;
@@ -7121,32 +9730,120 @@ void CassandraProcessor::process_insert(int32_t seqid, ::apache::thrift::protoco
     result.te = te;
     result.__isset.te = true;
   } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.get_indexed_slices");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("get_indexed_slices", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.get_indexed_slices");
+  }
+
+  oprot->writeMessageBegin("get_indexed_slices", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.get_indexed_slices", bytes);
+  }
+}
+
+void CassandraProcessor::process_insert(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.insert", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.insert");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.insert");
+  }
+
+  Cassandra_insert_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.insert", bytes);
+  }
+
+  Cassandra_insert_result result;
+  try {
+    iface_->insert(args.key, args.column_parent, args.column, args.consistency_level);
+  } catch (InvalidRequestException &ire) {
+    result.ire = ire;
+    result.__isset.ire = true;
+  } catch (UnavailableException &ue) {
+    result.ue = ue;
+    result.__isset.ue = true;
+  } catch (TimedOutException &te) {
+    result.te = te;
+    result.__isset.te = true;
+  } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.insert");
+    }
+
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("insert", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
-    oprot->getTransport()->flush();
     oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
     return;
+  }
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.insert");
   }
 
   oprot->writeMessageBegin("insert", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
-  oprot->getTransport()->writeEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.insert", bytes);
+  }
 }
 
-void CassandraProcessor::process_batch_insert(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+void CassandraProcessor::process_add(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
-  Cassandra_batch_insert_args args;
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.add", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.add");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.add");
+  }
+
+  Cassandra_add_args args;
   args.read(iprot);
   iprot->readMessageEnd();
-  iprot->getTransport()->readEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
 
-  Cassandra_batch_insert_result result;
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.add", bytes);
+  }
+
+  Cassandra_add_result result;
   try {
-    iface_->batch_insert(args.keyspace, args.key, args.cfmap, args.consistency_level);
+    iface_->add(args.key, args.column_parent, args.column, args.consistency_level);
   } catch (InvalidRequestException &ire) {
     result.ire = ire;
     result.__isset.ire = true;
@@ -7157,32 +9854,58 @@ void CassandraProcessor::process_batch_insert(int32_t seqid, ::apache::thrift::p
     result.te = te;
     result.__isset.te = true;
   } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.add");
+    }
+
     ::apache::thrift::TApplicationException x(e.what());
-    oprot->writeMessageBegin("batch_insert", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    oprot->writeMessageBegin("add", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
-    oprot->getTransport()->flush();
     oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
     return;
   }
 
-  oprot->writeMessageBegin("batch_insert", ::apache::thrift::protocol::T_REPLY, seqid);
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.add");
+  }
+
+  oprot->writeMessageBegin("add", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
-  oprot->getTransport()->writeEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.add", bytes);
+  }
 }
 
-void CassandraProcessor::process_remove(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+void CassandraProcessor::process_remove(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.remove", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.remove");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.remove");
+  }
+
   Cassandra_remove_args args;
   args.read(iprot);
   iprot->readMessageEnd();
-  iprot->getTransport()->readEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.remove", bytes);
+  }
 
   Cassandra_remove_result result;
   try {
-    iface_->remove(args.keyspace, args.key, args.column_path, args.timestamp, args.consistency_level);
+    iface_->remove(args.key, args.column_path, args.timestamp, args.consistency_level);
   } catch (InvalidRequestException &ire) {
     result.ire = ire;
     result.__isset.ire = true;
@@ -7193,32 +9916,58 @@ void CassandraProcessor::process_remove(int32_t seqid, ::apache::thrift::protoco
     result.te = te;
     result.__isset.te = true;
   } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.remove");
+    }
+
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("remove", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
-    oprot->getTransport()->flush();
     oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
     return;
+  }
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.remove");
   }
 
   oprot->writeMessageBegin("remove", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
-  oprot->getTransport()->writeEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.remove", bytes);
+  }
 }
 
-void CassandraProcessor::process_batch_mutate(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+void CassandraProcessor::process_remove_counter(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
-  Cassandra_batch_mutate_args args;
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.remove_counter", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.remove_counter");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.remove_counter");
+  }
+
+  Cassandra_remove_counter_args args;
   args.read(iprot);
   iprot->readMessageEnd();
-  iprot->getTransport()->readEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
 
-  Cassandra_batch_mutate_result result;
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.remove_counter", bytes);
+  }
+
+  Cassandra_remove_counter_result result;
   try {
-    iface_->batch_mutate(args.keyspace, args.mutation_map, args.consistency_level);
+    iface_->remove_counter(args.key, args.path, args.consistency_level);
   } catch (InvalidRequestException &ire) {
     result.ire = ire;
     result.__isset.ire = true;
@@ -7229,168 +9978,397 @@ void CassandraProcessor::process_batch_mutate(int32_t seqid, ::apache::thrift::p
     result.te = te;
     result.__isset.te = true;
   } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.remove_counter");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("remove_counter", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.remove_counter");
+  }
+
+  oprot->writeMessageBegin("remove_counter", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.remove_counter", bytes);
+  }
+}
+
+void CassandraProcessor::process_batch_mutate(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.batch_mutate", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.batch_mutate");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.batch_mutate");
+  }
+
+  Cassandra_batch_mutate_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.batch_mutate", bytes);
+  }
+
+  Cassandra_batch_mutate_result result;
+  try {
+    iface_->batch_mutate(args.mutation_map, args.consistency_level);
+  } catch (InvalidRequestException &ire) {
+    result.ire = ire;
+    result.__isset.ire = true;
+  } catch (UnavailableException &ue) {
+    result.ue = ue;
+    result.__isset.ue = true;
+  } catch (TimedOutException &te) {
+    result.te = te;
+    result.__isset.te = true;
+  } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.batch_mutate");
+    }
+
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("batch_mutate", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
-    oprot->getTransport()->flush();
     oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
     return;
+  }
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.batch_mutate");
   }
 
   oprot->writeMessageBegin("batch_mutate", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
-  oprot->getTransport()->writeEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.batch_mutate", bytes);
+  }
 }
 
-void CassandraProcessor::process_get_string_property(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+void CassandraProcessor::process_truncate(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
-  Cassandra_get_string_property_args args;
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.truncate", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.truncate");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.truncate");
+  }
+
+  Cassandra_truncate_args args;
   args.read(iprot);
   iprot->readMessageEnd();
-  iprot->getTransport()->readEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
 
-  Cassandra_get_string_property_result result;
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.truncate", bytes);
+  }
+
+  Cassandra_truncate_result result;
   try {
-    iface_->get_string_property(result.success, args.property);
-    result.__isset.success = true;
+    iface_->truncate(args.cfname);
+  } catch (InvalidRequestException &ire) {
+    result.ire = ire;
+    result.__isset.ire = true;
+  } catch (UnavailableException &ue) {
+    result.ue = ue;
+    result.__isset.ue = true;
   } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.truncate");
+    }
+
     ::apache::thrift::TApplicationException x(e.what());
-    oprot->writeMessageBegin("get_string_property", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    oprot->writeMessageBegin("truncate", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
-    oprot->getTransport()->flush();
     oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
     return;
   }
 
-  oprot->writeMessageBegin("get_string_property", ::apache::thrift::protocol::T_REPLY, seqid);
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.truncate");
+  }
+
+  oprot->writeMessageBegin("truncate", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
-  oprot->getTransport()->writeEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.truncate", bytes);
+  }
 }
 
-void CassandraProcessor::process_get_string_list_property(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+void CassandraProcessor::process_describe_schema_versions(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
-  Cassandra_get_string_list_property_args args;
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.describe_schema_versions", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.describe_schema_versions");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.describe_schema_versions");
+  }
+
+  Cassandra_describe_schema_versions_args args;
   args.read(iprot);
   iprot->readMessageEnd();
-  iprot->getTransport()->readEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
 
-  Cassandra_get_string_list_property_result result;
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.describe_schema_versions", bytes);
+  }
+
+  Cassandra_describe_schema_versions_result result;
   try {
-    iface_->get_string_list_property(result.success, args.property);
+    iface_->describe_schema_versions(result.success);
     result.__isset.success = true;
+  } catch (InvalidRequestException &ire) {
+    result.ire = ire;
+    result.__isset.ire = true;
   } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.describe_schema_versions");
+    }
+
     ::apache::thrift::TApplicationException x(e.what());
-    oprot->writeMessageBegin("get_string_list_property", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    oprot->writeMessageBegin("describe_schema_versions", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
-    oprot->getTransport()->flush();
     oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
     return;
   }
 
-  oprot->writeMessageBegin("get_string_list_property", ::apache::thrift::protocol::T_REPLY, seqid);
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.describe_schema_versions");
+  }
+
+  oprot->writeMessageBegin("describe_schema_versions", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
-  oprot->getTransport()->writeEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.describe_schema_versions", bytes);
+  }
 }
 
-void CassandraProcessor::process_describe_keyspaces(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+void CassandraProcessor::process_describe_keyspaces(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.describe_keyspaces", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.describe_keyspaces");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.describe_keyspaces");
+  }
+
   Cassandra_describe_keyspaces_args args;
   args.read(iprot);
   iprot->readMessageEnd();
-  iprot->getTransport()->readEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.describe_keyspaces", bytes);
+  }
 
   Cassandra_describe_keyspaces_result result;
   try {
     iface_->describe_keyspaces(result.success);
     result.__isset.success = true;
+  } catch (InvalidRequestException &ire) {
+    result.ire = ire;
+    result.__isset.ire = true;
   } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.describe_keyspaces");
+    }
+
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("describe_keyspaces", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
-    oprot->getTransport()->flush();
     oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
     return;
+  }
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.describe_keyspaces");
   }
 
   oprot->writeMessageBegin("describe_keyspaces", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
-  oprot->getTransport()->writeEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.describe_keyspaces", bytes);
+  }
 }
 
-void CassandraProcessor::process_describe_cluster_name(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+void CassandraProcessor::process_describe_cluster_name(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.describe_cluster_name", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.describe_cluster_name");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.describe_cluster_name");
+  }
+
   Cassandra_describe_cluster_name_args args;
   args.read(iprot);
   iprot->readMessageEnd();
-  iprot->getTransport()->readEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.describe_cluster_name", bytes);
+  }
 
   Cassandra_describe_cluster_name_result result;
   try {
     iface_->describe_cluster_name(result.success);
     result.__isset.success = true;
   } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.describe_cluster_name");
+    }
+
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("describe_cluster_name", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
-    oprot->getTransport()->flush();
     oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
     return;
+  }
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.describe_cluster_name");
   }
 
   oprot->writeMessageBegin("describe_cluster_name", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
-  oprot->getTransport()->writeEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.describe_cluster_name", bytes);
+  }
 }
 
-void CassandraProcessor::process_describe_version(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+void CassandraProcessor::process_describe_version(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.describe_version", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.describe_version");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.describe_version");
+  }
+
   Cassandra_describe_version_args args;
   args.read(iprot);
   iprot->readMessageEnd();
-  iprot->getTransport()->readEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.describe_version", bytes);
+  }
 
   Cassandra_describe_version_result result;
   try {
     iface_->describe_version(result.success);
     result.__isset.success = true;
   } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.describe_version");
+    }
+
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("describe_version", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
-    oprot->getTransport()->flush();
     oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
     return;
+  }
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.describe_version");
   }
 
   oprot->writeMessageBegin("describe_version", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
-  oprot->getTransport()->writeEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.describe_version", bytes);
+  }
 }
 
-void CassandraProcessor::process_describe_ring(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+void CassandraProcessor::process_describe_ring(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.describe_ring", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.describe_ring");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.describe_ring");
+  }
+
   Cassandra_describe_ring_args args;
   args.read(iprot);
   iprot->readMessageEnd();
-  iprot->getTransport()->readEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.describe_ring", bytes);
+  }
 
   Cassandra_describe_ring_result result;
   try {
@@ -7400,56 +10378,162 @@ void CassandraProcessor::process_describe_ring(int32_t seqid, ::apache::thrift::
     result.ire = ire;
     result.__isset.ire = true;
   } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.describe_ring");
+    }
+
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("describe_ring", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
-    oprot->getTransport()->flush();
     oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
     return;
+  }
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.describe_ring");
   }
 
   oprot->writeMessageBegin("describe_ring", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
-  oprot->getTransport()->writeEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.describe_ring", bytes);
+  }
 }
 
-void CassandraProcessor::process_describe_partitioner(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+void CassandraProcessor::process_describe_partitioner(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.describe_partitioner", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.describe_partitioner");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.describe_partitioner");
+  }
+
   Cassandra_describe_partitioner_args args;
   args.read(iprot);
   iprot->readMessageEnd();
-  iprot->getTransport()->readEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.describe_partitioner", bytes);
+  }
 
   Cassandra_describe_partitioner_result result;
   try {
     iface_->describe_partitioner(result.success);
     result.__isset.success = true;
   } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.describe_partitioner");
+    }
+
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("describe_partitioner", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
-    oprot->getTransport()->flush();
     oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
     return;
+  }
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.describe_partitioner");
   }
 
   oprot->writeMessageBegin("describe_partitioner", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
-  oprot->getTransport()->writeEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.describe_partitioner", bytes);
+  }
 }
 
-void CassandraProcessor::process_describe_keyspace(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+void CassandraProcessor::process_describe_snitch(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.describe_snitch", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.describe_snitch");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.describe_snitch");
+  }
+
+  Cassandra_describe_snitch_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.describe_snitch", bytes);
+  }
+
+  Cassandra_describe_snitch_result result;
+  try {
+    iface_->describe_snitch(result.success);
+    result.__isset.success = true;
+  } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.describe_snitch");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("describe_snitch", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.describe_snitch");
+  }
+
+  oprot->writeMessageBegin("describe_snitch", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.describe_snitch", bytes);
+  }
+}
+
+void CassandraProcessor::process_describe_keyspace(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.describe_keyspace", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.describe_keyspace");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.describe_keyspace");
+  }
+
   Cassandra_describe_keyspace_args args;
   args.read(iprot);
   iprot->readMessageEnd();
-  iprot->getTransport()->readEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.describe_keyspace", bytes);
+  }
 
   Cassandra_describe_keyspace_result result;
   try {
@@ -7458,49 +10542,519 @@ void CassandraProcessor::process_describe_keyspace(int32_t seqid, ::apache::thri
   } catch (NotFoundException &nfe) {
     result.nfe = nfe;
     result.__isset.nfe = true;
+  } catch (InvalidRequestException &ire) {
+    result.ire = ire;
+    result.__isset.ire = true;
   } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.describe_keyspace");
+    }
+
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("describe_keyspace", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
-    oprot->getTransport()->flush();
     oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
     return;
+  }
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.describe_keyspace");
   }
 
   oprot->writeMessageBegin("describe_keyspace", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
-  oprot->getTransport()->writeEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.describe_keyspace", bytes);
+  }
 }
 
-void CassandraProcessor::process_describe_splits(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot)
+void CassandraProcessor::process_describe_splits(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
 {
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.describe_splits", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.describe_splits");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.describe_splits");
+  }
+
   Cassandra_describe_splits_args args;
   args.read(iprot);
   iprot->readMessageEnd();
-  iprot->getTransport()->readEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.describe_splits", bytes);
+  }
 
   Cassandra_describe_splits_result result;
   try {
-    iface_->describe_splits(result.success, args.start_token, args.end_token, args.keys_per_split);
+    iface_->describe_splits(result.success, args.cfName, args.start_token, args.end_token, args.keys_per_split);
     result.__isset.success = true;
+  } catch (InvalidRequestException &ire) {
+    result.ire = ire;
+    result.__isset.ire = true;
   } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.describe_splits");
+    }
+
     ::apache::thrift::TApplicationException x(e.what());
     oprot->writeMessageBegin("describe_splits", ::apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
-    oprot->getTransport()->flush();
     oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
     return;
+  }
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.describe_splits");
   }
 
   oprot->writeMessageBegin("describe_splits", ::apache::thrift::protocol::T_REPLY, seqid);
   result.write(oprot);
   oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
   oprot->getTransport()->flush();
-  oprot->getTransport()->writeEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.describe_splits", bytes);
+  }
+}
+
+void CassandraProcessor::process_system_add_column_family(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.system_add_column_family", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.system_add_column_family");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.system_add_column_family");
+  }
+
+  Cassandra_system_add_column_family_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.system_add_column_family", bytes);
+  }
+
+  Cassandra_system_add_column_family_result result;
+  try {
+    iface_->system_add_column_family(result.success, args.cf_def);
+    result.__isset.success = true;
+  } catch (InvalidRequestException &ire) {
+    result.ire = ire;
+    result.__isset.ire = true;
+  } catch (SchemaDisagreementException &sde) {
+    result.sde = sde;
+    result.__isset.sde = true;
+  } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.system_add_column_family");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("system_add_column_family", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.system_add_column_family");
+  }
+
+  oprot->writeMessageBegin("system_add_column_family", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.system_add_column_family", bytes);
+  }
+}
+
+void CassandraProcessor::process_system_drop_column_family(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.system_drop_column_family", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.system_drop_column_family");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.system_drop_column_family");
+  }
+
+  Cassandra_system_drop_column_family_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.system_drop_column_family", bytes);
+  }
+
+  Cassandra_system_drop_column_family_result result;
+  try {
+    iface_->system_drop_column_family(result.success, args.column_family);
+    result.__isset.success = true;
+  } catch (InvalidRequestException &ire) {
+    result.ire = ire;
+    result.__isset.ire = true;
+  } catch (SchemaDisagreementException &sde) {
+    result.sde = sde;
+    result.__isset.sde = true;
+  } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.system_drop_column_family");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("system_drop_column_family", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.system_drop_column_family");
+  }
+
+  oprot->writeMessageBegin("system_drop_column_family", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.system_drop_column_family", bytes);
+  }
+}
+
+void CassandraProcessor::process_system_add_keyspace(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.system_add_keyspace", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.system_add_keyspace");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.system_add_keyspace");
+  }
+
+  Cassandra_system_add_keyspace_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.system_add_keyspace", bytes);
+  }
+
+  Cassandra_system_add_keyspace_result result;
+  try {
+    iface_->system_add_keyspace(result.success, args.ks_def);
+    result.__isset.success = true;
+  } catch (InvalidRequestException &ire) {
+    result.ire = ire;
+    result.__isset.ire = true;
+  } catch (SchemaDisagreementException &sde) {
+    result.sde = sde;
+    result.__isset.sde = true;
+  } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.system_add_keyspace");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("system_add_keyspace", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.system_add_keyspace");
+  }
+
+  oprot->writeMessageBegin("system_add_keyspace", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.system_add_keyspace", bytes);
+  }
+}
+
+void CassandraProcessor::process_system_drop_keyspace(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.system_drop_keyspace", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.system_drop_keyspace");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.system_drop_keyspace");
+  }
+
+  Cassandra_system_drop_keyspace_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.system_drop_keyspace", bytes);
+  }
+
+  Cassandra_system_drop_keyspace_result result;
+  try {
+    iface_->system_drop_keyspace(result.success, args.keyspace);
+    result.__isset.success = true;
+  } catch (InvalidRequestException &ire) {
+    result.ire = ire;
+    result.__isset.ire = true;
+  } catch (SchemaDisagreementException &sde) {
+    result.sde = sde;
+    result.__isset.sde = true;
+  } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.system_drop_keyspace");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("system_drop_keyspace", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.system_drop_keyspace");
+  }
+
+  oprot->writeMessageBegin("system_drop_keyspace", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.system_drop_keyspace", bytes);
+  }
+}
+
+void CassandraProcessor::process_system_update_keyspace(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.system_update_keyspace", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.system_update_keyspace");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.system_update_keyspace");
+  }
+
+  Cassandra_system_update_keyspace_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.system_update_keyspace", bytes);
+  }
+
+  Cassandra_system_update_keyspace_result result;
+  try {
+    iface_->system_update_keyspace(result.success, args.ks_def);
+    result.__isset.success = true;
+  } catch (InvalidRequestException &ire) {
+    result.ire = ire;
+    result.__isset.ire = true;
+  } catch (SchemaDisagreementException &sde) {
+    result.sde = sde;
+    result.__isset.sde = true;
+  } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.system_update_keyspace");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("system_update_keyspace", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.system_update_keyspace");
+  }
+
+  oprot->writeMessageBegin("system_update_keyspace", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.system_update_keyspace", bytes);
+  }
+}
+
+void CassandraProcessor::process_system_update_column_family(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.system_update_column_family", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.system_update_column_family");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.system_update_column_family");
+  }
+
+  Cassandra_system_update_column_family_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.system_update_column_family", bytes);
+  }
+
+  Cassandra_system_update_column_family_result result;
+  try {
+    iface_->system_update_column_family(result.success, args.cf_def);
+    result.__isset.success = true;
+  } catch (InvalidRequestException &ire) {
+    result.ire = ire;
+    result.__isset.ire = true;
+  } catch (SchemaDisagreementException &sde) {
+    result.sde = sde;
+    result.__isset.sde = true;
+  } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.system_update_column_family");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("system_update_column_family", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.system_update_column_family");
+  }
+
+  oprot->writeMessageBegin("system_update_column_family", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.system_update_column_family", bytes);
+  }
+}
+
+void CassandraProcessor::process_execute_cql_query(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext)
+{
+  void* ctx = NULL;
+  if (eventHandler_.get() != NULL) {
+    ctx = eventHandler_->getContext("Cassandra.execute_cql_query", callContext);
+  }
+  ::apache::thrift::TProcessorContextFreer freer(eventHandler_.get(), ctx, "Cassandra.execute_cql_query");
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preRead(ctx, "Cassandra.execute_cql_query");
+  }
+
+  Cassandra_execute_cql_query_args args;
+  args.read(iprot);
+  iprot->readMessageEnd();
+  uint32_t bytes = iprot->getTransport()->readEnd();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postRead(ctx, "Cassandra.execute_cql_query", bytes);
+  }
+
+  Cassandra_execute_cql_query_result result;
+  try {
+    iface_->execute_cql_query(result.success, args.query, args.compression);
+    result.__isset.success = true;
+  } catch (InvalidRequestException &ire) {
+    result.ire = ire;
+    result.__isset.ire = true;
+  } catch (UnavailableException &ue) {
+    result.ue = ue;
+    result.__isset.ue = true;
+  } catch (TimedOutException &te) {
+    result.te = te;
+    result.__isset.te = true;
+  } catch (SchemaDisagreementException &sde) {
+    result.sde = sde;
+    result.__isset.sde = true;
+  } catch (const std::exception& e) {
+    if (eventHandler_.get() != NULL) {
+      eventHandler_->handlerError(ctx, "Cassandra.execute_cql_query");
+    }
+
+    ::apache::thrift::TApplicationException x(e.what());
+    oprot->writeMessageBegin("execute_cql_query", ::apache::thrift::protocol::T_EXCEPTION, seqid);
+    x.write(oprot);
+    oprot->writeMessageEnd();
+    oprot->getTransport()->writeEnd();
+    oprot->getTransport()->flush();
+    return;
+  }
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->preWrite(ctx, "Cassandra.execute_cql_query");
+  }
+
+  oprot->writeMessageBegin("execute_cql_query", ::apache::thrift::protocol::T_REPLY, seqid);
+  result.write(oprot);
+  oprot->writeMessageEnd();
+  bytes = oprot->getTransport()->writeEnd();
+  oprot->getTransport()->flush();
+
+  if (eventHandler_.get() != NULL) {
+    eventHandler_->postWrite(ctx, "Cassandra.execute_cql_query", bytes);
+  }
 }
 
 }}} // namespace

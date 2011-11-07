@@ -33,16 +33,16 @@ using namespace boost;
 
 Keyspace::Keyspace(Cassandra *in_client,
                    const string &in_name,
-                   const map< string, map<string, string> > &in_desc,
-                   ConsistencyLevel in_readLevel,
-                   ConsistencyLevel in_writeLevel)
+                   const ConsistencyLevel::type in_readLevel,
+                   const ConsistencyLevel::type in_writeLevel)
   :
     client(in_client),
     name(in_name),
-    keyspace_desc(in_desc),
     readLevel(in_readLevel),
     writeLevel(in_writeLevel)
-{}
+{
+	client->getCassandra()->set_keyspace( in_name );
+}
 
 
 void Keyspace::insertColumn(const string &key,
@@ -51,19 +51,22 @@ void Keyspace::insertColumn(const string &key,
                             const string &column_name,
                             const string &value)
 {
-  ColumnPath col_path;
-  col_path.column_family.assign(column_family);
-  if (! super_column_name.empty()) 
+  ColumnParent parent;
+  parent.column_family.assign( column_family );
+  if (! super_column_name.empty())
   {
-    col_path.super_column.assign(super_column_name);
-    col_path.__isset.super_column= true;
+    parent.super_column.assign(super_column_name);
+    parent.__isset.super_column= true;
   }
-  col_path.column.assign(column_name);
-  col_path.__isset.column= true;
-  /* validate the column path */
-  validateColumnPath(col_path);
-  /* actually perform the insert */
-  client->getCassandra()->insert(name, key, col_path, value, createTimestamp(), writeLevel);
+
+  Column column;
+  column.name.assign( column_name );
+  column.value.assign( value );
+  column.timestamp = createTimestamp();
+  column.__isset.timestamp = true;
+  column.__isset.value = true;
+
+  client->getCassandra()->insert( key, parent, column, writeLevel);
 }
 
 
@@ -79,9 +82,7 @@ void Keyspace::insertColumn(const string &key,
 void Keyspace::remove(const string &key,
                       const ColumnPath &col_path)
 {
-  /* validate the column path */
-  validateColumnPath(col_path);
-  client->getCassandra()->remove(name, key, col_path, createTimestamp(), writeLevel);
+  client->getCassandra()->remove(key, col_path, createTimestamp(), writeLevel);
 }
 
 
@@ -137,9 +138,8 @@ Column Keyspace::getColumn(const string &key,
   }
   col_path.column.assign(column_name);
   col_path.__isset.column= true;
-  validateColumnPath(col_path);
   ColumnOrSuperColumn cosc;
-  client->getCassandra()->get(cosc, name, key, col_path, readLevel);
+  client->getCassandra()->get(cosc, key, col_path, readLevel);
   if (cosc.column.name.empty())
   {
     /* throw an exception */
@@ -182,9 +182,8 @@ SuperColumn Keyspace::getSuperColumn(const string &key,
   col_path.super_column.assign(super_column_name);
   /* this is ugly but thanks to thrift is needed */
   col_path.__isset.super_column= true;
-  validateSuperColumnPath(col_path);
   ColumnOrSuperColumn cosc;
-  client->getCassandra()->get(cosc, name, key, col_path, readLevel);
+  client->getCassandra()->get(cosc, key, col_path, readLevel);
   if (cosc.super_column.name.empty())
   {
     /* throw an exception */
@@ -202,7 +201,7 @@ vector<Column> Keyspace::getSliceNames(const string &key,
   vector<Column> result;
   /* damn you thrift! */
   pred.__isset.column_names= true;
-  client->getCassandra()->get_slice(ret_cosc, name, key, col_parent, pred, readLevel);
+  client->getCassandra()->get_slice(ret_cosc, key, col_parent, pred, readLevel);
   for (vector<ColumnOrSuperColumn>::iterator it= ret_cosc.begin();
        it != ret_cosc.end();
        ++it)
@@ -224,7 +223,7 @@ vector<Column> Keyspace::getSliceRange(const string &key,
   vector<Column> result;
   /* damn you thrift! */
   pred.__isset.slice_range= true;
-  client->getCassandra()->get_slice(ret_cosc, name, key, col_parent, pred, readLevel);
+  client->getCassandra()->get_slice(ret_cosc, key, col_parent, pred, readLevel);
   for (vector<ColumnOrSuperColumn>::iterator it= ret_cosc.begin();
        it != ret_cosc.end();
        ++it)
@@ -238,70 +237,12 @@ vector<Column> Keyspace::getSliceRange(const string &key,
 }
 
 
-map<string, vector<Column> > Keyspace::getRangeSlice(const ColumnParent &col_parent,
-                                                     const SlicePredicate &pred,
-                                                     const string &start,
-                                                     const string &finish,
-                                                     const int32_t row_count)
-{
-  map<string, vector<Column> > ret;
-  vector<KeySlice> key_slices;
-  client->getCassandra()->get_range_slice(key_slices,
-                                          name,
-                                          col_parent,
-                                          pred,
-                                          start,
-                                          finish,
-                                          row_count,
-                                          readLevel);
-  if (! key_slices.empty())
-  {
-    for (vector<KeySlice>::iterator it= key_slices.begin();
-         it != key_slices.end();
-         ++it)
-    {
-      ret.insert(make_pair((*it).key, getColumnList((*it).columns)));
-    }
-  }
-  return ret;
-}
-
-
-map<string, vector<SuperColumn> > Keyspace::getSuperRangeSlice(const ColumnParent &col_parent,
-                                                               const SlicePredicate &pred,
-                                                               const string &start,
-                                                               const string &finish,
-                                                               const int32_t row_count)
-{
-  map<string, vector<SuperColumn> > ret;
-  vector<KeySlice> key_slices;
-  client->getCassandra()->get_range_slice(key_slices,
-                                          name,
-                                          col_parent,
-                                          pred,
-                                          start,
-                                          finish,
-                                          row_count,
-                                          readLevel);
-  if (! key_slices.empty())
-  {
-    for (vector<KeySlice>::iterator it= key_slices.begin();
-         it != key_slices.end();
-         ++it)
-    {
-      ret.insert(make_pair((*it).key, getSuperColumnList((*it).columns)));
-    }
-  }
-  return ret;
-}
-
 void Keyspace::getRangeSlicesRaw(vector<KeySlice> &key_slices,
 								const ColumnParent &col_parent,
 								const SlicePredicate &pred,
 								const KeyRange &range)
 {
 	client->getCassandra()->get_range_slices(key_slices,
-	                                          name,
 	                                          col_parent,
 	                                          pred,
 	                                          range,
@@ -314,7 +255,6 @@ void Keyspace::multigetSliceRaw(std::map<std::string, std::vector<ColumnOrSuperC
 								const std::vector<std::string> &keys)
 {
 	client->getCassandra()->multiget_slice(_return,
-											name,
 											keys,
 											col_parent,
 											pred,
@@ -328,7 +268,6 @@ map<string, vector<Column> > Keyspace::getRangeSlices(const ColumnParent &col_pa
   map<string, vector<Column> > ret;
   vector<KeySlice> key_slices;
   client->getCassandra()->get_range_slices(key_slices,
-                                          name,
                                           col_parent,
                                           pred,
                                           range,
@@ -353,7 +292,6 @@ map<string, vector<SuperColumn> > Keyspace::getSuperRangeSlices(const ColumnPare
   map<string, vector<SuperColumn> > ret;
   vector<KeySlice> key_slices;
   client->getCassandra()->get_range_slices(key_slices,
-                                          name,
                                           col_parent,
                                           pred,
                                           range,
@@ -397,9 +335,9 @@ vector<SuperColumn> Keyspace::getSuperColumnList(vector<ColumnOrSuperColumn> &co
 }
 
 
-int32_t Keyspace::getCount(const string &key, const ColumnParent &col_parent)
+int32_t Keyspace::getCount(const string &key, const ColumnParent &col_parent, const SlicePredicate &predicate )
 {
-  return (client->getCassandra()->get_count(name, key, col_parent, readLevel));
+  return (client->getCassandra()->get_count(key, col_parent, predicate, readLevel));
 }
 
 
@@ -409,75 +347,20 @@ string Keyspace::getName()
 }
 
 
-ConsistencyLevel Keyspace::getReadConsistencyLevel() const
+ConsistencyLevel::type Keyspace::getReadConsistencyLevel() const
 {
   return readLevel;
 }
 
 
-ConsistencyLevel Keyspace::getWriteConsistencyLevel() const
+ConsistencyLevel::type Keyspace::getWriteConsistencyLevel() const
 {
   return writeLevel;
 }
-
-map< string, map<string, string> > Keyspace::getDescription()
-{
-  return keyspace_desc;
-}
-
 
 int64_t Keyspace::createTimestamp()
 {
   struct timeval tv;
   gettimeofday(&tv, NULL);
   return (int64_t) tv.tv_sec * 1000000 + (int64_t) tv.tv_usec;
-}
-
-
-void Keyspace::validateColumnPath(const ColumnPath &col_path)
-{
-  map<string, string> cf_define= keyspace_desc[col_path.column_family];
-  if (cf_define.empty())
-  {
-    /* throw an exception */
-    throw(InvalidRequestException());
-  }
-  string type= cf_define["Type"];
-  if (! type.compare("Standard"))
-  {
-    if (! col_path.column.empty())
-    {
-      return;
-    }
-  }
-  else if (! type.compare("Super"))
-  {
-    if (! col_path.super_column.empty())
-    {
-      return;
-    }
-  }
-  /* if we get here, throw an exception */
-  throw(InvalidRequestException());
-}
-
-
-void Keyspace::validateSuperColumnPath(const ColumnPath &col_path)
-{
-  map<string, string> cf_define= keyspace_desc[col_path.column_family];
-  if (cf_define.empty())
-  {
-    /* throw an exception */
-    throw(InvalidRequestException());
-  }
-  string type= cf_define["Type"];
-  if (! type.compare("Super"))
-  {
-    if (! col_path.super_column.empty())
-    {
-      return;
-    }
-  }
-  /* if we get here, throw an exception */
-  throw(InvalidRequestException());
 }

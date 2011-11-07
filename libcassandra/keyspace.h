@@ -28,9 +28,8 @@ public:
 
   Keyspace(Cassandra *in_client,
            const std::string &in_name,
-           const std::map< std::string, std::map<std::string, std::string> > &in_desc,
-           org::apache::cassandra::ConsistencyLevel in_readLevel,
-           org::apache::cassandra::ConsistencyLevel in_writeLevel);
+           const org::apache::cassandra::ConsistencyLevel::type in_readLevel,
+           const org::apache::cassandra::ConsistencyLevel::type in_writeLevel);
   ~Keyspace() {}
 
   /**
@@ -211,7 +210,8 @@ public:
    * @return number of columns in a row or super column
    */
   int32_t getCount(const std::string &key,
-                   const org::apache::cassandra::ColumnParent &col_parent);
+                   const org::apache::cassandra::ColumnParent &col_parent,
+                   const org::apache::cassandra::SlicePredicate &predicate );
 
   /**
    * @return name of this keyspace
@@ -221,12 +221,12 @@ public:
   /**
    * @return the consistency level for read operations on this keyspace
    */
-  org::apache::cassandra::ConsistencyLevel getReadConsistencyLevel() const;
+  org::apache::cassandra::ConsistencyLevel::type getReadConsistencyLevel() const;
 
   /**
    * @return the consistency level for write operations on this keyspace
    */
-  org::apache::cassandra::ConsistencyLevel getWriteConsistencyLevel() const;
+  org::apache::cassandra::ConsistencyLevel::type getWriteConsistencyLevel() const;
 
   /**
    * @return the keyspace description
@@ -246,18 +246,11 @@ private:
   std::vector<org::apache::cassandra::SuperColumn>
   getSuperColumnList(std::vector<org::apache::cassandra::ColumnOrSuperColumn> &cols);
 
-  void validateColumnPath(const org::apache::cassandra::ColumnPath &col_path);
-
-  void validateSuperColumnPath(const org::apache::cassandra::ColumnPath &col_path);
-
   Cassandra *client;
 
   std::string name;
 
-  std::map< std::string, std::map<std::string, std::string> > keyspace_desc;
-
-  org::apache::cassandra::ConsistencyLevel readLevel, writeLevel;
-
+  org::apache::cassandra::ConsistencyLevel::type readLevel, writeLevel;
 };
 
 } /* end namespace libcassandra */

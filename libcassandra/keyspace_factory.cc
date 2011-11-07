@@ -36,11 +36,10 @@ KeyspaceFactory::~KeyspaceFactory() {}
 
 tr1::shared_ptr<Keyspace> KeyspaceFactory::create(Cassandra *client,
                                                   const string &name,
-                                                  const map< string, map<string, string> > &descrip,
-                                                  ConsistencyLevel readLevel,
-                                                  ConsistencyLevel writeLevel)
+                                                  ConsistencyLevel::type readLevel,
+                                                  ConsistencyLevel::type writeLevel)
 {
-  tr1::shared_ptr<Keyspace> ret(new Keyspace(client, name, descrip, readLevel, writeLevel));
+  tr1::shared_ptr<Keyspace> ret(new Keyspace(client, name, readLevel, writeLevel));
   return ret;
 }
 
