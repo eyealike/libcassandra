@@ -961,16 +961,64 @@ class Mutation {
 
 };
 
+typedef struct _EndpointDetails__isset {
+  _EndpointDetails__isset() : host(false), datacenter(false), rack(false) {}
+  bool host;
+  bool datacenter;
+  bool rack;
+} _EndpointDetails__isset;
+
+class EndpointDetails {
+ public:
+
+  static const char* ascii_fingerprint; // = "F4A50F0EC638C7F66026F9B6678FD89B";
+  static const uint8_t binary_fingerprint[16]; // = {0xF4,0xA5,0x0F,0x0E,0xC6,0x38,0xC7,0xF6,0x60,0x26,0xF9,0xB6,0x67,0x8F,0xD8,0x9B};
+
+  EndpointDetails() : host(""), datacenter(""), rack("") {
+  }
+
+  virtual ~EndpointDetails() throw() {}
+
+  std::string host;
+  std::string datacenter;
+  std::string rack;
+
+  _EndpointDetails__isset __isset;
+
+  bool operator == (const EndpointDetails & rhs) const
+  {
+    if (!(host == rhs.host))
+      return false;
+    if (!(datacenter == rhs.datacenter))
+      return false;
+    if (__isset.rack != rhs.__isset.rack)
+      return false;
+    else if (__isset.rack && !(rack == rhs.rack))
+      return false;
+    return true;
+  }
+  bool operator != (const EndpointDetails &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const EndpointDetails & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
 typedef struct _TokenRange__isset {
-  _TokenRange__isset() : rpc_endpoints(false) {}
+  _TokenRange__isset() : rpc_endpoints(false), endpoint_details(false) {}
   bool rpc_endpoints;
+  bool endpoint_details;
 } _TokenRange__isset;
 
 class TokenRange {
  public:
 
-  static const char* ascii_fingerprint; // = "7DAB3420A3B97C1E96C2F37EB7EB300F";
-  static const uint8_t binary_fingerprint[16]; // = {0x7D,0xAB,0x34,0x20,0xA3,0xB9,0x7C,0x1E,0x96,0xC2,0xF3,0x7E,0xB7,0xEB,0x30,0x0F};
+  static const char* ascii_fingerprint; // = "832268DC4CD6B17EE8881FC57EA04679";
+  static const uint8_t binary_fingerprint[16]; // = {0x83,0x22,0x68,0xDC,0x4C,0xD6,0xB1,0x7E,0xE8,0x88,0x1F,0xC5,0x7E,0xA0,0x46,0x79};
 
   TokenRange() : start_token(""), end_token("") {
   }
@@ -981,6 +1029,7 @@ class TokenRange {
   std::string end_token;
   std::vector<std::string>  endpoints;
   std::vector<std::string>  rpc_endpoints;
+  std::vector<EndpointDetails>  endpoint_details;
 
   _TokenRange__isset __isset;
 
@@ -995,6 +1044,10 @@ class TokenRange {
     if (__isset.rpc_endpoints != rhs.__isset.rpc_endpoints)
       return false;
     else if (__isset.rpc_endpoints && !(rpc_endpoints == rhs.rpc_endpoints))
+      return false;
+    if (__isset.endpoint_details != rhs.__isset.endpoint_details)
+      return false;
+    else if (__isset.endpoint_details && !(endpoint_details == rhs.endpoint_details))
       return false;
     return true;
   }

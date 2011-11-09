@@ -2,7 +2,7 @@
 
 psPlatformVersion="3.4.0"
 distribution="snapshots"
-upstreamVersion="1.0.0"
+upstreamVersion="1.0.2"
 debianVersion="0ubuntu1"
 
 config/autorun.sh
