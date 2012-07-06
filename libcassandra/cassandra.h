@@ -54,7 +54,7 @@ public:
   /**
    * @return the underlying cassandra thrift client.
    */
-  org::apache::cassandra::CassandraClient *getCassandra();
+  org::apache::cassandra::CassandraClient *getCassandra( const Keyspace * keyspace );
 
   /**
    * @return all the keyspace names.
@@ -121,6 +121,7 @@ private:
   std::map<std::string, org::apache::cassandra::KsDef> key_spaces;
   std::map<std::string, std::string> token_map;
   std::map<std::string, std::tr1::shared_ptr<Keyspace> > keyspace_map;
+  const Keyspace* active_keyspace;
 
   Cassandra(const Cassandra&);
   Cassandra &operator=(const Cassandra&);

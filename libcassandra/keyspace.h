@@ -216,7 +216,7 @@ public:
   /**
    * @return name of this keyspace
    */
-  std::string getName();
+  std::string getName() const;
 
   /**
    * @return the consistency level for read operations on this keyspace

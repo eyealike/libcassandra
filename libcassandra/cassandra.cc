@@ -43,7 +43,8 @@ Cassandra::Cassandra(CassandraClient *in_thrift_client,
     config_file(),
     key_spaces(),
     token_map(),
-    keyspace_map()
+    keyspace_map(),
+    active_keyspace(0)
 {}
 
 
@@ -53,8 +54,12 @@ Cassandra::~Cassandra()
 }
 
 
-CassandraClient *Cassandra::getCassandra()
+CassandraClient *Cassandra::getCassandra( const Keyspace * keyspace )
 {
+  if( keyspace != active_keyspace ) {
+	  thrift_client->set_keyspace( keyspace->getName() );
+	  active_keyspace = keyspace;
+  }
   return thrift_client;
 }
 
